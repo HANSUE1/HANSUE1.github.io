@@ -20,10 +20,19 @@
     const mobileOverlay = document.getElementById('mobileOverlay');
 
     function toggleMobileMenu() {
+      const isActive = mobileMenu.classList.contains('active');
       navToggle.classList.toggle('active');
       mobileMenu.classList.toggle('active');
       mobileOverlay.classList.toggle('active');
       document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+
+      if (!isActive) {
+        navToggle.setAttribute('aria-expanded', 'true');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+      } else {
+        navToggle.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      }
     }
 
     navToggle.addEventListener('click', toggleMobileMenu);
@@ -35,6 +44,24 @@
           toggleMobileMenu();
         }
       });
+    });
+
+    // Close mobile menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+        toggleMobileMenu();
+      }
+    });
+
+    // Handle window resize for mobile menu
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (window.innerWidth >= 768 && mobileMenu.classList.contains('active')) {
+          toggleMobileMenu();
+        }
+      }, 100);
     });
 
     // Intersection Observer for animations
@@ -102,24 +129,28 @@
       });
     });
 
-    // Magnetic effect for buttons
-    document.querySelectorAll('.magnetic').forEach(btn => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+    // Magnetic effect for buttons - only on non-touch devices
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-        btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+    if (!isTouchDevice) {
+      document.querySelectorAll('.magnetic').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+
+          btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = 'translate(0, 0)';
+        });
       });
+    }
 
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = 'translate(0, 0)';
-      });
-    });
-
-    // Parallax effect for hero
+    // Parallax effect for hero - only on non-touch devices
     const hero = document.getElementById('hero');
-    if (hero) {
+    if (hero && !isTouchDevice) {
       window.addEventListener('scroll', () => {
         const scrolled = window.pageYOffset;
         const heroContent = hero.querySelector('.hero-content');

@@ -1,0 +1,81 @@
+@import 'variables.css';
+@import 'reset.css';
+@import 'typography.css';
+@import 'layout.css';
+@import 'components.css';
+@import 'animations.css';
+
+/* Background Grid */
+body {
+  background-color: var(--color-bg);
+  background-image: linear-gradient(0deg, transparent 24%, var(--color-grid) 25%, var(--color-grid) 26%, transparent 27%, transparent 74%, var(--color-grid) 75%, var(--color-grid) 76%, transparent 77%, transparent),
+      linear-gradient(90deg, transparent 24%, var(--color-grid) 25%, var(--color-grid) 26%, transparent 27%, transparent 74%, var(--color-grid) 75%, var(--color-grid) 76%, transparent 77%, transparent);
+  background-size: 55px 55px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .hero-overline {
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .stats-grid {
+    gap: var(--space-3);
+  }
+
+  .stat-label {
+    font-size: var(--text-xs);
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    padding: 0 var(--space-8);
+  }
+}
+
+/* Touch Device Improvements */
+@media (hover: none) {
+  .project-card:hover,
+  .skill-card:hover,
+  .contact-form-wrapper:hover {
+    transform: none;
+  }
+
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* Focus States for Accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Mobile Active States */
+@media (max-width: 640px) {
+  .btn:active,
+  .form-submit:active {
+    transform: scale(0.98);
+  }
+
+  .project-card:active {
+    transform: scale(0.99);
+  }
+}

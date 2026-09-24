@@ -23,8 +23,6 @@ uniform float uFogDepth;
 uniform float uSteps;
 uniform float uBrightness;
 uniform float uOpacity;
-uniform float uGrain;
-uniform float uGrainIntensity;
 uniform vec2 uMouse;
 uniform float uParallax;
 uniform float uEnableMouse;
@@ -33,13 +31,7 @@ uniform vec3 uWaveColor;
 uniform vec3 uCrestColor;
 out vec4 fragColor;
 
-const float MAX_DIST = 20000.0;
-
-float hash21(vec2 p) {
-  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-  p3 += dot(p3, p3.yzx + 33.33);
-  return fract((p3.x + p3.y) * p3.z);
-}
+const float MAX_DIST = 8000.0;
 
 float plasma(vec3 r, vec2 freq, vec4 tc) {
   float mx = r.x + tc.x;
@@ -51,10 +43,10 @@ float plasma(vec3 r, vec2 freq, vec4 tc) {
 
 float raymarch(vec3 pos, vec3 dir, vec2 freq, vec4 tc) {
   float dist = 0.0;
-  for (int i = 0; i < 128; i++) {
+  for (int i = 0; i < 64; i++) {
     if (float(i) >= uSteps) break;
     float dscene = plasma(pos + dist * dir, freq, tc);
-    if (abs(dscene) < 0.1) break;
+    if (abs(dscene) < 0.15) break;
     dist += 0.9 * dscene;
     if (!(abs(dist) < MAX_DIST)) return MAX_DIST;
   }
@@ -102,10 +94,6 @@ void main() {
   col = clamp(col, 0.0, 1.0);
 
   float alpha = clamp(t, 0.0, 1.0) * uOpacity;
-  if (uGrain > 0.5) {
-    float g = hash21(gl_FragCoord.xy + mod(iTime, 64.0) * 11.0);
-    alpha += (g - 0.5) * uGrainIntensity;
-  }
   alpha = clamp(alpha, 0.0, 1.0);
   fragColor = vec4(col * alpha, alpha);
 }
@@ -160,19 +148,19 @@ void main() {
     zoom: 1.0,
     height: 5.5,
     fogDepth: 15,
-    detail: 'medium',
+    detail: 'low',
     brightness: 1.0,
     opacity: 1.0,
     mouseInteraction: true,
     parallaxStrength: 0.5,
-    grain: true,
+    grain: false,
     grainIntensity: 0.05
   };
 
   const detailToSteps = detail => {
-    if (detail === 'low') return 40.0;
-    if (detail === 'high') return 110.0;
-    return 70.0;
+    if (detail === 'low') return 36.0;
+    if (detail === 'high') return 80.0;
+    return 48.0;
   };
 
   let canvas = null;
@@ -190,6 +178,8 @@ void main() {
   let intersectionObserver = null;
   let mouseTimeout = null;
   let currentParams = { ...defaults };
+  let lastFrameTime = 0;
+  const frameInterval = 1000 / 60;
 
   function init() {
     canvas = document.getElementById('gradient-waves-canvas');
@@ -341,11 +331,21 @@ void main() {
     canvas.addEventListener('pointerleave', onPointerLeave);
   }
 
-  function render() {
+  function render(timestamp) {
     if (!isVisible || !gl || !program) {
       animationId = null;
       return;
     }
+
+    if (!lastFrameTime) lastFrameTime = timestamp;
+    const elapsed = timestamp - lastFrameTime;
+
+    if (elapsed < frameInterval) {
+      animationId = requestAnimationFrame(render);
+      return;
+    }
+
+    lastFrameTime = timestamp - (elapsed % frameInterval);
 
     gl.useProgram(program);
 
@@ -366,8 +366,6 @@ void main() {
     const stepsLocation = gl.getUniformLocation(program, 'uSteps');
     const brightnessLocation = gl.getUniformLocation(program, 'uBrightness');
     const opacityLocation = gl.getUniformLocation(program, 'uOpacity');
-    const grainLocation = gl.getUniformLocation(program, 'uGrain');
-    const grainIntensityLocation = gl.getUniformLocation(program, 'uGrainIntensity');
     const mouseLocation = gl.getUniformLocation(program, 'uMouse');
     const parallaxLocation = gl.getUniformLocation(program, 'uParallax');
     const enableMouseLocation = gl.getUniformLocation(program, 'uEnableMouse');
@@ -397,8 +395,6 @@ void main() {
     gl.uniform1f(stepsLocation, detailToSteps(p.detail));
     gl.uniform1f(brightnessLocation, p.brightness);
     gl.uniform1f(opacityLocation, p.opacity);
-    gl.uniform1f(grainLocation, p.grain ? 1.0 : 0.0);
-    gl.uniform1f(grainIntensityLocation, p.grainIntensity);
     gl.uniform2f(mouseLocation, mouseX, mouseY);
     gl.uniform1f(parallaxLocation, p.parallaxStrength);
     gl.uniform1f(enableMouseLocation, p.mouseInteraction ? 1.0 : 0.0);
@@ -407,6 +403,12 @@ void main() {
     gl.uniform3f(crestColorLocation, crestRgb[0], crestRgb[1], crestRgb[2]);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+    const now = performance.now();
+    const fps = 1000 / (now - lastFrameTime);
+    if (Math.floor(now / 1000) !== Math.floor((now - 16) / 1000)) {
+      console.log('GradientWaves FPS:', Math.round(fps));
+    }
 
     animationId = requestAnimationFrame(render);
   }

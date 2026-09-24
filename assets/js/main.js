@@ -1,4 +1,4 @@
-    // Navbar scroll effect
+     // Navbar scroll effect
     const navbar = document.getElementById('navbar');
     let lastScroll = 0;
 
@@ -13,56 +13,6 @@
 
       lastScroll = currentScroll;
     }, { passive: true });
-
-    // Mobile menu
-    const navToggle = document.getElementById('navToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileOverlay = document.getElementById('mobileOverlay');
-
-    function toggleMobileMenu() {
-      const isActive = mobileMenu.classList.contains('active');
-      navToggle.classList.toggle('active');
-      mobileMenu.classList.toggle('active');
-      mobileOverlay.classList.toggle('active');
-      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-
-      if (!isActive) {
-        navToggle.setAttribute('aria-expanded', 'true');
-        mobileMenu.setAttribute('aria-hidden', 'false');
-      } else {
-        navToggle.setAttribute('aria-expanded', 'false');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-      }
-    }
-
-    navToggle.addEventListener('click', toggleMobileMenu);
-    mobileOverlay.addEventListener('click', toggleMobileMenu);
-
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (mobileMenu.classList.contains('active')) {
-          toggleMobileMenu();
-        }
-      });
-    });
-
-    // Close mobile menu on escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-        toggleMobileMenu();
-      }
-    });
-
-    // Handle window resize for mobile menu
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        if (window.innerWidth >= 768 && mobileMenu.classList.contains('active')) {
-          toggleMobileMenu();
-        }
-      }, 100);
-    });
 
     // Intersection Observer for animations
     const observerOptions = {

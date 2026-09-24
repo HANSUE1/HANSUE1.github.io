@@ -218,3 +218,15 @@ section {
     font-size: 0.9rem;
   }
 }
+
+/* Section Base */
+.contact,
+.projects,
+.skills {
+  background: transparent;
+}
+
+/* Magnetic Effect */
+.magnetic {
+  cursor: pointer;
+}

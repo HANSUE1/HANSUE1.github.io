@@ -8,17 +8,30 @@ This project is a static personal portfolio website built with HTML, CSS, and Ja
 PORTFOLIO/
 ├── index.html
 ├── README.md
-├── assets/
-│   ├── css/
-│   │   └── styles.css
-│   └── js/
-│       └── main.js
+├── css/
+│   ├── animations.css
+│   ├── components.css
+│   ├── layout.css
+│   ├── main.css
+│   ├── reset.css
+│   ├── typography.css
+│   └── variables.css
+├── data/
+│   └── projects.json
+├── images/
+├── js/
+│   ├── animations.js
+│   ├── contact.js
+│   ├── main.js
+│   ├── navigation.js
+│   ├── projects.js
+│   └── utils.js
 └── .git/
 ```
 
 ## How to run
 
-Open `index.html` directly in your browser, or serve the folder with a local HTTP server:
+Open `index.html` directly in a browser, or serve the project with a local HTTP server:
 
 ```bash
 python -m http.server 8000

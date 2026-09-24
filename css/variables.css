@@ -1,5 +1,5 @@
 :root {
-  /* Colors */
+  /* Colors - Light Mode */
   --color-bg: #F3F3F3;
   --color-surface: rgba(255, 255, 255, 0.88);
   --color-surface-hover: rgba(255, 255, 255, 0.95);
@@ -64,4 +64,21 @@
   --z-nav: 1000;
   --z-overlay: 998;
   --z-modal: 999;
+}
+
+[data-theme="dark"] {
+  --color-bg: #0a0a0a;
+  --color-surface: rgba(24, 24, 24, 0.88);
+  --color-surface-hover: rgba(30, 30, 30, 0.95);
+  --color-text: #ededed;
+  --color-text-secondary: #c4c4c4;
+  --color-text-tertiary: #888888;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-light: rgba(255, 255, 255, 0.05);
+  --color-accent: #ededed;
+  --color-accent-hover: #ffffff;
+  --color-accent-text: #0a0a0a;
+  --color-grid: #1a1a1a;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
 }

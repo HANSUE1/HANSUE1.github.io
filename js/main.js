@@ -12,19 +12,37 @@ import ContactForm from './contact.js';
  * Initialize the application
  */
 function init() {
-  // Core functionality
+  addScrollProgress();
+  addBackToTop();
+  initTheme();
+
   new Navigation();
   new Animations();
   new Projects();
   new ContactForm();
 
-  // Add scroll progress bar
-  addScrollProgress();
-
-  // Add back to top button
-  addBackToTop();
-
   console.log('Portfolio initialized successfully');
+}
+
+/**
+ * Initialize theme toggle
+ */
+function initTheme() {
+  const toggle = document.getElementById('themeToggle');
+  if (!toggle) return;
+
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  document.documentElement.setAttribute('data-theme', theme);
+
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
 }
 
 /**

@@ -1,9 +1,9 @@
-@import 'variables.css';
-@import 'reset.css';
-@import 'typography.css';
-@import 'layout.css';
-@import 'components.css';
-@import 'animations.css';
+@import '_variables.css';
+@import '_reset.css';
+@import '_typography.css';
+@import '_layout.css';
+@import '_components.css';
+@import '_animations.css';
 
 /* Background Grid */
 body {

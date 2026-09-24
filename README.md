@@ -9,24 +9,25 @@ PORTFOLIO/
 ├── index.html
 ├── README.md
 ├── css/
-│   ├── animations.css
-│   ├── components.css
-│   ├── layout.css
 │   ├── main.css
-│   ├── reset.css
-│   ├── typography.css
-│   └── variables.css
+│   ├── _variables.css
+│   ├── _reset.css
+│   ├── _typography.css
+│   ├── _layout.css
+│   ├── _components.css
+│   └── _animations.css
 ├── data/
 │   └── projects.json
 ├── images/
+│   └── .gitkeep
 ├── js/
-│   ├── animations.js
-│   ├── contact.js
 │   ├── main.js
+│   ├── utils.js
 │   ├── navigation.js
+│   ├── animations.js
 │   ├── projects.js
-│   └── utils.js
-└── .git/
+│   └── contact.js
+└── .kilo/
 ```
 
 ## How to run

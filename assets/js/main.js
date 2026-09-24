@@ -14,6 +14,86 @@
       lastScroll = currentScroll;
     }, { passive: true });
 
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeToggleMobile = document.getElementById('themeToggleMobile');
+    const html = document.documentElement;
+    const THEME_KEY = 'portfolio-theme';
+
+    function getSystemTheme() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function getStoredTheme() {
+      try {
+        return localStorage.getItem(THEME_KEY);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+      } else {
+        html.removeAttribute('data-theme');
+      }
+    }
+
+    function getCurrentTheme() {
+      return html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    }
+
+    function toggleTheme(event) {
+      const currentTheme = getCurrentTheme();
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      const activeToggle = themeToggle || themeToggleMobile;
+      const ripple = activeToggle ? activeToggle.querySelector('.theme-ripple') : null;
+
+      if (ripple) {
+        ripple.classList.remove('animate');
+        void ripple.offsetWidth;
+        ripple.classList.add('animate');
+      }
+
+      if (newTheme === 'light') {
+        document.body.classList.add('theme-switching');
+        setTimeout(() => {
+          applyTheme(newTheme);
+          document.body.classList.remove('theme-switching');
+        }, 50);
+      } else {
+        applyTheme(newTheme);
+      }
+
+      try {
+        localStorage.setItem(THEME_KEY, newTheme);
+      } catch (e) {
+        // ignore storage errors
+      }
+    }
+
+    const storedTheme = getStoredTheme();
+    if (storedTheme) {
+      applyTheme(storedTheme);
+    } else {
+      applyTheme(getSystemTheme());
+    }
+
+    if (themeToggle) {
+      themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    if (themeToggleMobile) {
+      themeToggleMobile.addEventListener('click', toggleTheme);
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!getStoredTheme()) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
     // Mobile menu
     const navToggle = document.getElementById('navToggle');
     const mobileMenu = document.getElementById('mobileMenu');

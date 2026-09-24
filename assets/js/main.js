@@ -71,6 +71,10 @@
       } catch (e) {
         // ignore storage errors
       }
+      
+      if (typeof GradientWaves !== 'undefined' && GradientWaves.updateTheme) {
+        GradientWaves.updateTheme();
+      }
     }
 
     const storedTheme = getStoredTheme();
@@ -91,6 +95,9 @@
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!getStoredTheme()) {
         applyTheme(e.matches ? 'dark' : 'light');
+        if (typeof GradientWaves !== 'undefined' && GradientWaves.updateTheme) {
+          GradientWaves.updateTheme();
+        }
       }
     });
 

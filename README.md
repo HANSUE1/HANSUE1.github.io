@@ -2,6 +2,20 @@
 
 This project is a static personal portfolio website built with HTML, CSS, and JavaScript.
 
+## Design
+
+The design is inspired by modern glassmorphism aesthetics with a dual-tone color system:
+
+- **Light mode**: Vanilla palette with soft cream backgrounds (`#F1FEC8`) and frosted glass surfaces
+- **Dark mode**: Cosmic palette with deep purple-gray backgrounds (`#23212C`) and translucent glass panels
+
+Key visual features:
+- Frosted glass cards with `backdrop-filter: blur()`
+- GPU-accelerated animations via `translate3d` and `will-change`
+- Smooth scroll-triggered reveal animations
+- Responsive grid background pattern
+- Custom typography with Playfair Display + Inter
+
 ## Structure
 
 ```text

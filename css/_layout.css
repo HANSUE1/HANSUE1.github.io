@@ -22,7 +22,7 @@ section {
   right: 0;
   z-index: var(--z-nav);
   padding: var(--space-6) 0;
-  transition: background var(--transition-base), padding var(--transition-base);
+  transition: background var(--transition-base), padding var(--transition-base), backdrop-filter var(--transition-base);
   background: transparent;
 }
 
@@ -30,6 +30,8 @@ section {
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border-light);
   padding: var(--space-4) 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .nav-container {
@@ -63,6 +65,8 @@ section {
   color: var(--color-text);
   cursor: pointer;
   transition: all var(--transition-fast);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .theme-toggle:hover {

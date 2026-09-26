@@ -35,7 +35,7 @@ class Navigation {
     // Back to top button
     if (this.backToTop) {
       this.backToTop.addEventListener('click', () => {
-        utils.smoothScrollTo('body');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
 
@@ -46,7 +46,12 @@ class Navigation {
         if (href === '#') return;
 
         e.preventDefault();
-        utils.smoothScrollTo(href);
+        const target = document.querySelector(href);
+        if (target) {
+          const navHeight = this.navbar?.offsetHeight || 0;
+          const top = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
       });
     });
   }
@@ -54,14 +59,12 @@ class Navigation {
   updateOnScroll() {
     const currentScroll = window.pageYOffset;
 
-    // Navbar background
     if (currentScroll > 50) {
       this.navbar.classList.add('scrolled');
     } else {
       this.navbar.classList.remove('scrolled');
     }
 
-    // Back to top visibility
     if (this.backToTop) {
       if (currentScroll > 500) {
         this.backToTop.classList.add('visible');
@@ -70,10 +73,9 @@ class Navigation {
       }
     }
 
-    // Scroll progress
     if (this.scrollProgress) {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (currentScroll / docHeight) * 100;
+      const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
       this.scrollProgress.style.width = `${scrollPercent}%`;
     }
 

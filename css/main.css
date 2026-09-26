@@ -247,7 +247,7 @@ section {
 
 .theme-toggle:hover {
   border-color: var(--color-text);
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px);
 }
 
 .theme-toggle svg {
@@ -476,11 +476,11 @@ section {
 
 .btn-primary:hover {
   background: var(--color-accent-hover);
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px);
 }
 
 .btn-primary:active {
-  transform: translateY(0) scale(0.98);
+  transform: translate3d(0, 0) scale(0.98);
 }
 
 .btn-secondary {
@@ -508,20 +508,22 @@ section {
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px);
   box-shadow: var(--shadow-md);
 }
 
 /* Project Card */
 .project-card {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px, 0);
   transition: opacity var(--transition-slow), transform var(--transition-slow);
+  will-change: opacity, transform;
+  contain: layout style paint;
 }
 
 .project-card.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0);
 }
 
 .project-image {
@@ -632,6 +634,8 @@ section {
   transition: transform var(--transition-fast);
   position: relative;
   overflow: hidden;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .skill-card::before {
@@ -652,7 +656,7 @@ section {
 }
 
 .skill-card:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px);
 }
 
 .skill-icon {
@@ -700,10 +704,12 @@ section {
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-light);
   transition: transform var(--transition-fast);
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .contact-form-wrapper:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px);
 }
 
 .form-group {
@@ -883,7 +889,7 @@ section {
 .footer-social-link:hover {
   border-color: var(--color-text);
   color: var(--color-text);
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px);
 }
 
 .footer-social-link svg {
@@ -1019,7 +1025,7 @@ section {
 }
 
 .back-to-top:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px);
   box-shadow: var(--shadow-md);
 }
 
@@ -1060,11 +1066,11 @@ section {
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0);
   }
 }
 
@@ -1091,14 +1097,14 @@ section {
 /* Utility Classes */
 .fade-in {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px);
   transition: opacity 0.5s ease, transform 0.5s ease;
   will-change: transform, opacity;
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0);
 }
 
 .stagger-1 { transition-delay: 0.1s; }
@@ -1111,7 +1117,7 @@ section {
 /* Hero Animations */
 .hero-overline {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translate3d(0, 20px);
   animation: fadeUp 0.6s ease 0.2s forwards;
   will-change: transform, opacity;
   color: var(--color-text);
@@ -1119,7 +1125,7 @@ section {
 
 .hero-title {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px);
   animation: fadeUp 0.6s ease 0.4s forwards;
   will-change: transform, opacity;
   color: var(--color-text);
@@ -1127,7 +1133,7 @@ section {
 
 .hero-subtitle {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px);
   animation: fadeUp 0.6s ease 0.6s forwards;
   will-change: transform, opacity;
   color: var(--color-text-secondary);
@@ -1135,7 +1141,7 @@ section {
 
 .hero-description {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px);
   animation: fadeUp 0.6s ease 0.8s forwards;
   will-change: transform, opacity;
   color: var(--color-text-secondary);
@@ -1143,7 +1149,7 @@ section {
 
 .hero-actions {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translate3d(0, 30px);
   animation: fadeUp 0.6s ease 1s forwards;
   will-change: transform, opacity;
 }
@@ -1160,6 +1166,7 @@ section {
     scroll-behavior: auto;
   }
 }
+
 
 
 

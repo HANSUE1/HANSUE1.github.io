@@ -1,7 +1,6 @@
 /**
  * Scroll-based animations and effects
  */
-import { utils } from './utils.js';
 
 class Animations {
   constructor() {
@@ -28,7 +27,6 @@ class Animations {
       });
     }, this.observerOptions);
 
-    // Observe fade-in elements
     document.querySelectorAll('.fade-in, .project-card').forEach(el => {
       observer.observe(el);
     });
@@ -45,14 +43,23 @@ class Animations {
       return;
     }
 
-    const handleScroll = utils.throttle(() => {
-      const scrolled = window.pageYOffset;
-      if (scrolled < window.innerHeight) {
-        const progress = scrolled / window.innerHeight;
-        heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
-        heroContent.style.opacity = `${1 - progress * 0.8}`;
-      }
-    }, 16);
+    heroContent.style.willChange = 'transform, opacity';
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const scrolled = window.pageYOffset;
+        if (scrolled < window.innerHeight) {
+          const progress = scrolled / window.innerHeight;
+          heroContent.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`;
+          heroContent.style.opacity = `${1 - progress * 0.8}`;
+        }
+        ticking = false;
+      });
+    };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
   }

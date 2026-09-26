@@ -21,7 +21,59 @@ function init() {
   new Projects();
   new ContactForm();
 
+  ensureHeroVisibility();
+  ensureSectionsVisible();
+
   console.log('Portfolio initialized successfully');
+}
+
+/**
+ * Ensure hero elements are visible even if CSS animations fail
+ */
+function ensureHeroVisibility() {
+  const heroSelectors = [
+    '.hero-overline',
+    '.hero-title',
+    '.hero-subtitle',
+    '.hero-description',
+    '.hero-actions'
+  ];
+
+  setTimeout(() => {
+    heroSelectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(el => {
+        const computedOpacity = window.getComputedStyle(el).opacity;
+        if (parseFloat(computedOpacity) < 0.9) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
+    });
+  }, 1500);
+}
+
+function ensureSectionsVisible() {
+  const selectors = [
+    '.section-header.fade-in',
+    '.about-visual.fade-in',
+    '.about-text.fade-in',
+    '.project-card.fade-in',
+    '.skill-card.fade-in',
+    '.contact-info.fade-in',
+    '.contact-form-wrapper.fade-in'
+  ];
+
+  setTimeout(() => {
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        const computedOpacity = window.getComputedStyle(el).opacity;
+        if (parseFloat(computedOpacity) < 0.1) {
+          el.classList.add('visible');
+        }
+      });
+    });
+  }, 2000);
 }
 
 /**

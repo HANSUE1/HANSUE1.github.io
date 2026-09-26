@@ -1114,6 +1114,7 @@ section {
   transform: translateY(20px);
   animation: fadeUp 0.6s ease 0.2s forwards;
   will-change: transform, opacity;
+  color: var(--color-text);
 }
 
 .hero-title {
@@ -1121,6 +1122,7 @@ section {
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.4s forwards;
   will-change: transform, opacity;
+  color: var(--color-text);
 }
 
 .hero-subtitle {
@@ -1128,6 +1130,7 @@ section {
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.6s forwards;
   will-change: transform, opacity;
+  color: var(--color-text-secondary);
 }
 
 .hero-description {
@@ -1135,6 +1138,7 @@ section {
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.8s forwards;
   will-change: transform, opacity;
+  color: var(--color-text-secondary);
 }
 
 .hero-actions {

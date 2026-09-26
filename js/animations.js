@@ -41,7 +41,6 @@ class Animations {
     const heroContent = hero.querySelector('.hero-content');
     if (!heroContent) return;
 
-    // Only on non-touch devices
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
       return;
     }
@@ -49,8 +48,9 @@ class Animations {
     const handleScroll = utils.throttle(() => {
       const scrolled = window.pageYOffset;
       if (scrolled < window.innerHeight) {
+        const progress = scrolled / window.innerHeight;
         heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
-        heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 0.8;
+        heroContent.style.opacity = `${1 - progress * 0.8}`;
       }
     }, 16);
 

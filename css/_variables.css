@@ -64,14 +64,20 @@
   --z-nav: 1000;
   --z-overlay: 998;
   --z-modal: 999;
+
+  /* Glassmorphism */
+  --glass-blur: 24px;
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="dark"] {
   /* Colors - Dark Mode (Cosmic) */
   --color-bg: #23212C;
   --color-bg-image: none;
-  --color-surface: rgba(255, 255, 255, 0.08);
-  --color-surface-hover: rgba(255, 255, 255, 0.12);
+  --color-surface: rgba(24, 24, 24, 0.95);
+  --color-surface-hover: rgba(30, 30, 30, 0.95);
   --color-text: #F1FEC8;
   --color-text-secondary: #e2e2b0;
   --color-text-tertiary: #b0b090;
@@ -82,4 +88,10 @@
   --color-accent-text: #23212C;
   --color-success: #22c55e;
   --color-error: #ef4444;
+
+  /* Glassmorphism - Dark: reduced for solid feel */
+  --glass-blur: 8px;
+  --glass-bg: rgba(24, 24, 24, 0.9);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
 }

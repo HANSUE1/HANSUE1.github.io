@@ -50,31 +50,47 @@
 
 /* Cards */
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
   background: var(--color-surface-hover);
+  border-color: var(--color-border);
 }
 
 /* Project Card */
 .project-card {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity var(--transition-slow), transform var(--transition-slow);
+  transition: opacity var(--transition-slow), transform var(--transition-slow), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
 }
 
 .project-card.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  background: var(--color-surface-hover);
+  border-color: var(--color-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .project-image {
@@ -186,14 +202,15 @@
 /* Skill Card */
 .skill-card {
   padding: var(--space-6);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-light);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  transition: transform var(--transition-fast), background var(--transition-fast);
+  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
 }
 
 .skill-card::before {
@@ -216,6 +233,8 @@
 .skill-card:hover {
   transform: translateY(-2px);
   background: var(--color-surface-hover);
+  border-color: var(--color-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .skill-icon {
@@ -250,26 +269,31 @@
 .skill-tag {
   padding: var(--space-2) var(--space-3);
   background: rgba(255, 255, 255, 0.15);
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Contact Form */
 .contact-form-wrapper {
-  background: var(--color-surface);
+  background: var(--glass-bg);
   padding: var(--space-8);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border-light);
-  transition: transform var(--transition-fast), background var(--transition-fast);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
 }
 
 .contact-form-wrapper:hover {
   transform: translateY(-2px);
   background: var(--color-surface-hover);
+  border-color: var(--color-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .form-group {
@@ -297,6 +321,8 @@
   transition: border-color var(--transition-fast);
   outline: none;
   min-height: 48px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .form-input:focus,
@@ -354,6 +380,8 @@
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   display: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .form-feedback.success {
@@ -383,11 +411,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   flex-shrink: 0;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg);
 }
 
 .contact-item-icon svg {
@@ -442,19 +471,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   color: var(--color-text-secondary);
   transition: all var(--transition-fast);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--glass-bg);
 }
 
 .footer-social-link:hover {
   border-color: var(--color-text);
   color: var(--color-text);
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-surface-hover);
+  box-shadow: var(--glass-shadow);
 }
 
 .footer-social-link svg {
@@ -508,6 +539,8 @@
   color: var(--color-text-tertiary);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 [data-theme="dark"] .about-image {
@@ -577,17 +610,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-full);
   color: var(--color-text);
   opacity: 0;
   visibility: hidden;
   transition: all var(--transition-base);
   z-index: var(--z-base);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .back-to-top.visible {
@@ -597,7 +630,9 @@
 
 .back-to-top:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow);
+  background: var(--color-surface-hover);
+  border-color: var(--color-border);
 }
 
 .back-to-top svg {

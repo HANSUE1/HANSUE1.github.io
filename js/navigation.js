@@ -10,6 +10,7 @@ class Navigation {
     this.scrollProgress = document.querySelector('.scroll-progress');
     this.lastScroll = 0;
     this.ticking = false;
+    this.maxScroll = 0;
 
     this.init();
   }
@@ -18,7 +19,12 @@ class Navigation {
     if (!this.navbar) return;
 
     this.bindEvents();
+    this.updateScrollMetrics();
     this.updateOnScroll();
+  }
+
+  updateScrollMetrics() {
+    this.maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   }
 
   bindEvents() {
@@ -30,6 +36,10 @@ class Navigation {
         });
         this.ticking = true;
       }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      this.updateScrollMetrics();
     }, { passive: true });
 
     // Back to top button
@@ -74,9 +84,8 @@ class Navigation {
     }
 
     if (this.scrollProgress) {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = docHeight > 0 ? (currentScroll / docHeight) * 100 : 0;
-      this.scrollProgress.style.width = `${scrollPercent}%`;
+      const scrollPercent = this.maxScroll > 0 ? currentScroll / this.maxScroll : 0;
+      this.scrollProgress.style.transform = `scaleX(${Math.min(1, scrollPercent)})`;
     }
 
     this.lastScroll = currentScroll;

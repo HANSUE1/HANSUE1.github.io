@@ -14,7 +14,6 @@ class Animations {
 
   init() {
     this.setupIntersectionObserver();
-    this.setupParallax();
   }
 
   setupIntersectionObserver() {
@@ -32,37 +31,6 @@ class Animations {
     });
   }
 
-  setupParallax() {
-    const hero = document.getElementById('hero');
-    if (!hero) return;
-
-    const heroContent = hero.querySelector('.hero-content');
-    if (!heroContent) return;
-
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      return;
-    }
-
-    heroContent.style.willChange = 'transform, opacity';
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        const scrolled = window.pageYOffset;
-        if (scrolled < window.innerHeight) {
-          const progress = scrolled / window.innerHeight;
-          heroContent.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`;
-          heroContent.style.opacity = `${1 - progress * 0.8}`;
-        }
-        ticking = false;
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-  }
 }
 
 export default Animations;

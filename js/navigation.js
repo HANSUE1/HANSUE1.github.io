@@ -1,14 +1,11 @@
 /**
  * Navigation functionality
  */
-import { utils } from './utils.js';
-
 class Navigation {
   constructor() {
     this.navbar = document.querySelector('.navbar');
     this.backToTop = document.querySelector('.back-to-top');
     this.scrollProgress = document.querySelector('.scroll-progress');
-    this.lastScroll = 0;
     this.ticking = false;
     this.maxScroll = 0;
 
@@ -88,7 +85,6 @@ class Navigation {
       this.scrollProgress.style.transform = `scaleX(${Math.min(1, scrollPercent)})`;
     }
 
-    this.lastScroll = currentScroll;
   }
 }
 

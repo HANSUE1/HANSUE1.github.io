@@ -35,7 +35,6 @@
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-  will-change: transform, opacity;
 }
 
 .fade-in.visible {
@@ -55,35 +54,30 @@
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 0.6s ease 0.2s forwards;
-  will-change: transform, opacity;
 }
 
 .hero-title {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.4s forwards;
-  will-change: transform, opacity;
 }
 
 .hero-subtitle {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.6s forwards;
-  will-change: transform, opacity;
 }
 
 .hero-description {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 0.8s forwards;
-  will-change: transform, opacity;
 }
 
 .hero-actions {
   opacity: 0;
   transform: translateY(30px);
   animation: fadeUp 0.6s ease 1s forwards;
-  will-change: transform, opacity;
 }
 
 /* Reduced Motion */

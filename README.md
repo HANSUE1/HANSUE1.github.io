@@ -30,8 +30,6 @@ PORTFOLIO/
 │   ├── _layout.css
 │   ├── _components.css
 │   └── _animations.css
-├── data/
-│   └── projects.json
 ├── images/
 │   └── .gitkeep
 ├── js/

@@ -1,8 +1,6 @@
 /**
  * Contact form handling
  */
-import { utils } from './utils.js';
-
 class ContactForm {
   constructor() {
     this.form = document.getElementById('contact-form');
@@ -85,25 +83,23 @@ class ContactForm {
       return;
     }
 
-    // Show loading state
     this.submitBtn.disabled = true;
-    this.submitBtn.querySelector('span').textContent = 'Sending...';
+    this.submitBtn.querySelector('span').textContent = 'Opening Email...';
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    const formData = new FormData(this.form);
+    const subject = `Portfolio inquiry from ${formData.get('name')}`;
+    const body = [
+      `Name: ${formData.get('name')}`,
+      `Email: ${formData.get('email')}`,
+      '',
+      formData.get('message')
+    ].join('\n');
 
-    // Show success
-    this.showFeedback('Thank you for your message! I\'ll get back to you soon.', 'success');
-    this.form.reset();
+    this.showFeedback('Opening your email app...', 'success');
+    window.location.href = `mailto:hans.rjj12@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-    // Reset button
     this.submitBtn.disabled = false;
     this.submitBtn.querySelector('span').textContent = 'Send Message';
-
-    // Clear success message after 5 seconds
-    setTimeout(() => {
-      this.hideFeedback();
-    }, 5000);
   }
 
   showFeedback(message, type) {

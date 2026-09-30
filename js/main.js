@@ -20,6 +20,7 @@ function init() {
   new Animations();
   new Projects();
   new ContactForm();
+  initGithubContributions();
 
   ensureHeroVisibility();
   ensureSectionsVisible();
@@ -74,6 +75,14 @@ function ensureSectionsVisible() {
       });
     });
   }, 2000);
+}
+
+function initGithubContributions() {
+  const contributions = document.getElementById('github-contributions');
+  if (!contributions) return;
+
+  const cacheBuster = Date.now();
+  contributions.src = `https://ghchart.rshah.org/Hansue-debuger?updated=${cacheBuster}`;
 }
 
 /**

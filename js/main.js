@@ -1,138 +1,100 @@
-/**
- * Portfolio Main Application
- * Entry point for initializing all modules
- */
+const navigationLinks = [...document.querySelectorAll('.nav-link')];
+const pageSections = [...document.querySelectorAll('main section[id]')];
+const profileCard = document.querySelector('.profile-card');
+const backToTop = document.querySelector('.back-to-top');
 
-import Navigation from './navigation.js';
-import Animations from './animations.js';
-import Projects from './projects.js';
-import ContactForm from './contact.js';
-
-/**
- * Initialize the application
- */
-function init() {
-  addScrollProgress();
-  addBackToTop();
-  initTheme();
-
-  new Navigation();
-  new Animations();
-  new Projects();
-  new ContactForm();
-  initGithubContributions();
-
-  ensureHeroVisibility();
-  ensureSectionsVisible();
-
-  console.log('Portfolio initialized successfully');
-}
-
-/**
- * Ensure hero elements are visible even if CSS animations fail
- */
-function ensureHeroVisibility() {
-  const heroSelectors = [
-    '.hero-overline',
-    '.hero-title',
-    '.hero-subtitle',
-    '.hero-description',
-    '.hero-actions'
-  ];
-
-  setTimeout(() => {
-    heroSelectors.forEach(selector => {
-      const elements = document.querySelectorAll(selector);
-      elements.forEach(el => {
-        const computedOpacity = window.getComputedStyle(el).opacity;
-        if (parseFloat(computedOpacity) < 0.9) {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        }
-      });
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (!entry.isIntersecting) return;
+    navigationLinks.forEach((link) => {
+      const active = link.hash === '#' + entry.target.id;
+      if (active) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
     });
-  }, 1500);
-}
+  });
+}, { rootMargin: '-25% 0px -65% 0px' });
 
-function ensureSectionsVisible() {
-  const selectors = [
-    '.section-header.fade-in',
-    '.about-visual.fade-in',
-    '.about-text.fade-in',
-    '.project-card.fade-in',
-    '.skill-card.fade-in',
-    '.contact-info.fade-in',
-    '.contact-form-wrapper.fade-in'
-  ];
+pageSections.forEach((section) => sectionObserver.observe(section));
 
-  setTimeout(() => {
-    selectors.forEach(selector => {
-      document.querySelectorAll(selector).forEach(el => {
-        const computedOpacity = window.getComputedStyle(el).opacity;
-        if (parseFloat(computedOpacity) < 0.1) {
-          el.classList.add('visible');
-        }
-      });
-    });
-  }, 2000);
-}
+const updateProfileRail = () => {
+  if (window.innerWidth > 820 && profileCard) {
+    const heroHeight = document.querySelector('.hero')?.offsetHeight || 800;
+    const shouldPin = window.scrollY > heroHeight - 200;
+    profileCard.classList.toggle('is-pinned', shouldPin);
+  } else if (profileCard) {
+    profileCard.classList.remove('is-pinned');
+  }
+};
 
-function initGithubContributions() {
-  const contributions = document.getElementById('github-contributions');
-  if (!contributions) return;
+const updateBackToTop = () => {
+  if (backToTop) {
+    backToTop.classList.toggle('is-visible', window.scrollY > 500);
+  }
+};
 
-  const cacheBuster = Date.now();
-  contributions.src = `https://ghchart.rshah.org/Hansue-debuger?updated=${cacheBuster}`;
-}
+window.addEventListener('scroll', () => {
+  updateProfileRail();
+  updateBackToTop();
+}, { passive: true });
 
-/**
- * Initialize theme toggle
- */
-function initTheme() {
-  const toggle = document.getElementById('themeToggle');
-  if (!toggle) return;
+window.addEventListener('resize', updateProfileRail, { passive: true });
+updateProfileRail();
+updateBackToTop();
 
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = savedTheme || (prefersDark ? 'dark' : 'light');
-
-  document.documentElement.setAttribute('data-theme', theme);
-
-  toggle.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
+if (backToTop) {
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 
-/**
- * Add scroll progress indicator
- */
-function addScrollProgress() {
-  const progress = document.createElement('div');
-  progress.className = 'scroll-progress';
-  document.body.prepend(progress);
-}
+const articleDialog = document.querySelector('#article-dialog');
+const dialogTitle = document.querySelector('#dialog-title');
+const dialogDate = document.querySelector('#dialog-date');
+const dialogTime = document.querySelector('#dialog-time');
+const dialogCopy = document.querySelector('#dialog-copy');
 
-/**
- * Add back to top button
- */
-function addBackToTop() {
-  const button = document.createElement('button');
-  button.className = 'back-to-top';
-  button.setAttribute('aria-label', 'Back to top');
-  button.innerHTML = `
-    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-    </svg>
-  `;
-  document.body.appendChild(button);
-}
+document.querySelectorAll('.thought-card').forEach((card) => {
+  card.addEventListener('click', () => {
+    dialogTitle.textContent = card.dataset.title;
+    dialogDate.textContent = card.dataset.date;
+    dialogTime.textContent = card.dataset.time;
+    dialogCopy.textContent = card.dataset.copy;
+    articleDialog.showModal();
+  });
+});
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+document.querySelector('.dialog-close')?.addEventListener('click', () => articleDialog.close());
+articleDialog?.addEventListener('click', (event) => {
+  if (event.target === articleDialog) articleDialog.close();
+});
+document.querySelector('.dialog-contact')?.addEventListener('click', () => articleDialog.close());
+
+const contactForm = document.querySelector('#contact-form');
+const formFeedback = document.querySelector('#form-feedback');
+
+contactForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (!contactForm.reportValidity()) return;
+
+  const values = new FormData(contactForm);
+  const subject = 'Portfolio inquiry from ' + values.get('name');
+  const body = [
+    'Name: ' + values.get('name'),
+    'Email: ' + values.get('email'),
+    'Budget: ' + values.get('budget'),
+    '',
+    values.get('message')
+  ].join('\n');
+
+  const mailtoLink = 'mailto:your@email.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  
+  formFeedback.textContent = 'Opening your email app...';
+  formFeedback.classList.add('is-visible');
+  
+  window.location.href = mailtoLink;
+  
+  setTimeout(() => {
+    formFeedback.textContent = 'If your email app did not open, please copy the details and email directly.';
+    formFeedback.classList.remove('is-visible');
+  }, 5000);
+});

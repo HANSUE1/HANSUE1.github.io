@@ -1,682 +1,190 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Personal portfolio website showcasing professional work, projects, and skills." />
-  <title>Hans Curt Austin C. Santos | Portfolio</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151312">
+  <meta name="description" content="Hans — Software Engineer creating intuitive, engaging digital experiences.">
+  <title>Hans — Software Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
-  <style>
-    :root {
-      --color-bg: #F3F3F3;
-      --color-surface: #ffffff;
-      --color-text: #000000;
-      --color-text-secondary: #222222;
-      --color-text-tertiary: #666666;
-      --color-border: rgba(0,0,0,0.08);
-      --color-accent: #000000;
-      --color-accent-text: #ffffff;
-      --font-sans: 'Inter', system-ui, sans-serif;
-      --font-heading: 'Playfair Display', Georgia, serif;
-      --radius-lg: 14px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: var(--font-sans);
-      background-color: #F1FEC8;
-      background-image: linear-gradient(0deg, transparent 24%, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0.02) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 76%, transparent 77%, transparent),
-          linear-gradient(90deg, transparent 24%, rgba(0,0,0,0.02) 25%, rgba(0,0,0,0.02) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.02) 75%, rgba(0,0,0,0.02) 76%, transparent 77%, transparent);
-      background-size: 55px 55px;
-      color: var(--color-text);
-      line-height: 1.6;
-    }
-    [data-theme="dark"] body {
-      background-color: #23212C;
-      background-image: linear-gradient(0deg, transparent 24%, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.02) 26%, transparent 27%, transparent 74%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02) 76%, transparent 77%, transparent),
-          linear-gradient(90deg, transparent 24%, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.02) 26%, transparent 27%, transparent 74%, rgba(255,255,255,0.02) 75%, rgba(255,255,255,0.02) 76%, transparent 77%, transparent);
-    }
-    h1,h2,h3 { font-family: var(--font-heading); }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.25rem 0; background: transparent; }
-    .navbar.scrolled { background: rgba(255,255,255,0.92); border-bottom: 1px solid rgba(0,0,0,0.08); padding: 1rem 0; }
-    [data-theme="dark"] .navbar.scrolled { background: rgba(24,24,24,0.96); border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .nav-container { display: flex; justify-content: space-between; align-items: center; }
-    .nav-logo { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600; }
-    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 9999px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.85); cursor: pointer; }
-    [data-theme="dark"] .theme-toggle { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 7rem 0 5rem; }
-    .hero-content { max-width: 800px; margin: 0 auto; text-align: center; }
-    .hero-overline { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 1rem; }
-    .hero-title { font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 1rem; }
-    .hero-subtitle { font-size: 1.125rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
-    .hero-description { color: var(--color-text-secondary); margin-bottom: 2rem; }
-    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 1rem 2rem; font-size: 0.875rem; font-weight: 500; border-radius: 10px; min-height: 48px; border: none; cursor: pointer; }
-    .btn-primary { background: var(--color-accent); color: var(--color-accent-text); }
-    .btn-secondary { background: rgba(255,255,255,0.72); color: var(--color-text); border: 1px solid rgba(0,0,0,0.08); }
-    [data-theme="dark"] .btn-secondary { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    section { padding: 5rem 0; }
-    .section-header { text-align: center; margin-bottom: 3.5rem; }
-    .section-overline { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: 0.875rem; }
-    .section-title { margin-bottom: 0.875rem; }
-    .section-description { max-width: 560px; margin: 0 auto; color: var(--color-text-secondary); }
-    .about-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; }
-    .about-visual { position: relative; aspect-ratio: 1; max-width: 320px; margin: 0 auto; }
-    .about-image { width: 100%; height: 100%; background: #171717; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 600; color: #666; }
-    .about-image-border { position: absolute; inset: -0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); pointer-events: none; }
-    .about-text h3 { margin-bottom: 1.25rem; font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.01em; }
-    .about-text p { margin-bottom: 1rem; color: var(--color-text-secondary); line-height: 1.8; }
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
-    .stat-item { text-align: center; }
-    .stat-value { font-family: var(--font-heading); font-size: 1.875rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .stat-label { font-size: 0.75rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.1em; }
-    .projects-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-    .project-card { background: rgba(255,255,255,0.88); border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
-    [data-theme="dark"] .project-card { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .project-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.06); background: rgba(255,255,255,0.75); }
-    [data-theme="dark"] .project-card:hover { background: rgba(30,30,30,0.95); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-    .project-image { aspect-ratio: 16/10; background: rgba(0,0,0,0.03); display: flex; align-items: center; justify-content: center; color: #666; }
-    [data-theme="dark"] .project-image { background: rgba(255,255,255,0.05); }
-    .project-content { padding: 1.5rem; }
-    .project-title { font-family: var(--font-sans); font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem; }
-    .project-description { font-size: 0.875rem; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 1rem; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .tag { padding: 0.375rem 0.75rem; background: rgba(255,255,255,0.72); border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; font-size: 0.75rem; color: var(--color-text-secondary); }
-    [data-theme="dark"] .tag { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .filter-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 2.5rem; }
-    .filter-btn { padding: 0.5rem 1.25rem; background: rgba(255,255,255,0.55); border: 1px solid rgba(0,0,0,0.08); border-radius: 9999px; font-size: 0.875rem; color: var(--color-text-secondary); cursor: pointer; }
-    [data-theme="dark"] .filter-btn { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .filter-btn:hover { border-color: var(--color-text); color: var(--color-text); background: rgba(255,255,255,0.25); }
-    [data-theme="dark"] .filter-btn:hover { background: rgba(24,24,24,0.9); }
-    .filter-btn.active { background: var(--color-accent); color: var(--color-accent-text); border-color: var(--color-accent); }
-    .skills-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-    .skill-card { padding: 1.5rem; background: rgba(255,255,255,0.88); border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); transition: transform 0.2s ease, background 0.2s ease; }
-    [data-theme="dark"] .skill-card { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .skill-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.75); }
-    [data-theme="dark"] .skill-card:hover { background: rgba(30,30,30,0.95); }
-    .skill-icon { width: 44px; height: 44px; margin-bottom: 1.25rem; color: var(--color-text); }
-    .skill-icon svg { width: 24px; height: 24px; }
-    .skill-title { font-family: var(--font-sans); font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .skill-tag { padding: 0.375rem 0.75rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 6px; font-size: 0.75rem; color: var(--color-text-secondary); }
-    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
-    .contact-info h3 { font-family: var(--font-sans); font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 600; margin-bottom: 1.25rem; }
-    .contact-info p { margin-bottom: 1.5rem; line-height: 1.8; color: var(--color-text-secondary); }
-    .contact-details { display: flex; flex-direction: column; gap: 1rem; }
-    .contact-item { display: flex; align-items: center; gap: 0.875rem; }
-    .contact-item-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-border); border-radius: 9999px; background: rgba(255,255,255,0.72); }
-    .contact-item-icon svg { width: 18px; height: 18px; color: var(--color-text); }
-    .contact-item-content { display: flex; flex-direction: column; gap: 0.25rem; }
-    .contact-item-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-tertiary); }
-    .contact-item-value { font-size: 0.875rem; color: var(--color-text); font-weight: 500; }
-    .contact-form-wrapper { background: rgba(255,255,255,0.88); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid rgba(0,0,0,0.1); transition: transform 0.2s ease, background 0.2s ease; }
-    [data-theme="dark"] .contact-form-wrapper { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .contact-form-wrapper:hover { transform: translateY(-2px); background: rgba(255,255,255,0.75); }
-    [data-theme="dark"] .contact-form-wrapper:hover { background: rgba(30,30,30,0.95); }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; }
-    .form-input, .form-textarea { width: 100%; padding: 1rem; border: 1px solid var(--color-border); border-radius: 10px; background: rgba(255,255,255,0.72); color: var(--color-text); font-size: 1rem; }
-    [data-theme="dark"] .form-input, [data-theme="dark"] .form-textarea { background: rgba(255,255,255,0.08); }
-    .form-textarea { resize: vertical; min-height: 140px; }
-    .form-submit { width: 100%; padding: 1rem; background: var(--color-accent); color: var(--color-accent-text); border: none; border-radius: 10px; font-size: 1rem; font-weight: 500; cursor: pointer; min-height: 48px; }
-    .form-feedback { margin-top: 1rem; padding: 1rem; border-radius: 10px; font-size: 0.875rem; display: none; }
-    .form-feedback.success { display: block; background: rgba(34,197,94,0.1); color: #16a34a; border: 1px solid rgba(34,197,94,0.25); }
-    .form-feedback.error { display: block; background: rgba(220,38,38,0.1); color: #dc2626; border: 1px solid rgba(220,38,38,0.25); }
-    .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; padding: 2rem 0; }
-    .footer-brand { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
-    .footer-tagline { font-size: 0.85rem; color: var(--color-text-tertiary); }
-    .footer-socials { display: flex; gap: 1rem; }
-    .footer-social-link { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,0,0,0.08); border-radius: 9999px; color: var(--color-text-secondary); transition: all 0.2s ease; background: rgba(255,255,255,0.72); }
-    [data-theme="dark"] .footer-social-link { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); }
-    .footer-social-link:hover { border-color: var(--color-text); color: var(--color-text); transform: translateY(-2px); background: rgba(255,255,255,0.55); }
-    [data-theme="dark"] .footer-social-link:hover { background: rgba(30,30,30,0.95); }
-    .footer-social-link svg { width: 18px; height: 18px; }
-    .footer-bottom { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border); text-align: center; font-size: 0.8rem; color: var(--color-text-tertiary); }
-    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: var(--color-accent); z-index: 1001; transform: scaleX(0); transform-origin: left center; }
-    .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.1); border-radius: 9999px; color: var(--color-text); opacity: 0; visibility: hidden; transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(0,0,0,0.06); cursor: pointer; }
-    [data-theme="dark"] .back-to-top { background: rgba(24,24,24,0.96); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-    .back-to-top.visible { opacity: 1; visibility: visible; }
-    .back-to-top:hover { transform: translateY(-2px); background: rgba(255,255,255,0.75); }
-    [data-theme="dark"] .back-to-top:hover { background: rgba(30,30,30,0.95); }
-    .back-to-top svg { width: 20px; height: 20px; }
-    .github-activity-card { max-width: 900px; margin: 0 auto; padding: 1.5rem; background: rgba(255,255,255,0.88); border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); overflow-x: auto; }
-    [data-theme="dark"] .github-activity-card { background: rgba(24,24,24,0.96); border-color: rgba(255,255,255,0.06); }
-    .github-activity-link { display: block; min-width: 760px; color: inherit; }
-    .github-activity-link img { display: block; width: 100%; height: auto; min-height: 115px; object-fit: contain; }
-    .github-activity-note { margin-top: 1rem; text-align: center; font-size: 0.8rem; color: var(--color-text-tertiary); }
-    @media (max-width: 640px) {
-      .hero-actions { flex-direction: column; align-items: center; }
-      .btn { width: 100%; max-width: 280px; }
-    }
-    @media (min-width: 768px) {
-      .about-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
-      .projects-grid { grid-template-columns: repeat(3, 1fr); }
-      .skills-grid { grid-template-columns: repeat(3, 1fr); }
-      .contact-grid { grid-template-columns: 1fr 1fr; }
-      .footer-content { flex-direction: row; justify-content: space-between; text-align: left; }
-    }
-    .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .fade-in.visible { opacity: 1; transform: translate3d(0, 0, 0); }
-    .stagger-1 { transition-delay: 0.1s; }
-    .stagger-2 { transition-delay: 0.2s; }
-    .stagger-3 { transition-delay: 0.3s; }
-    .stagger-4 { transition-delay: 0.4s; }
-    .stagger-5 { transition-delay: 0.5s; }
-    .stagger-6 { transition-delay: 0.6s; }
-  </style>
+  <script src="js/main.js" defer></script>
 </head>
-  <body>
+<body>
+  <header class="site-header">
+    <nav class="main-nav" aria-label="Main navigation">
+      <a class="nav-link" href="#home" aria-label="Home" title="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10 8.5-7 8.5 7v10a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1V10Z"/><path d="M9 21v-8h6v8"/></svg>
+        <span class="nav-tip">Home</span>
+      </a>
+      <a class="nav-link" href="#projects" aria-label="Projects" title="Projects">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5h18v12a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5v-12Z"/><path d="M3 7.5 5 4h5l2 3.5"/></svg>
+        <span class="nav-tip">Projects</span>
+      </a>
+      <a class="nav-link" href="#experience" aria-label="Experience" title="Experience">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg>
+        <span class="nav-tip">Experience</span>
+      </a>
+      <a class="nav-link" href="#tools" aria-label="Tools" title="Tools">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.6 6.6l-5 5a2 2 0 0 0 2.8 2.8l5-5a5 5 0 0 0 6.6-6.6l-3.1 3.1-2.8-2.8 3.1-3.1Z"/></svg>
+        <span class="nav-tip">Tools</span>
+      </a>
+      <a class="nav-link" href="#thoughts" aria-label="Thoughts" title="Thoughts">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L20 7.4 16.6 4 4.8 15.8 4 20Z"/><path d="M13 20h7"/></svg>
+        <span class="nav-tip">Thoughts</span>
+      </a>
+    </nav>
+  </header>
 
-  <!-- Navigation -->
-  <nav id="navbar" class="navbar">
-    <div class="container">
-      <div class="nav-container">
-        <a href="#" class="nav-logo">Hans Curt Austin C. Santos</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-          <svg class="sun-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-          </svg>
-          <svg class="moon-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-          </svg>
+  <main>
+    <section class="hero page-shell" id="home" aria-labelledby="hero-title">
+      <article class="profile-card">
+        <div class="portrait-wrap">
+          <img class="portrait" src="images/portrait.jpg" alt="Portrait of software engineer Hans">
+          <svg class="orbit orbit-top" viewBox="0 0 240 80" aria-hidden="true"><path d="M-24 44C21 2 92-13 147 8c34 13 54 37 57 69"/></svg>
+        </div>
+        <h2 class="profile-name">Hans</h2>
+        <span class="profile-spark" aria-hidden="true">✦</span>
+        <svg class="orbit orbit-bottom" viewBox="0 0 240 88" aria-hidden="true"><path d="M-35 44C5 85 66 98 111 77c18-8 33-22 44-39"/></svg>
+        <p class="profile-summary">A Software Engineer who has developed countless innovative solutions.</p>
+<div class="social-links" aria-label="Social links">
+        <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer" aria-label="Dribbble">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7 4.7c4.4 4.1 7.8 9.2 9.3 15M3 10c5.5.2 10.7-1.5 14.6-4.7M6 19c2.8-4 7.1-6.2 14.1-5.7"/></svg>
+        </a>
+        <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.7 7.1c-.6.3-1.2.4-1.9.5a3.3 3.3 0 0 0 1.5-1.8c-.6.4-1.3.6-2.1.8a3.3 3.3 0 0 0-5.7 2.3c0 .3 0 .5.1.8a9.4 9.4 0 0 1-6.8-3.5 3.3 3.3 0 0 0 1 4.4c-.5 0-1-.2-1.5-.4 0 1.6 1.2 3 2.7 3.3-.5.1-1 .2-1.5.1.4 1.4 1.7 2.4 3.2 2.4A6.7 6.7 0 0 1 4 17.4a9.4 9.4 0 0 0 14.5-7.9v-.4c.7-.5 1.2-1.1 1.7-1.8l-.5-.2Z"/></svg>
+        </a>
+        <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.95 0-1.1.39-2 1.03-2.7-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.7 0 3.84-2.34 4.69-4.57 4.94.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12c0-5.523-4.477-10-10-10Z"/></svg>
+        </a>
+        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+      </div>
+      </article>
+
+      <div class="hero-main">
+        <h1 class="hero-title" id="hero-title"><span>Software</span><span class="muted-title">Engineer</span></h1>
+        <p class="hero-intro">Passionate about creating intuitive and engaging user experiences. Specialize in transforming ideas into beautifully crafted products.</p>
+        <div class="stats" aria-label="Career highlights">
+          <div class="stat"><strong>+12</strong><span>Years of<br>experience</span></div>
+          <div class="stat"><strong>+46</strong><span>Projects<br>completed</span></div>
+          <div class="stat"><strong>+20</strong><span>Worldwide<br>clients</span></div>
+        </div>
+        <div class="focus-cards">
+          <a class="focus-card focus-orange" href="#projects">
+            <svg class="focus-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 13 7-13 7L3 10l13-7Z"/><path d="m3 16 13 7 13-7M3 22l13 7 13-7"/></svg>
+            <span class="focus-label">Dynamic animation,<br>motion design</span>
+            <span class="focus-arrow" aria-hidden="true">↗</span>
+            <svg class="focus-art" viewBox="0 0 310 245" preserveAspectRatio="none" aria-hidden="true"><path d="M-30 224c90-36 72-48 121-72s73-22 89-58 57-51 151-17"/></svg>
+          </a>
+          <a class="focus-card focus-lime" href="#tools">
+            <svg class="focus-icon focus-window" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="4" width="26" height="24" rx="2"/><path d="M3 11h26M12 11v17"/></svg>
+            <span class="focus-label">Framer, Figma,<br>WordPress, ReactJS</span>
+            <span class="focus-arrow" aria-hidden="true">→</span>
+            <svg class="focus-art focus-art-zigzag" viewBox="0 0 360 245" preserveAspectRatio="none" aria-hidden="true"><path d="m-20 91 74-62 34 182 68-74 35 113 74-111 26 123 78-135"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section page-shell" id="projects" aria-labelledby="projects-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="projects-title">Recent<br><span>Projects</span></h2>
+      </div>
+      <div class="project-grid">
+        <a class="project-card" href="https://framer.link/iij2V3q?duplicateType=siteTemplate" target="_blank" rel="noreferrer">
+          <div class="project-image"><img src="images/project-najmai.jpeg" alt="NajmAI SaaS landing page design"></div>
+          <div class="project-meta"><h3>NajmAI</h3><p>SaaS Framer Template</p></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="project-card" href="https://framer.link/KhRj2A5?duplicateType=siteTemplate" target="_blank" rel="noreferrer">
+          <div class="project-image"><img src="images/project-damas.png" alt="Damas creative studio portfolio design"></div>
+          <div class="project-meta"><h3>Damas</h3><p>Free Framer Template</p></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="project-card" href="https://framer.link/BQAw2Te?duplicateType=siteTemplate" target="_blank" rel="noreferrer">
+          <div class="project-image"><img src="images/project-majd.png" alt="Majd software engineer portfolio design"></div>
+          <div class="project-meta"><h3>Majd</h3><p>Free Portfolio Template</p></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="page-section page-shell experience-section" id="experience" aria-labelledby="experience-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="experience-title">12 Years of<br><span>Experience</span></h2>
+      </div>
+      <div class="experience-list">
+        <div class="experience-item"><div class="experience-copy"><h3>PixelForge Studios</h3><p>Led the design team in creating user-centric mobile and web applications, improving the user experience and increasing user engagement.</p><p class="experience-date">Jan 2020 — Present</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
+        <div class="experience-item"><div class="experience-copy"><h3>BlueWave Innovators</h3><p>Developed and implemented design strategies for new product lines, collaborated closely with engineers and product managers.</p><p class="experience-date">Jun 2017 — Dec 2019</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
+        <div class="experience-item"><div class="experience-copy"><h3>TrendCraft Solutions</h3><p>Designed user interfaces for e-commerce platforms, focusing on enhancing usability and visual appeal.</p><p class="experience-date">Mar 2015 — May 2017</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
+      </div>
+    </section>
+
+    <section class="page-section page-shell tools-section" id="tools" aria-labelledby="tools-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="tools-title">Premium<br><span>Tools</span></h2>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-framer.png" alt=""></span><span class="tool-copy"><strong>Framer</strong><small>Website Builder</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-figma.png" alt=""></span><span class="tool-copy"><strong>Figma</strong><small>Design Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-lemon-squeezy.png" alt=""></span><span class="tool-copy"><strong>Lemon Squeezy</strong><small>Payments Provider</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-chatgpt.png" alt=""></span><span class="tool-copy"><strong>ChatGPT</strong><small>AI Assistant</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-notion.png" alt=""></span><span class="tool-copy"><strong>Notion</strong><small>Productivity Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card"><span class="tool-logo"><img src="images/tool-nextjs.png" alt=""></span><span class="tool-copy"><strong>Next.js</strong><small>React Framework</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+      </div>
+    </section>
+
+    <section class="page-section page-shell thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="thoughts-title">Design<br><span>Thoughts</span></h2>
+      </div>
+      <div class="thought-grid">
+        <button class="thought-card" type="button" data-title="Starting and Growing a Career in Web Design" data-date="Apr 8, 2022" data-time="6 min read" data-copy="As the internet continues to develop and grow exponentially, jobs related to the industry do too — particularly those that relate to web design and development. The best way to begin is to stay curious, build often, and learn from the work you put into the world.">
+          <span class="thought-content"><strong>Starting and Growing a Career in Web Design</strong><span>As the internet continues to develop and grow exponentially, jobs related to the industry do too, particularly those that relate to web design and development.</span><span class="thought-meta"><span>Apr 8, 2022</span><i></i><span>6min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
+        </button>
+        <button class="thought-card" type="button" data-title="Create a Landing Page That Performs Great" data-date="Mar 15, 2022" data-time="6 min read" data-copy="Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. A clear message, strong hierarchy, and one focused action help a landing page turn a good idea into a useful experience.">
+          <span class="thought-content"><strong>Create a Landing Page That Performs Great</strong><span>Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. Landing pages are standalone websites used to generate leads or sales — in other words they help you increase your revenue.</span><span class="thought-meta"><span>Mar 15, 2022</span><i></i><span>6min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
+        </button>
+        <button class="thought-card" type="button" data-title="How Can Designers Prepare for the Future?" data-date="Feb 28, 2022" data-time="6 min read" data-copy="Designers can prepare for what's next by staying close to the people who use their work, learning new tools with intention, and building a practice that makes room for experimentation.">
+          <span class="thought-content"><strong>How Can Designers Prepare for the Future?</strong><span>Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. Landing pages are standalone websites used to generate leads or sales — in other words they help you increase your revenue.</span><span class="thought-meta"><span>Feb 28, 2022</span><i></i><span>6min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
         </button>
       </div>
-    </div>
-  </nav>
+    </section>
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <p class="hero-overline">Full-Stack Developer & UI/UX Designer</p>
-        <h1 class="hero-title">Hans Curt Austin C. Santos</h1>
-        <p class="hero-subtitle">Crafting elegant digital experiences with clean code and thoughtful design.</p>
-        <p class="hero-description">
-          I build modern, responsive applications that solve real-world problems. 
-          Passionate about user-centered design and continuous improvement.
-        </p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary magnetic">
-            <span>View Work</span>
-          </a>
-          <a href="#contact" class="btn btn-secondary magnetic">
-            <span>Get In Touch</span>
-          </a>
-        </div>
+    <section class="page-section page-shell contact-section" id="contact" aria-labelledby="contact-title">
+      <div class="section-heading-row contact-heading">
+        <h2 class="section-title" id="contact-title">Let's work<br><span>Together</span></h2>
       </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="section-overline">About</p>
-        <h2 class="section-title">A bit about me</h2>
-        <p class="section-description">
-          I'm a developer based in Philippines, focused on creating clean, 
-          user-friendly digital experiences.
-        </p>
+      <div class="contact-layout">
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <label>Name<input name="name" type="text" autocomplete="name" placeholder="Your Name" required></label>
+            <label>Email<input name="email" type="email" autocomplete="email" placeholder="Your@email.com" required></label>
+          </div>
+          <label>Budget<select name="budget" required><option value="" selected disabled>Select…</option><option value="Less than $3k">&lt;$3k</option><option value="$3k - $5k">$3k - $5k</option><option value="$5k - $10k">$5k - $10k</option><option value="More than $10k">&gt;$10k</option></select></label>
+          <label>Message<textarea name="message" placeholder="Tell me about your project" rows="4" required></textarea></label>
+          <button class="submit-button" type="submit">Submit <span aria-hidden="true">↗</span></button>
+          <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+        </form>
       </div>
+    </section>
+  </main>
 
-      <div class="about-grid">
-        <div class="about-visual fade-in stagger-1">
-          <div class="about-image">HCS</div>
-          <div class="about-image-border"></div>
-        </div>
-
-        <div class="about-text fade-in stagger-2">
-          <h3>I'm a passionate developer based in Philippines</h3>
-          <p>
-            With over 5 years of experience in web development, I specialize in creating 
-            modern, scalable applications that solve real-world problems. My journey started 
-            with a curiosity for how things work on the internet, and it has evolved into a 
-            career building products that users love.
-          </p>
-          <p>
-            I believe in clean code, user-centered design, and continuous learning. When I'm 
-            not coding, you can find me exploring new technologies, contributing to open-source 
-            projects, or sharing knowledge with the developer community.
-          </p>
-
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-value">5+</div>
-              <div class="stat-label">Years Experience</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value">50+</div>
-              <div class="stat-label">Projects Completed</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value">30+</div>
-              <div class="stat-label">Happy Clients</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="projects">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="section-overline">Portfolio</p>
-        <h2 class="section-title">Selected projects</h2>
-        <p class="section-description">
-          A curated selection of recent work, each representing a unique challenge 
-          and learning opportunity.
-        </p>
-      </div>
-
-      <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="frontend">Frontend</button>
-        <button class="filter-btn" data-filter="backend">Backend</button>
-        <button class="filter-btn" data-filter="fullstack">Full Stack</button>
-      </div>
-
-      <div class="projects-grid">
-        <article class="project-card fade-in stagger-1">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">E-Commerce Platform</h3>
-            <p class="project-description">A full-featured online store with payment integration, inventory management, and admin dashboard.</p>
-            <div class="project-tags">
-              <span class="tag">React</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">MongoDB</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card fade-in stagger-2">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Mobile Banking App</h3>
-            <p class="project-description">A secure mobile banking application with biometric authentication and real-time transaction tracking.</p>
-            <div class="project-tags">
-              <span class="tag">React Native</span>
-              <span class="tag">Firebase</span>
-              <span class="tag">TypeScript</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card fade-in stagger-3">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Analytics Dashboard</h3>
-            <p class="project-description">Interactive data visualization dashboard with real-time analytics and customizable reports.</p>
-            <div class="project-tags">
-              <span class="tag">Vue.js</span>
-              <span class="tag">D3.js</span>
-              <span class="tag">PostgreSQL</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card fade-in stagger-4">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9a2 2 0 00-2 2v1"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Content Management System</h3>
-            <p class="project-description">A headless CMS with a beautiful admin interface, media library, and API-first architecture.</p>
-            <div class="project-tags">
-              <span class="tag">Next.js</span>
-              <span class="tag">GraphQL</span>
-              <span class="tag">Prisma</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card fade-in stagger-5">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">Social Media Platform</h3>
-            <p class="project-description">A modern social platform with real-time messaging, content sharing, and community features.</p>
-            <div class="project-tags">
-              <span class="tag">React</span>
-              <span class="tag">Socket.io</span>
-              <span class="tag">Redis</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="project-card fade-in stagger-6">
-          <div class="project-image">
-            <div class="project-image-icon">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-              </svg>
-            </div>
-          </div>
-          <div class="project-content">
-            <h3 class="project-title">AI-Powered Chatbot</h3>
-            <p class="project-description">An intelligent chatbot using natural language processing for customer support automation.</p>
-            <div class="project-tags">
-              <span class="tag">Python</span>
-              <span class="tag">TensorFlow</span>
-              <span class="tag">FastAPI</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills Section -->
-  <section id="skills" class="skills">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="section-overline">Expertise</p>
-        <h2 class="section-title">Skills & Technologies</h2>
-        <p class="section-description">
-          A comprehensive toolkit for building modern, scalable applications 
-          from frontend to backend.
-        </p>
-      </div>
-
-      <div class="skills-grid">
-        <div class="skill-card fade-in stagger-1">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Frontend</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">HTML5</span>
-            <span class="skill-tag">CSS3</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">Vue.js</span>
-            <span class="skill-tag">Tailwind CSS</span>
-          </div>
-        </div>
-
-        <div class="skill-card fade-in stagger-2">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Backend</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Node.js</span>
-            <span class="skill-tag">Express</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">Django</span>
-            <span class="skill-tag">GraphQL</span>
-            <span class="skill-tag">REST APIs</span>
-            <span class="skill-tag">FastAPI</span>
-          </div>
-        </div>
-
-        <div class="skill-card fade-in stagger-3">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Database</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">PostgreSQL</span>
-            <span class="skill-tag">MongoDB</span>
-            <span class="skill-tag">MySQL</span>
-            <span class="skill-tag">Redis</span>
-            <span class="skill-tag">Prisma</span>
-            <span class="skill-tag">Supabase</span>
-          </div>
-        </div>
-
-        <div class="skill-card fade-in stagger-4">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Tools & DevOps</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">AWS</span>
-            <span class="skill-tag">CI/CD</span>
-            <span class="skill-tag">Figma</span>
-            <span class="skill-tag">VS Code</span>
-          </div>
-        </div>
-
-        <div class="skill-card fade-in stagger-5">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Design</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">UI/UX Design</span>
-            <span class="skill-tag">Figma</span>
-            <span class="skill-tag">Adobe XD</span>
-            <span class="skill-tag">Responsive Design</span>
-            <span class="skill-tag">Prototyping</span>
-          </div>
-        </div>
-
-        <div class="skill-card fade-in stagger-6">
-          <div class="skill-icon">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-          </div>
-          <h3 class="skill-title">Soft Skills</h3>
-          <div class="skill-tags">
-            <span class="skill-tag">Communication</span>
-            <span class="skill-tag">Problem Solving</span>
-            <span class="skill-tag">Teamwork</span>
-            <span class="skill-tag">Time Management</span>
-            <span class="skill-tag">Leadership</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GitHub Activity Section -->
-  <section id="github-activity" class="github-activity">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="section-overline">Open Source</p>
-        <h2 class="section-title">GitHub activity</h2>
-        <p class="section-description">A live look at my coding consistency and open-source work.</p>
-      </div>
-
-      <div class="github-activity-card fade-in stagger-1">
-        <a class="github-activity-link" href="https://github.com/Hansue-debuger" target="_blank" rel="noopener noreferrer" aria-label="View Hansue-debuger on GitHub">
-          <img id="github-contributions" src="https://ghchart.rshah.org/Hansue-debuger" alt="GitHub contribution calendar for Hansue-debuger" loading="lazy" />
-        </a>
-        <p class="github-activity-note">Updated from GitHub when this portfolio loads.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="section-header fade-in">
-        <p class="section-overline">Contact</p>
-        <h2 class="section-title">Get in touch</h2>
-        <p class="section-description">
-          Have a project in mind or just want to say hello? I'd love to hear from you.
-        </p>
-      </div>
-
-      <div class="contact-grid">
-        <div class="contact-info fade-in stagger-1">
-          <h3>Let's talk about everything!</h3>
-          <p>
-            Don't like forms? Send me an email directly at 
-            <a href="mailto:hans.rjj12@gmail.com">hans.rjj12@gmail.com</a> or 
-            <a href="mailto:hanscurtaustinsantos@gmail.com">hanscurtaustinsantos@gmail.com</a>. 
-            I'll respond as soon as possible.
-          </p>
-
-          <div class="contact-details">
-            <div class="contact-item">
-              <div class="contact-item-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-              </div>
-              <div class="contact-item-content">
-                <span class="contact-item-label">Email</span>
-                <a href="mailto:hans.rjj12@gmail.com" class="contact-item-value">hans.rjj12@gmail.com</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-item-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-              </div>
-              <div class="contact-item-content">
-                <span class="contact-item-label">Phone</span>
-                <a href="tel:+639954578231" class="contact-item-value">09954578231</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-item-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243A8 8 0 1117.657 16.657z"/>
-                  <circle cx="12" cy="11" r="1.5" fill="currentColor"/>
-                </svg>
-              </div>
-              <div class="contact-item-content">
-                <span class="contact-item-label">Location</span>
-                <span class="contact-item-value">Philippines</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="contact-form-wrapper fade-in stagger-2">
-          <form id="contact-form">
-            <div class="form-group">
-              <label for="name" class="form-label">Your Name</label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                required 
-                class="form-input" 
-                placeholder="Hans Curt Austin C. Santos"
-              >
-            </div>
-            <div class="form-group">
-              <label for="email" class="form-label">Email Address</label>
-              <input 
-                type="email" 
-                id="email" 
-                name="email" 
-                required 
-                class="form-input" 
-                placeholder="john@example.com"
-              >
-            </div>
-            <div class="form-group">
-              <label for="message" class="form-label">Message</label>
-              <textarea 
-                id="message" 
-                name="message" 
-                rows="5" 
-                required 
-                class="form-textarea" 
-                placeholder="Tell me about your project..."
-              ></textarea>
-            </div>
-            <button type="submit" class="form-submit" id="submitBtn">
-              <span>Send Message</span>
-            </button>
-            <div id="form-feedback" class="form-feedback"></div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div>
-          <div class="footer-brand">Hans Curt Austin C. Santos</div>
-          <p class="footer-tagline">Building digital experiences that matter.</p>
-        </div>
-
-        <div class="footer-socials">
-          <a href="https://web.facebook.com/hans.santos.e/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Facebook">
-            <svg fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </a>
-          <a href="https://www.instagram.com/hanscurtaustin/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Instagram">
-            <svg fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-            </svg>
-          </a>
-          <a href="https://github.com/Hansue-debuger" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
-            <svg fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2024 Hans Curt Austin C. Santos. All rights reserved.</p>
-      </div>
-    </div>
+  <footer class="page-shell site-footer">
+    <a class="footer-brand" href="#home">Hans <span>© 2026</span></a>
+    <p>Software Engineer — Creating intuitive, engaging digital experiences</p>
+    <a class="footer-top" href="#home">↑</a>
   </footer>
 
-  <script type="module" src="js/main.js"></script>
+  <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg></button>
+
+  <dialog class="article-dialog" id="article-dialog" aria-labelledby="dialog-title">
+    <button class="dialog-close" type="button" aria-label="Close article">×</button>
+    <p class="dialog-eyebrow"><span id="dialog-date"></span><i></i><span id="dialog-time"></span></p>
+    <h2 id="dialog-title"></h2>
+    <p id="dialog-copy"></p>
+    <a class="dialog-contact" href="#contact">Let's talk about it <span aria-hidden="true">↗</span></a>
+  </dialog>
 </body>
 </html>

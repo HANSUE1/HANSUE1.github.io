@@ -26,13 +26,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
 pageSections.forEach((section) => sectionObserver.observe(section));
 
 const updateProfileRail = () => {
-  if (window.innerWidth > 820 && profileCard) {
-    const heroHeight = document.querySelector('.hero')?.offsetHeight || 800;
-    const shouldPin = window.scrollY > heroHeight - 200;
-    profileCard.classList.toggle('is-pinned', shouldPin);
-  } else if (profileCard) {
-    profileCard.classList.remove('is-pinned');
-  }
+  if (profileCard) profileCard.classList.remove('is-pinned');
 };
 
 const updateBackToTop = () => {

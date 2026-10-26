@@ -32,7 +32,7 @@ button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 .nav-link:hover .nav-tip, .nav-link:focus-visible .nav-tip { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 
 .hero { display: grid; grid-template-columns: 344px minmax(0, 1fr); gap: clamp(50px, 6.95vw, 100px); align-items: start; padding-top: 160px; padding-bottom: 84px; }
-.profile-card { position: relative; min-height: 640px; padding: 30px 20px 32px; overflow: hidden; border-radius: 16px; background: rgba(20,18,17,.75); color: #fff; text-align: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.08); margin-left: 0; }
+.profile-card { position: relative; min-height: 640px; padding: 30px 20px 32px; overflow: hidden; border-radius: 16px; background: rgba(20,18,17,.75); color: #fff; text-align: center; backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.08); }
 .portrait-wrap { position: relative; width: 240px; max-width: 100%; height: 284px; margin: 0 auto; overflow: visible; }
 .portrait { width: 100%; height: 100%; border-radius: 16px; object-fit: cover; object-position: center 39%; }
 .orbit { position: absolute; fill: none; stroke: #ff781b; stroke-width: 3; stroke-dasharray: 8 8; pointer-events: none; }
@@ -349,3 +349,5 @@ body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-in
 main, header, footer { position: relative; z-index: 1; }
 
 .github-graph img { filter: invert(1) hue-rotate(180deg); opacity: 0.9; }
+
+.portrait-mirror { display: block; width: 100%; height: 80px; object-fit: cover; object-position: center top; transform: scaleY(-1); opacity: 0.35; mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent); -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent); margin-top: -4px; }

@@ -9,8 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.css?v=3">
-  <script src="js/main.js" defer></script>
+  <link rel="stylesheet" href="css/main.css?v=5">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+  <script src="js/main.js?v=5" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -39,8 +41,8 @@
   </header>
 
   <main>
-    <section class="hero page-shell reveal" id="home" aria-labelledby="hero-title">
-      <article class="profile-card">
+    <section class="hero page-shell" id="home" aria-labelledby="hero-title">
+      <article class="profile-card glow">
         <div class="portrait-wrap">
           <img class="portrait" src="images/profile.jpg" alt="Portrait of software engineer Hans">
           <img class="portrait-mirror" src="images/profile.jpg" alt="" aria-hidden="true">
@@ -91,7 +93,7 @@
       </div>
     </section>
 
-    <section class="page-section page-shell reveal" id="projects" aria-labelledby="projects-title">
+    <section class="page-section page-shell" id="projects" aria-labelledby="projects-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="projects-title">Recent<br><span>Projects</span></h2>
       </div>
@@ -111,7 +113,7 @@
       </div>
     </section>
 
-    <section class="page-section page-shell experience-section reveal" id="experience" aria-labelledby="experience-title">
+    <section class="page-section page-shell experience-section" id="experience" aria-labelledby="experience-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="experience-title">12 Years of<br><span>Experience</span></h2>
       </div>
@@ -122,21 +124,21 @@
       </div>
     </section>
 
-    <section class="page-section page-shell tools-section reveal" id="tools" aria-labelledby="tools-title">
+    <section class="page-section page-shell tools-section" id="tools" aria-labelledby="tools-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="tools-title">Premium<br><span>Tools</span></h2>
       </div>
       <div class="tools-grid">
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-framer.png" alt=""></span><span class="tool-copy"><strong>Framer</strong><small>Website Builder</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-figma.png" alt=""></span><span class="tool-copy"><strong>Figma</strong><small>Design Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-lemon-squeezy.png" alt=""></span><span class="tool-copy"><strong>Lemon Squeezy</strong><small>Payments Provider</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-chatgpt.png" alt=""></span><span class="tool-copy"><strong>ChatGPT</strong><small>AI Assistant</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-notion.png" alt=""></span><span class="tool-copy"><strong>Notion</strong><small>Productivity Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
-        <div class="tool-card"><span class="tool-logo"><img src="images/tool-nextjs.png" alt=""></span><span class="tool-copy"><strong>Next.js</strong><small>React Framework</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-framer.png" alt=""></span><span class="tool-copy"><strong>Framer</strong><small>Website Builder</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-figma.png" alt=""></span><span class="tool-copy"><strong>Figma</strong><small>Design Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-lemon-squeezy.png" alt=""></span><span class="tool-copy"><strong>Lemon Squeezy</strong><small>Payments Provider</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-chatgpt.png" alt=""></span><span class="tool-copy"><strong>ChatGPT</strong><small>AI Assistant</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-notion.png" alt=""></span><span class="tool-copy"><strong>Notion</strong><small>Productivity Tool</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
+        <div class="tool-card glow"><span class="tool-logo"><img src="images/tool-nextjs.png" alt=""></span><span class="tool-copy"><strong>Next.js</strong><small>React Framework</small></span><span class="tool-arrow" aria-hidden="true">↗</span></div>
       </div>
     </section>
 
-    <section class="page-section page-shell thoughts-section reveal" id="thoughts" aria-labelledby="thoughts-title">
+    <section class="page-section page-shell thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="thoughts-title">Design<br><span>Thoughts</span></h2>
       </div>
@@ -153,16 +155,18 @@
       </div>
     </section>
 
-    <section class="page-section page-shell github-section reveal" id="github" aria-labelledby="github-title">
+    <section class="page-section page-shell github-section" id="github" aria-labelledby="github-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="github-title">GitHub<br><span>Contributions</span></h2>
       </div>
       <div class="github-graph">
-        <img src="https://ghchart.rshah.org/Hansue-debuger" alt="GitHub contribution graph for Hansue-debuger" loading="lazy">
+        <a href="https://github.com/Hansue-debuger" target="_blank" rel="noopener noreferrer">
+          <img src="https://ghchart.rshah.org/Hansue-debuger" alt="GitHub contribution graph for Hansue-debuger" loading="lazy">
+        </a>
       </div>
     </section>
 
-    <section class="page-section page-shell contact-section reveal" id="contact" aria-labelledby="contact-title">
+    <section class="page-section page-shell contact-section" id="contact" aria-labelledby="contact-title">
       <div class="section-heading-row contact-heading">
         <h2 class="section-title" id="contact-title">Let's work<br><span>Together</span></h2>
       </div>
@@ -184,7 +188,7 @@
   <footer class="page-shell site-footer">
     <a class="footer-brand" href="#home">Hans <span>© 2026</span></a>
     <p>Software Engineer — Creating intuitive, engaging digital experiences</p>
-    <a class="footer-top" href="#home">↑</a>
+    <a class="footer-top" href="#home" aria-label="Back to top">↑</a>
   </footer>
 
   <button class="back-to-top" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg></button>

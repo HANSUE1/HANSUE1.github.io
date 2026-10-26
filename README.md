@@ -12,4 +12,4 @@ python -m http.server 8000
 
 Then visit `http://localhost:8000`.
 
-The section navigation highlights the current section, article cards open a reading dialog, the contact form prepares an email via mailto, and a back-to-top button appears on scroll.
+The section navigation highlights the current section, article cards open a reading dialog, the contact form prepares an email via mailto, and a back-to-top button appears on scroll. Motion uses GSAP + ScrollTrigger (loaded from jsDelivr); without them, or with reduced motion enabled, the page renders fully static.

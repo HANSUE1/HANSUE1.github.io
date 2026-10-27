@@ -1,5 +1,4 @@
-// shortcut: placeholder inbox, replace with the real address before deploying.
-const CONTACT_EMAIL = 'your@email.com';
+const CONTACT_EMAIL = 'hans.rjj12@gmail.com';
 
 const navigationLinks = [...document.querySelectorAll('.nav-link')];
 const pageSections = [...document.querySelectorAll('main section[id]')];

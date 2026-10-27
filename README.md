@@ -24,9 +24,9 @@ images/         WebP photos/screenshots + tool logos
 
 Layout breakpoints: base styles are the tablet layout (561–820px); `≤560px` is mobile; `≥821px` pins the profile card on the left and puts sections in a right-hand rail, with a compact card on short screens (`max-height: 820px`).
 
-## Before deploying
+## Contact form
 
-- Set `CONTACT_EMAIL` at the top of `js/main.js` — the contact form opens the visitor's email app addressed to it.
+The form opens the visitor's email app addressed to `CONTACT_EMAIL` (top of `js/main.js`).
 
 ## Behaviour
 

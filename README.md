@@ -1,6 +1,8 @@
-# Hans — Portfolio
+# Hans Santos — Portfolio
 
-A responsive portfolio for a Software Engineer, built with plain HTML, CSS, and JavaScript — no build step.
+Portfolio of Hans Curt Austin C. Santos, Computer Science student at National University (Digital Forensics). Live at https://hansue-debuger.github.io/
+
+Built with plain HTML, CSS, and JavaScript — no build step.
 
 ## Run locally
 

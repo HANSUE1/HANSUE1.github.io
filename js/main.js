@@ -67,7 +67,7 @@ contactForm?.addEventListener('submit', (event) => {
   const body = [
     'Name: ' + values.get('name'),
     'Email: ' + values.get('email'),
-    'Budget: ' + values.get('budget'),
+    'Topic: ' + values.get('topic'),
     '',
     values.get('message')
   ].join('\n');
@@ -121,10 +121,12 @@ if (window.gsap && window.ScrollTrigger) {
       return;
     }
 
-    const counters = gsap.utils.toArray('.stat strong').map((el) => {
-      const target = parseInt(el.textContent.replace(/\D/g, ''), 10);
-      el.textContent = '+0';
-      return { el, target, value: 0 };
+    // Count up plain numbers like "+10"; leave ordinals like "3rd" as written ("1rd" would read wrong).
+    const counters = gsap.utils.toArray('.stat strong').flatMap((el) => {
+      const [, prefix, digits] = el.textContent.match(/^(\D*)(\d+)$/) || [];
+      if (!digits) return [];
+      el.textContent = prefix + '0';
+      return { el, prefix, target: parseInt(digits, 10), value: 0 };
     });
 
     gsap.timeline({ defaults: { ease } })
@@ -138,7 +140,7 @@ if (window.gsap && window.ScrollTrigger) {
         duration: 1.6,
         ease: 'power3.out',
         stagger: 0.12,
-        onUpdate() { counters.forEach((c) => { c.el.textContent = '+' + Math.round(c.value); }); }
+        onUpdate() { counters.forEach((c) => { c.el.textContent = c.prefix + Math.round(c.value); }); }
       }, '<0.1')
       .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
 

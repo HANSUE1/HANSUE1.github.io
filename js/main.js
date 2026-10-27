@@ -1,3 +1,6 @@
+// shortcut: placeholder inbox, replace with the real address before deploying.
+const CONTACT_EMAIL = 'your@email.com';
+
 const navigationLinks = [...document.querySelectorAll('.nav-link')];
 const pageSections = [...document.querySelectorAll('main section[id]')];
 const backToTop = document.querySelector('.back-to-top');
@@ -26,6 +29,7 @@ backToTop?.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
+// Article dialog: title and meta come from the card itself; only the full copy lives in data-copy.
 const articleDialog = document.querySelector('#article-dialog');
 const dialogTitle = document.querySelector('#dialog-title');
 const dialogDate = document.querySelector('#dialog-date');
@@ -34,26 +38,30 @@ const dialogCopy = document.querySelector('#dialog-copy');
 
 document.querySelectorAll('.thought-card').forEach((card) => {
   card.addEventListener('click', () => {
-    dialogTitle.textContent = card.dataset.title;
-    dialogDate.textContent = card.dataset.date;
-    dialogTime.textContent = card.dataset.time;
+    const [date, time] = card.querySelectorAll('.thought-meta span');
+    dialogTitle.textContent = card.querySelector('strong').textContent;
+    dialogDate.textContent = date.textContent;
+    dialogTime.textContent = time.textContent;
     dialogCopy.textContent = card.dataset.copy;
     articleDialog.showModal();
   });
 });
 
 document.querySelector('.dialog-close')?.addEventListener('click', () => articleDialog.close());
-articleDialog?.addEventListener('click', (event) => {
-  if (event.target === articleDialog) articleDialog.close();
+// The dialog's own padding is also event.target === dialog, so compare against its box to detect backdrop clicks.
+articleDialog?.addEventListener('click', ({ target, clientX: x, clientY: y }) => {
+  if (target !== articleDialog) return;
+  const box = articleDialog.getBoundingClientRect();
+  if (x < box.left || x > box.right || y < box.top || y > box.bottom) articleDialog.close();
 });
 document.querySelector('.dialog-contact')?.addEventListener('click', () => articleDialog.close());
 
 const contactForm = document.querySelector('#contact-form');
 const formFeedback = document.querySelector('#form-feedback');
+let feedbackTimer;
 
 contactForm?.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (!contactForm.reportValidity()) return;
 
   const values = new FormData(contactForm);
   const subject = 'Portfolio inquiry from ' + values.get('name');
@@ -65,28 +73,37 @@ contactForm?.addEventListener('submit', (event) => {
     values.get('message')
   ].join('\n');
 
-  // shortcut: placeholder inbox, replace with the real address before deploying.
-  const mailtoLink = 'mailto:your@email.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  const mailtoLink = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 
   formFeedback.textContent = 'Opening your email app…';
   formFeedback.classList.add('is-visible');
   window.location.href = mailtoLink;
 
-  setTimeout(() => {
-    formFeedback.textContent = "If your email app didn't open, copy your message and email me directly.";
+  clearTimeout(feedbackTimer);
+  feedbackTimer = setTimeout(() => {
+    const direct = document.createElement('a');
+    direct.href = 'mailto:' + CONTACT_EMAIL;
+    direct.textContent = CONTACT_EMAIL;
+    formFeedback.replaceChildren("If your email app didn't open, email me directly at ", direct, '.');
   }, 5000);
 });
 
-// Spotlight glow: feed the pointer position to each .glow card (mouse/trackpad only).
+// Spotlight glow: feed the pointer position to each .glow card (mouse/trackpad only), once per frame.
 const glowCards = [...document.querySelectorAll('.glow')];
 if (glowCards.length && matchMedia('(hover: hover)').matches) {
-  document.addEventListener('pointermove', ({ clientX: x, clientY: y }) => {
-    const xp = (x / window.innerWidth).toFixed(2);
-    glowCards.forEach(({ style }) => {
-      style.setProperty('--x', x);
-      style.setProperty('--y', y);
-      style.setProperty('--xp', xp);
+  let pointer = null;
+  document.addEventListener('pointermove', ({ clientX, clientY }) => {
+    if (!pointer) requestAnimationFrame(() => {
+      const { x, y } = pointer;
+      const xp = (x / window.innerWidth).toFixed(2);
+      glowCards.forEach(({ style }) => {
+        style.setProperty('--x', x);
+        style.setProperty('--y', y);
+        style.setProperty('--xp', xp);
+      });
+      pointer = null;
     });
+    pointer = { x: clientX, y: clientY };
   }, { passive: true });
 }
 
@@ -101,7 +118,7 @@ if (window.gsap && window.ScrollTrigger) {
     reduced: '(prefers-reduced-motion: reduce)'
   }, ({ conditions }) => {
     if (conditions.reduced) {
-      gsap.from('.hero-main, .profile-card', { autoAlpha: 0, duration: 0.4, clearProps: 'all' });
+      gsap.from('.hero-main, .profile-card', { autoAlpha: 0, duration: 0.4, clearProps: 'opacity,visibility' });
       return;
     }
 
@@ -126,12 +143,13 @@ if (window.gsap && window.ScrollTrigger) {
       }, '<0.1')
       .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
 
+    // Opacity only (not autoAlpha): visibility:hidden would make unrevealed links and form fields unreachable by Tab.
     const lists = '.project-card, .experience-item, .tool-card, .thought-card, .contact-form > *';
-    gsap.set(lists, { autoAlpha: 0, y: 28 });
+    gsap.set(lists, { opacity: 0, y: 28 });
     ScrollTrigger.batch(lists, {
       start: 'top 90%',
       once: true,
-      onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.8, ease, stagger: { each: 0.08, amount: 0.3 }, clearProps: 'transform' })
+      onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, ease, stagger: { each: 0.08, amount: 0.3 }, clearProps: 'transform' })
     });
   });
 }

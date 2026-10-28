@@ -87,35 +87,17 @@ contactForm?.addEventListener('submit', (event) => {
   }, 5000);
 });
 
-// Spotlight glow: feed the pointer position to each .glow card (mouse/trackpad only), once per frame.
-const glowCards = [...document.querySelectorAll('.glow')];
-if (glowCards.length && matchMedia('(hover: hover)').matches) {
-  let pointer = null;
-  document.addEventListener('pointermove', ({ clientX, clientY }) => {
-    if (!pointer) requestAnimationFrame(() => {
-      const { x, y } = pointer;
-      const xp = (x / window.innerWidth).toFixed(2);
-      glowCards.forEach(({ style }) => {
-        style.setProperty('--x', x);
-        style.setProperty('--y', y);
-        style.setProperty('--xp', xp);
-      });
-      pointer = null;
-    });
-    pointer = { x: clientX, y: clientY };
-  }, { passive: true });
-}
-
 // Tools: glass icons play their own entrance when scrolled into view, so GSAP leaves them alone.
 const toolIcons = document.querySelector('#tool-icons');
 if (toolIcons && window.GlassIcons) {
   GlassIcons(toolIcons, { size: 72, gap: 48, columns: 4, labels: 'always' });
 }
 
-// Contact: metal ID card that tilts toward the pointer. No video, so it reflects the built-in soft studio.
-const contactCard = document.querySelector('#contact-card');
-if (contactCard && window.ReflectiveCard) {
-  ReflectiveCard(contactCard, { width: 440, height: 260, statusColor: '#c8ff34' });
+// Profile card: brushed metal that tilts toward the pointer. Size comes from the page CSS (width 100%, height
+// from content); no video, so it reflects the built-in soft studio. A gentler tilt suits a card this tall.
+const profileCard = document.querySelector('#profile-card');
+if (profileCard && window.ReflectiveCard) {
+  ReflectiveCard(profileCard, { width: '100%', height: 'auto', radius: 16, tiltStrength: 8 });
 }
 
 // Motion: one authored hero entrance, then lists settle in as they arrive.

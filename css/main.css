@@ -56,7 +56,9 @@ main, .site-footer { position: relative; z-index: 1; }
    Hero: profile card
    ========================================================================== */
 .hero { display: grid; align-items: start; padding-top: 160px; padding-bottom: 84px; }
-.profile-card { position: relative; min-height: 640px; padding: 30px 20px 32px; overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 16px; background: rgba(20,18,17,.75); color: #fff; text-align: center; backdrop-filter: blur(8px); }
+/* The card surface (metal, radius, rim) comes from .reflective-card; padding lives on the content so the absolutely placed orbit and spark keep their offsets. */
+.profile-card { position: relative; color: #fff; text-align: center; }
+.profile-content { display: block; height: auto; min-height: 640px; padding: 30px 20px 32px; }
 .portrait-wrap { position: relative; width: 240px; max-width: 100%; height: 284px; margin: 0 auto; }
 .portrait { width: 100%; height: 100%; border-radius: 16px; object-fit: cover; object-position: center 39%; }
 .portrait-mirror { width: 100%; height: 80px; margin-top: -4px; object-fit: cover; object-position: center top; transform: scaleY(-1); opacity: .35; -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent); mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent); }
@@ -65,7 +67,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .orbit-bottom { top: 370px; left: -8px; width: 240px; height: 88px; transform: rotate(-5deg); }
 .profile-name { position: relative; z-index: 1; margin: 22px -10px 0; font-family: var(--font-display); font-size: 37px; line-height: 1.15; letter-spacing: -.055em; font-weight: 700; white-space: nowrap; }
 .profile-spark { position: absolute; z-index: 2; top: 395px; left: 50%; display: grid; width: 34px; height: 34px; transform: translateX(-50%); place-items: center; border-radius: 50%; background: #ff781b; color: #fff; font-size: 20px; }
-.profile-summary { position: relative; z-index: 1; max-width: 294px; margin: 108px auto 0; color: var(--soft); font-family: var(--font-display); font-size: 17px; font-weight: 500; line-height: 1.28; }
+.profile-summary { position: relative; z-index: 1; max-width: 294px; margin: 108px auto 0; color: #bdb7b8; text-shadow: 0 1px 3px rgba(0,0,0,.55); font-family: var(--font-display); font-size: 17px; font-weight: 500; line-height: 1.28; }
 .social-links { position: relative; z-index: 1; display: flex; justify-content: center; gap: 22px; margin-top: 32px; }
 .social-links a { display: grid; width: 26px; height: 26px; place-items: center; color: #ff612b; transition: transform .2s ease, color .2s ease; }
 .social-links a:hover, .social-links a:focus-visible { color: #d93f0e; transform: translateY(-3px); }
@@ -163,9 +165,6 @@ main, .site-footer { position: relative; z-index: 1; }
 
 /* Contact */
 .contact-heading .section-title span { color: #373334; }
-.contact-card { margin-bottom: 32px; }
-.contact-card .reflective-card__name { font-family: var(--font-display); font-weight: 600; }
-.contact-card .reflective-card__value:hover { text-decoration: underline; }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
 .contact-form label { display: flex; min-width: 0; flex-direction: column; gap: 9px; color: #a7a1a2; font-size: 11px; font-weight: 500; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
@@ -205,28 +204,6 @@ main, .site-footer { position: relative; z-index: 1; }
 .dialog-contact { display: inline-flex; align-items: center; gap: 18px; color: var(--orange); font-size: 13px; font-weight: 600; }
 
 /* ==========================================================================
-   Spotlight glow (ported from GlowCard): one pointer-driven light shared
-   across cards via background-attachment: fixed. Must follow the cards'
-   own `background` shorthands so its background-image wins.
-   ========================================================================== */
-.glow {
-  --x: -1000; --y: -1000; --xp: 0;
-  --glow-border: 1.5px;
-  --glow-size: 220px;
-  --glow-at: calc(var(--x) * 1px) calc(var(--y) * 1px);
-  --glow-hue: calc(16 + var(--xp) * 30);
-  background-image: radial-gradient(var(--glow-size) var(--glow-size) at var(--glow-at), hsl(var(--glow-hue) 100% 70% / .08), transparent);
-  background-attachment: fixed;
-}
-.glow::before, .glow::after {
-  content: ''; position: absolute; inset: 0; z-index: 2; padding: var(--glow-border); border-radius: inherit; pointer-events: none; background-attachment: fixed;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
-.glow::before { background-image: radial-gradient(calc(var(--glow-size) * .75) calc(var(--glow-size) * .75) at var(--glow-at), hsl(var(--glow-hue) 100% 60%), transparent); }
-.glow::after { background-image: radial-gradient(calc(var(--glow-size) * .4) calc(var(--glow-size) * .4) at var(--glow-at), hsl(0 0% 100% / .7), transparent); }
-
-/* ==========================================================================
    Responsive. Base styles above are the tablet layout (561–820px);
    desktop (≥821px) pins the profile card and moves content into a right rail.
    ========================================================================== */
@@ -252,7 +229,7 @@ main, .site-footer { position: relative; z-index: 1; }
 @media (max-width: 560px) {
   .page-shell { width: calc(100% - 36px); }
   .hero { padding-top: 96px; gap: 39px; }
-  .profile-card { min-height: 0; padding: 20px 20px 24px; }
+  .profile-content { min-height: 0; padding: 20px 20px 24px; }
   .portrait-wrap { width: 210px; height: 249px; }
   .profile-name { margin-top: 18px; font-size: 29px; }
   .profile-spark { top: 341px; }
@@ -351,8 +328,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .thought-arrow { top: 3px; right: 0; bottom: auto; color: var(--orange); }
 
   .contact-section { padding-top: 40px; }
-  .contact-card { margin: 51px 0 0; }
-  .contact-form { gap: 21px; margin-top: 40px; }
+  .contact-form { gap: 21px; margin-top: 51px; }
   .contact-form label { font-size: 12px; }
   .contact-form input, .contact-form select { min-height: 40px; padding-block: 10px; }
   .contact-form textarea { min-height: 105px; }
@@ -367,7 +343,9 @@ main, .site-footer { position: relative; z-index: 1; }
 /* Short desktop screens: compact the pinned profile card so it never runs off-screen. */
 @media (min-width: 821px) and (max-height: 820px) {
   .hero { padding-top: 100px; }
-  .profile-card { top: 100px; min-height: 0; max-height: calc(100vh - 116px); overflow-y: auto; scrollbar-width: none; padding: 20px 20px 24px; }
+  .profile-card { top: 100px; }
+  /* Scroll inside the card, not the card itself, so the tilting metal never gets clipped. */
+  .profile-content { min-height: 0; max-height: calc(100vh - 116px); overflow-y: auto; scrollbar-width: none; padding: 20px 20px 24px; }
   .portrait-wrap { width: 210px; height: 249px; }
   .profile-name { margin-top: 18px; font-size: 29px; }
   .profile-spark { top: 341px; }
@@ -382,7 +360,7 @@ main, .site-footer { position: relative; z-index: 1; }
     --rail-gap: clamp(32px, 5vw, 55px);
     --rail-offset: calc(var(--profile-width) + var(--rail-gap));
   }
-  .profile-card { padding-inline: 18px; }
+  .profile-content { padding-inline: 18px; }
   .profile-name { font-size: clamp(27px, 3.2vw, 34px); }
   .hero-title { font-size: clamp(3.65rem, 7.5vw, 6rem); }
   .focus-cards { gap: 14px; }

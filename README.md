@@ -36,7 +36,7 @@ Layout breakpoints: base styles are the tablet layout (561–820px); `≤560px` 
 
 ## Editing
 
-- **Content** lives in `index.html`: profile card, hero, projects, experience, tools, articles (`data-copy` holds an article's full text) and contact form.
+- **Content** lives in `index.html`: profile card, hero (including the GitHub contributions graph for `HANSUE1`), projects, experience, tools, articles (`data-copy` holds an article's full text) and contact form.
 - **Contact email**: `CONTACT_EMAIL` at the top of `js/main.js`. The form has no backend; it opens the visitor's email app.
 - **Component options** (icon size, card tilt, colors): the `GlassIcons(...)` and `ReflectiveCard(...)` calls in `js/main.js`, and the `SoftAurora(...)` call in `js/splash.js`.
 - **Cache busting**: after changing a CSS or JS file, bump the `?v=` number on its tag in `index.html`. GitHub Pages lets browsers cache files, so without it visitors (and you) can keep seeing the old version.

@@ -11,8 +11,8 @@
     else run();
   };
 
-  // Nav: mark the link for the section crossing the upper-middle band of the viewport. Sections without a
-  // link (GitHub) keep the previous highlight instead of clearing every link.
+  // Nav: mark the link for the section crossing the upper-middle band of the viewport. A section without a
+  // nav link keeps the previous highlight instead of clearing every link.
   const initNavHighlight = () => {
     const links = [...document.querySelectorAll('.nav-link')];
     const linkFor = (id) => links.find((link) => link.hash === '#' + id);
@@ -144,6 +144,7 @@
         .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
         .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' }, 0.15)
         .from('.hero-intro', { autoAlpha: 0, y: 16, duration: 0.8 }, '<0.35')
+        .from('.hero-github', { autoAlpha: 0, y: 16, duration: 0.8, clearProps: 'transform' }, '<0.15')
         .to(counters, {
           value: (i) => counters[i].target,
           duration: 1.6,

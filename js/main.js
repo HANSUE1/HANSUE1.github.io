@@ -93,11 +93,11 @@ if (toolIcons && window.GlassIcons) {
   GlassIcons(toolIcons, { size: 72, gap: 48, columns: 4, labels: 'always' });
 }
 
-// Profile card: brushed metal that tilts toward the pointer. Size comes from the page CSS (width 100%, height
-// from content); no video, so it reflects the built-in soft studio. A gentler tilt suits a card this tall.
+// Profile card: React Bits ReflectiveCard. Width comes from the page CSS and height from its content; no video,
+// so it reflects the built-in soft studio. The status dot uses the site's lime accent.
 const profileCard = document.querySelector('#profile-card');
 if (profileCard && window.ReflectiveCard) {
-  ReflectiveCard(profileCard, { width: '100%', height: 'auto', radius: 16, tiltStrength: 8 });
+  ReflectiveCard(profileCard, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 });
 }
 
 // Motion: one authored hero entrance, then lists settle in as they arrive.
@@ -125,8 +125,7 @@ if (window.gsap && window.ScrollTrigger) {
 
     gsap.timeline({ defaults: { ease } })
       .from('.profile-card', { autoAlpha: 0, y: 24, duration: 0.9, clearProps: 'transform' })
-      .from('.portrait', { clipPath: 'inset(100% 0 0 0 round 16px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
-      .from('.orbit path', { strokeDashoffset: 320, autoAlpha: 0, duration: 1.4, stagger: 0.2 }, '<0.3')
+      .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
       .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' }, 0.15)
       .from('.hero-intro', { autoAlpha: 0, y: 16, duration: 0.8 }, '<0.35')
       .to(counters, {

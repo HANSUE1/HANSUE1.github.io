@@ -1,6 +1,6 @@
 # Hans Santos — Portfolio
 
-Portfolio of Hans Curt Austin C. Santos, Computer Science student at National University (Digital Forensics). Live at https://hansue-debuger.github.io/
+Portfolio of Hans Curt Austin C. Santos, Computer Science student at National University (Digital Forensics). Live at https://hansue1.github.io/
 
 Built with plain HTML, CSS, and JavaScript — no build step.
 

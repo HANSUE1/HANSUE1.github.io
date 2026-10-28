@@ -9,6 +9,7 @@
   --muted: #393637;
   --line: rgba(255, 255, 255, .11);
   --orange: #ff6d37;
+  --orange-hover: #ff8a5c;
   --lime: #c8ff34;
   --font-display: 'Poppins', sans-serif;
   --font-copy: 'Inter', sans-serif;
@@ -56,16 +57,24 @@ main, .site-footer { position: relative; z-index: 1; }
    Hero: profile card
    ========================================================================== */
 .hero { display: grid; align-items: start; padding-top: 160px; padding-bottom: 84px; }
-/* Card surface, header, name, role and footer come from css/reflective-card.css; these add the photo and socials. */
-.profile-card { text-align: left; }
+/* Card surface, header, name, role and footer come from css/components/reflective-card.css; these add the photo and socials.
+   The --rc-* values match what ReflectiveCard() sets, so the card is already styled before (or without) its script. */
+.profile-card {
+  --rc-width: 100%; --rc-height: auto; --rc-radius: 24px; --rc-pad: 19px; --rc-tile-radius: 12px; --rc-status: var(--lime);
+  --rc-base: #1d1c22; --rc-ink: #f4f4f5; --rc-muted: rgba(244,244,245,.6);
+  --rc-shadow: 0 22px 44px -20px rgba(0,0,0,.8), 0 6px 16px -8px rgba(0,0,0,.5);
+  --rc-tile: linear-gradient(180deg, #3a3644 0%, #27242f 100%); --rc-tile-edge: rgba(255,255,255,.07); --rc-tile-highlight: rgba(255,255,255,.12); --rc-tile-shadow: 0 4px 10px -4px rgba(0,0,0,.7);
+  --rc-rim: rgba(255,255,255,.07); --rc-rim-highlight: rgba(255,255,255,.1);
+  text-align: left;
+}
 .profile-photo { width: 100%; height: 300px; margin-top: 16px; border-radius: 14px; object-fit: cover; object-position: center 39%; box-shadow: 0 10px 24px -14px rgba(0,0,0,.8); }
 .profile-card .reflective-card__identity { margin-top: 18px; }
 .profile-card .reflective-card__name { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -.04em; }
 .profile-card .reflective-card__footer { margin-top: 20px; }
 .profile-card .reflective-card__id { gap: 8px; }
 .social-links { display: flex; gap: 14px; }
-.social-links a { display: grid; width: 24px; height: 24px; place-items: center; color: #ff612b; transition: transform .2s ease, color .2s ease; }
-.social-links a:hover, .social-links a:focus-visible { color: #ff8a5c; transform: translateY(-2px); }
+.social-links a { display: grid; width: 24px; height: 24px; place-items: center; color: var(--orange); transition: transform .2s ease, color .2s ease; }
+.social-links a:hover, .social-links a:focus-visible { color: var(--orange-hover); transform: translateY(-2px); }
 .social-links svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ==========================================================================
@@ -136,8 +145,8 @@ main, .site-footer { position: relative; z-index: 1; }
 .stack-list + .stack-heading { margin-top: 36px; }
 .stack-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .stack-list li { padding: 9px 15px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.03); color: #ece8e8; font-size: 13px; font-weight: 500; }
-/* Glass icon sizing and colors come from GlassIcons() options in js/main.js; this only places the group in the rail. */
-/* The glass icons' canvas reaches ~0.7 icon-widths past the grid on each side; clip it sideways so phones don't get a horizontal scroll. */
+/* Glass icon size and colors come from GlassIcons() in js/main.js. Its canvas reaches ~0.7 icon-widths past the grid
+   on each side, so clip the section sideways or phones get a horizontal scroll. */
 .tools-section { overflow-x: clip; }
 /* Top margin clears the tilted plates, which swing up past the glass toward the heading. */
 .tool-icons { margin: 30px 0 0; justify-content: flex-start; }
@@ -161,7 +170,6 @@ main, .site-footer { position: relative; z-index: 1; }
 .github-graph img { max-width: 100%; height: auto; border-radius: 8px; filter: invert(1) hue-rotate(180deg); opacity: .9; }
 
 /* Contact */
-.contact-heading .section-title span { color: #373334; }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
 .contact-form label { display: flex; min-width: 0; flex-direction: column; gap: 9px; color: #a7a1a2; font-size: 11px; font-weight: 500; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
@@ -173,7 +181,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .contact-form textarea { min-height: 120px; resize: vertical; }
 .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { border-color: rgba(255,109,55,.75); background: rgba(255,255,255,.11); }
 .submit-button { display: flex; min-height: 52px; justify-content: space-between; align-items: center; padding: 0 17px; border: 0; border-radius: 8px; background: var(--orange); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .2s ease, transform .2s ease; }
-.submit-button:hover { transform: translateY(-2px); background: #ff8050; }
+.submit-button:hover { transform: translateY(-2px); background: var(--orange-hover); }
 .submit-button span { font-size: 17px; }
 .form-feedback { display: none; margin: 0; color: var(--lime); font-size: 13px; line-height: 1.5; }
 .form-feedback.is-visible { display: block; }
@@ -225,6 +233,8 @@ main, .site-footer { position: relative; z-index: 1; }
 
 @media (max-width: 560px) {
   .page-shell { width: calc(100% - 36px); }
+  /* Six 34px icons need tighter spacing to fit a 320px screen. */
+  .main-nav { gap: 12px; padding: 0 14px; }
   .hero { padding-top: 96px; gap: 39px; }
   .profile-photo { height: 260px; }
   .hero-title { font-size: clamp(3.1rem, 14.8vw, 4.8rem); letter-spacing: -.055em; }
@@ -303,7 +313,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .experience-copy p { max-width: 590px; font-size: 15px; line-height: 1.5; }
   .experience-copy .experience-date { margin: 19px 0 0; font-size: 15px; }
   .experience-mark { align-self: start; padding-top: 4px; color: var(--orange); }
-  .experience-item:hover .experience-mark { color: #ff9065; }
+  .experience-item:hover .experience-mark { color: var(--orange-hover); }
 
   .tool-icons, .stack-list, .stack-heading { margin-inline: 16px; }
   .stack-list li { font-size: 15px; }

@@ -15,14 +15,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" href="images/profile.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/glass-icons.css?v=9">
-  <link rel="stylesheet" href="css/reflective-card.css?v=9">
-  <link rel="stylesheet" href="css/main.css?v=9">
+  <!-- Splash once per browser session: set html.intro before first paint so the splash covers the page from the start. -->
+  <script>try { sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
+  <link rel="stylesheet" href="css/glass-icons.css?v=11">
+  <link rel="stylesheet" href="css/reflective-card.css?v=11">
+  <link rel="stylesheet" href="css/soft-aurora.css?v=11">
+  <link rel="stylesheet" href="css/main.css?v=11">
+  <link rel="stylesheet" href="css/splash.css?v=11">
+  <!-- Splash scripts come first so they run without waiting for the GSAP download. -->
+  <script src="js/soft-aurora.js?v=11" defer></script>
+  <script src="js/splash.js?v=11" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
-  <script src="js/glass-icons.js?v=9" defer></script>
-  <script src="js/reflective-card.js?v=9" defer></script>
-  <script src="js/main.js?v=9" defer></script>
+  <script src="js/glass-icons.js?v=11" defer></script>
+  <script src="js/reflective-card.js?v=11" defer></script>
+  <script src="js/main.js?v=11" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -44,6 +51,17 @@
   </script>
 </head>
 <body>
+  <!-- Splash (css/splash.css, js/splash.js): SoftAurora behind the name, then fades out to the page. Decorative, so hidden from screen readers. -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash-aurora"></div>
+    <div class="splash-content">
+      <p class="splash-eyebrow">Hello, I’m</p>
+      <p class="splash-name"><span>Hans</span><span>Santos</span></p>
+      <p class="splash-role">Computer Science<i></i>Digital Forensics</p>
+    </div>
+    <p class="splash-hint"><span class="hint-mouse">Click or press any key to enter</span><span class="hint-touch">Tap to enter</span></p>
+  </div>
+
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">

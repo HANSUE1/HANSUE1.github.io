@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Splash: aurora + name over the page, then fades out to the portfolio.
+   Shown only while html.intro is set (inline script in <head>, once per
+   browser session). js/splash.js runs the timing; if it never runs, the
+   fallback animation below still fades the splash out after 6s.
+   ========================================================================== */
+.splash { display: none; }
+/* Keep the scrollbar's space while scrolling is locked so the page doesn't shift as the splash lifts; paint it to match. */
+html.intro { overflow: hidden; scrollbar-gutter: stable; background: #0b0a0a; }
+html.intro .splash, .splash.is-leaving {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden;
+  background: #0b0a0a; color: var(--white);
+}
+html.intro .splash { animation: splash-in .6s ease both, splash-out .9s ease 6s forwards; }
+html.intro .splash.is-live { animation: splash-in .6s ease both; }
+.splash.is-leaving { opacity: 0; visibility: hidden; transition: opacity 1s cubic-bezier(.65,0,.35,1), visibility 0s 1s; }
+
+.splash .splash-aurora { position: absolute; inset: 0; width: auto; height: auto; }
+.splash-content { position: relative; z-index: 1; padding: 0 24px; text-align: center; transition: transform 1s cubic-bezier(.65,0,.35,1), filter 1s ease; }
+.splash.is-leaving .splash-content { transform: scale(1.06); filter: blur(8px); }
+
+.splash-eyebrow, .splash-role, .splash-hint { margin: 0; color: rgba(248,247,247,.72); font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; }
+.splash-name { margin: 18px 0 20px; font-family: var(--font-display); font-size: clamp(3.4rem, 14vw, 9.5rem); line-height: .9; letter-spacing: -.06em; font-weight: 700; text-transform: uppercase; }
+.splash-name span { display: block; }
+/* Second word as an outline so the aurora shows through it. */
+.splash-name span + span { color: transparent; -webkit-text-stroke: 1.5px rgba(248,247,247,.85); }
+.splash-role { color: rgba(248,247,247,.85); font-size: clamp(12px, 1.4vw, 15px); letter-spacing: .14em; }
+.splash-role i { display: inline-block; width: 5px; height: 5px; margin: 0 12px 2px; border-radius: 50%; background: var(--orange); vertical-align: middle; }
+.splash-hint { position: absolute; z-index: 1; bottom: max(28px, env(safe-area-inset-bottom)); left: 0; right: 0; font-size: 11px; color: rgba(248,247,247,.5); text-align: center; }
+
+.splash-eyebrow { animation: splash-rise .9s cubic-bezier(.2,.8,.2,1) .35s both; }
+.splash-name span { animation: splash-rise 1.1s cubic-bezier(.2,.8,.2,1) .5s both; }
+.splash-name span + span { animation-delay: .66s; }
+.splash-role { animation: splash-rise .9s cubic-bezier(.2,.8,.2,1) 1s both; }
+.splash-hint { animation: splash-in .8s ease 1.8s both; }
+
+@keyframes splash-in { from { opacity: 0; } }
+@keyframes splash-out { to { opacity: 0; visibility: hidden; } }
+@keyframes splash-rise { from { opacity: 0; transform: translateY(26px); filter: blur(10px); } }
+
+.hint-touch { display: none; }
+@media (hover: none) {
+  .hint-mouse { display: none; }
+  .hint-touch { display: inline; }
+}
+
+@media (max-width: 560px) {
+  .splash-name { font-size: 18vw; }
+  .splash-eyebrow, .splash-hint { letter-spacing: .2em; }
+  .splash-role { letter-spacing: .08em; }
+  .splash-role i { display: block; margin: 8px auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-eyebrow, .splash-name span, .splash-role, .splash-hint { animation: none; }
+  .splash.is-leaving { transition-duration: .3s, 0s; transition-delay: 0s, .3s; }
+  .splash.is-leaving .splash-content { transform: none; filter: none; }
+}

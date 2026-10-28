@@ -93,11 +93,18 @@ if (toolIcons && window.GlassIcons) {
   GlassIcons(toolIcons, { size: 72, gap: 48, columns: 4, labels: 'always' });
 }
 
+// The splash (js/splash.js) covers the page on the first visit of a session. Hero motion waits for it to
+// start fading out; if there's no splash, or it already left while GSAP was downloading, run right away.
+const afterIntro = (run) => {
+  if (window.splashActive) document.addEventListener('intro:done', run, { once: true });
+  else run();
+};
+
 // Profile card: React Bits ReflectiveCard. Width comes from the page CSS and height from its content; no video,
 // so it reflects the built-in soft studio. The status dot uses the site's lime accent.
 const profileCard = document.querySelector('#profile-card');
 if (profileCard && window.ReflectiveCard) {
-  ReflectiveCard(profileCard, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 });
+  afterIntro(() => ReflectiveCard(profileCard, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 }));
 }
 
 // Motion: one authored hero entrance, then lists settle in as they arrive.
@@ -123,7 +130,10 @@ if (window.gsap && window.ScrollTrigger) {
       return { el, prefix, target: parseInt(digits, 10), value: 0 };
     });
 
-    gsap.timeline({ defaults: { ease } })
+    // Built now (paused during the splash) so the from() states hide the hero before the splash lifts.
+    const hero = gsap.timeline({ defaults: { ease }, paused: Boolean(window.splashActive) });
+    afterIntro(() => hero.play());
+    hero
       .from('.profile-card', { autoAlpha: 0, y: 24, duration: 0.9, clearProps: 'transform' })
       .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
       .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' }, 0.15)

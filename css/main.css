@@ -107,7 +107,7 @@ main, .site-footer { position: relative; z-index: 1; }
 .page-section { padding-top: 76px; padding-bottom: 94px; }
 .section-heading-row { margin-bottom: 36px; }
 .section-title { margin: 0; font-family: var(--font-display); font-size: clamp(4rem, 11vw, 5.7rem); line-height: .98; letter-spacing: -.075em; font-weight: 700; text-transform: uppercase; }
-.project-card:focus-visible, .tool-card:focus-visible, .thought-card:focus-visible { outline: 2px solid var(--orange); outline-offset: 5px; }
+.project-card:focus-visible, .thought-card:focus-visible { outline: 2px solid var(--orange); outline-offset: 5px; }
 
 /* Projects */
 .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 18px; }
@@ -139,18 +139,9 @@ main, .site-footer { position: relative; z-index: 1; }
 .stack-list + .stack-heading { margin-top: 36px; }
 .stack-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .stack-list li { padding: 9px 15px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.03); color: #ece8e8; font-size: 13px; font-weight: 500; }
-.tools-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
-.tool-card { position: relative; display: flex; min-height: 150px; align-items: center; gap: 20px; overflow: hidden; padding: 21px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.018); transition: border-color .22s ease, background-color .22s ease; }
-/* No hover transform: a transformed element drops background-attachment: fixed, which would knock the .glow spotlight out of place. */
-.tool-card:hover { border-color: rgba(255,255,255,.28); background-color: rgba(255,255,255,.045); }
-.tool-logo { display: grid; width: 76px; height: 76px; flex: 0 0 76px; place-items: center; overflow: hidden; border-radius: 11px; background: #fff; }
-.tool-logo img { width: 100%; height: 100%; object-fit: cover; }
-.tool-logo img[src$=".svg"] { padding: 18%; object-fit: contain; }
-.tool-copy { display: flex; min-width: 0; flex-direction: column; gap: 7px; }
-.tool-copy strong { font-family: var(--font-display); font-size: 17px; line-height: 1.2; font-weight: 600; }
-.tool-copy small { color: var(--soft); font-size: 12px; line-height: 1.4; }
-.tool-arrow { position: absolute; top: 15px; right: 17px; color: #716b6c; font-size: 16px; transition: color .2s ease, transform .2s ease; }
-.tool-card:hover .tool-arrow { color: var(--orange); transform: translate(2px,-2px); }
+/* Glass icon sizing and colors come from GlassIcons() options in js/main.js; this only places the group in the rail. */
+/* Top margin clears the tilted plates, which swing up past the glass toward the heading. */
+.tool-icons { margin: 30px 0 0; justify-content: flex-start; }
 
 /* Thoughts */
 .thought-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -172,6 +163,9 @@ main, .site-footer { position: relative; z-index: 1; }
 
 /* Contact */
 .contact-heading .section-title span { color: #373334; }
+.contact-card { margin-bottom: 32px; }
+.contact-card .reflective-card__name { font-family: var(--font-display); font-weight: 600; }
+.contact-card .reflective-card__value:hover { text-decoration: underline; }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
 .contact-form label { display: flex; min-width: 0; flex-direction: column; gap: 9px; color: #a7a1a2; font-size: 11px; font-weight: 500; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
@@ -286,12 +280,6 @@ main, .site-footer { position: relative; z-index: 1; }
   .experience-copy h3 { font-size: 19px; }
   .experience-copy p { font-size: 12px; line-height: 1.65; }
   .experience-mark { align-self: center; }
-  .tools-grid { gap: 10px; }
-  .tool-card { min-height: 137px; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 13px; }
-  .tool-logo { width: 54px; height: 54px; flex-basis: 54px; border-radius: 8px; }
-  .tool-copy strong { font-size: 14px; }
-  .tool-copy small { font-size: 10px; }
-  .tool-arrow { top: 12px; right: 12px; }
   .thought-grid { grid-template-columns: 1fr; }
   .thought-card, .thought-card:not(:first-child) { min-height: 0; gap: 17px; padding: 21px 30px 21px 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .thought-card:last-child { border-bottom: 0; }
@@ -349,15 +337,9 @@ main, .site-footer { position: relative; z-index: 1; }
   .experience-mark { align-self: start; padding-top: 4px; color: var(--orange); }
   .experience-item:hover .experience-mark { color: #ff9065; }
 
-  .tools-grid, .stack-list, .stack-heading { margin-inline: 16px; }
-  .tools-grid { column-gap: 34px; row-gap: 23px; }
+  .tool-icons, .stack-list, .stack-heading { margin-inline: 16px; }
   .stack-list li { font-size: 15px; }
   .tools-section .section-heading-row { margin-bottom: 14px; }
-  .tool-card { min-height: 80px; gap: 16px; padding: 12px; border-radius: 14px; }
-  .tool-logo { width: 60px; height: 60px; flex-basis: 60px; border-radius: 10px; }
-  .tool-copy strong { font-size: 20px; }
-  .tool-copy small { font-size: 15px; }
-  .tool-arrow { display: none; }
 
   .thought-grid { display: flex; flex-direction: column; gap: 80px; border: 0; margin-inline: 16px; }
   .thoughts-section .section-heading-row { margin-bottom: 36px; }
@@ -369,7 +351,8 @@ main, .site-footer { position: relative; z-index: 1; }
   .thought-arrow { top: 3px; right: 0; bottom: auto; color: var(--orange); }
 
   .contact-section { padding-top: 40px; }
-  .contact-form { gap: 21px; margin-top: 51px; }
+  .contact-card { margin: 51px 0 0; }
+  .contact-form { gap: 21px; margin-top: 40px; }
   .contact-form label { font-size: 12px; }
   .contact-form input, .contact-form select { min-height: 40px; padding-block: 10px; }
   .contact-form textarea { min-height: 105px; }

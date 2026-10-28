@@ -106,6 +106,18 @@ if (glowCards.length && matchMedia('(hover: hover)').matches) {
   }, { passive: true });
 }
 
+// Tools: glass icons play their own entrance when scrolled into view, so GSAP leaves them alone.
+const toolIcons = document.querySelector('#tool-icons');
+if (toolIcons && window.GlassIcons) {
+  GlassIcons(toolIcons, { size: 72, gap: 48, columns: 4, labels: 'always' });
+}
+
+// Contact: metal ID card that tilts toward the pointer. No video, so it reflects the built-in soft studio.
+const contactCard = document.querySelector('#contact-card');
+if (contactCard && window.ReflectiveCard) {
+  ReflectiveCard(contactCard, { width: 440, height: 260, statusColor: '#c8ff34' });
+}
+
 // Motion: one authored hero entrance, then lists settle in as they arrive.
 // Content is visible by default; GSAP only animates *from* an offset state.
 if (window.gsap && window.ScrollTrigger) {
@@ -145,7 +157,7 @@ if (window.gsap && window.ScrollTrigger) {
       .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
 
     // Opacity only (not autoAlpha): visibility:hidden would make unrevealed links and form fields unreachable by Tab.
-    const lists = '.project-card, .experience-item, .tool-card, .thought-card, .contact-form > *';
+    const lists = '.project-card, .experience-item, .thought-card, .contact-form > *';
     gsap.set(lists, { opacity: 0, y: 28 });
     ScrollTrigger.batch(lists, {
       start: 'top 90%',

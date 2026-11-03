@@ -14,12 +14,13 @@ html.intro .splash, .splash.is-leaving {
   background: #0b0a0a; color: var(--white);
 }
 html.intro .splash { animation: splash-in .6s ease both, splash-out .9s ease 6s forwards; }
-html.intro .splash.is-live { animation: splash-in .6s ease both; }
-.splash.is-leaving { opacity: 0; visibility: hidden; transition: opacity 1s cubic-bezier(.65,0,.35,1), visibility 0s 1s; }
+/* backwards, not both: a forwards fill would hold opacity at 1 and swallow the leave fade below. */
+html.intro .splash.is-live { animation: splash-in .6s ease backwards; }
+/* Leaving is a plain fade; the dev title fades in behind it a beat later (css/main.css, .portal-shell). */
+.splash.is-leaving { opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s .8s; }
 
 .splash .splash-aurora { position: absolute; inset: 0; width: auto; height: auto; }
-.splash-content { position: relative; z-index: 1; padding: 0 24px; text-align: center; transition: transform 1s cubic-bezier(.65,0,.35,1), filter 1s ease; }
-.splash.is-leaving .splash-content { transform: scale(1.06); filter: blur(8px); }
+.splash-content { position: relative; z-index: 1; padding: 0 24px; text-align: center; }
 
 .splash-eyebrow, .splash-role, .splash-hint { margin: 0; color: rgba(248,247,247,.72); font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; }
 .splash-name { margin: 18px 0 20px; font-family: var(--font-display); font-size: clamp(3.4rem, 14vw, 9.5rem); line-height: .9; letter-spacing: -.06em; font-weight: 700; text-transform: uppercase; }
@@ -56,5 +57,4 @@ html.intro .splash.is-live { animation: splash-in .6s ease both; }
 @media (prefers-reduced-motion: reduce) {
   .splash-eyebrow, .splash-name span, .splash-role, .splash-hint { animation: none; }
   .splash.is-leaving { transition-duration: .3s, 0s; transition-delay: 0s, .3s; }
-  .splash.is-leaving .splash-content { transform: none; filter: none; }
 }

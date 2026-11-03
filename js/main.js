@@ -196,6 +196,20 @@
         }, '<0.1')
         .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
 
+      // Title → portfolio: a plain cross-fade tied to scroll. The dev title fades out as its last screen scrolls off
+      // and the hero fades in as it arrives; scrolling back up reverses both.
+      if (document.querySelector('#name-portal')) {
+        // immediateRender off: an inline opacity:1 written now would override the CSS that hides the title under the splash.
+        gsap.fromTo('#name-portal', { opacity: 1 }, {
+          opacity: 0, ease: 'none', immediateRender: false,
+          scrollTrigger: { trigger: '#name-portal', start: 'bottom 85%', end: 'bottom 30%', scrub: true }
+        });
+        gsap.fromTo('.hero-main', { opacity: 0 }, {
+          opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: '.hero', start: 'top 80%', end: 'top 25%', scrub: true }
+        });
+      }
+
       // Soft skills: once per row, the meter lights up tick by tick while its percentage counts up.
       gsap.utils.toArray('.skill').forEach((skill) => {
         const meter = skill.querySelector('.skill-meter');

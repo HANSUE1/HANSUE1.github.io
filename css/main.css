@@ -200,7 +200,12 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 
 /* Name portal: the React GlyphPortal title at the top of the page (src/components/name-portal.tsx). Its own
    stylesheet sets layout with zero specificity, so these single-class rules restyle it for the site. */
+/* Page fades. Landing → title: hidden while the splash is up, then fades in once html.intro drops (or on load when
+   there is no splash). backwards fill only, so main.js can own its opacity afterwards for the title → portfolio fade. */
 .portal-shell { position: relative; }
+html.intro .portal-shell { opacity: 0; }
+html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
+@keyframes stage-in { from { opacity: 0; } }
 .portal-fallback { display: grid; min-height: 100vh; min-height: 100svh; place-items: center; margin: 0; padding: 0 24px; color: #cfd4e4; font-family: var(--font-display); font-size: clamp(1.4rem, 6.6vw, 6rem); font-weight: 800; line-height: 1; text-align: center; text-transform: uppercase; white-space: nowrap; }
 .portal-field { position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1)); }
 .name-portal [data-gp-caption] { color: var(--soft); font-size: var(--text-sm); }

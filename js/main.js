@@ -22,6 +22,30 @@
 
   // Nav: mark the link for the section crossing the upper-middle band of the viewport. A section without a
   // nav link keeps the previous highlight instead of clearing every link.
+  // Stages: landing page (splash) → dev title (#name-portal, the HANS GlyphPortal) → portfolio. While the title
+  // still covers most of the screen, html.title-stage hides the portfolio's chrome (nav, pinned profile card,
+  // back-to-top); as it scrolls off, the class drops and 'title:leave' lets the card play its entrance.
+  const initTitleStage = () => {
+    const title = document.querySelector('#name-portal');
+    if (!title) return;
+    const root = document.documentElement;
+    const update = () => {
+      const onStage = title.getBoundingClientRect().bottom > window.innerHeight * 0.5;
+      if (root.classList.contains('title-stage') === onStage) return;
+      root.classList.toggle('title-stage', onStage);
+      if (!onStage) document.dispatchEvent(new Event('title:leave'));
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  };
+
+  // Runs once the dev title has scrolled off (or right away when there is none, or it is already gone).
+  const afterTitle = (run) => {
+    if (document.documentElement.classList.contains('title-stage')) document.addEventListener('title:leave', run, { once: true });
+    else run();
+  };
+
   const initNavHighlight = () => {
     const links = [...document.querySelectorAll('.nav-link')];
     const linkFor = (id) => links.find((link) => link.hash === '#' + id);
@@ -118,7 +142,7 @@
   const initProfileCard = () => {
     const card = document.querySelector('#profile-card');
     if (!card || !window.ReflectiveCard) return;
-    afterIntro(() => ReflectiveCard(card, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 }));
+    afterIntro(() => afterTitle(() => ReflectiveCard(card, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 })));
   };
 
   // Motion: one authored hero entrance, then lists settle in as they arrive.
@@ -151,11 +175,12 @@
       // Built now (paused) so the from() states hide them before the splash lifts. The card plays as the splash
       // leaves; the hero text sits below the opening name title, so it plays when it scrolls into view.
       const card = gsap.timeline({ defaults: { ease }, paused: true })
-        .from('.profile-card', { autoAlpha: 0, y: 24, duration: 0.9, clearProps: 'transform' })
+        // fromTo, not from: while the title stage hides the card, from() would capture opacity 0 as its end state.
+        .fromTo('.profile-card', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, clearProps: 'transform' })
         .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1');
       const hero = gsap.timeline({ defaults: { ease }, paused: true });
       afterIntro(() => {
-        card.play();
+        afterTitle(() => card.play());
         ScrollTrigger.create({ trigger: '.hero-main', start: 'top 85%', once: true, onEnter: () => hero.play() });
       });
       hero
@@ -199,6 +224,7 @@
     });
   };
 
+  initTitleStage();
   initNavHighlight();
   initBackToTop();
   initArticleDialog();

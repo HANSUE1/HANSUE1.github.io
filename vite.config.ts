@@ -15,7 +15,7 @@ export default defineConfig({
     emptyOutDir: true,
     modulePreload: false,
     rollupOptions: {
-      input: { archive: 'src/islands/archive.tsx' },
+      input: { islands: 'src/main.tsx' },
       output: { entryFileNames: '[name].js', chunkFileNames: '[name].js', assetFileNames: '[name][extname]' },
     },
   },

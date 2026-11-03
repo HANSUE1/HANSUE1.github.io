@@ -196,6 +196,25 @@ main, .site-footer { position: relative; z-index: 1; }
 .thought-arrow { position: absolute; right: 12px; bottom: 26px; color: #8a8384; font-size: 18px; transition: color .2s ease, transform .2s ease; }
 .thought-card:is(:hover, :focus-visible) .thought-arrow { color: var(--orange); transform: translate(2px,-2px); }
 
+/* Name portal: the React GlyphPortal title at the top of the page (src/components/name-portal.tsx). Its own
+   stylesheet sets layout with zero specificity, so these single-class rules restyle it for the site. */
+.portal-shell { position: relative; }
+.portal-fallback { display: grid; min-height: 100vh; min-height: 100svh; place-items: center; margin: 0; color: var(--orange); font-family: var(--font-display); font-size: clamp(6rem, 22vw, 15rem); font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+.portal-field { position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1)); background: radial-gradient(circle at 18% 12%, #ffb08a 0, transparent 36%), radial-gradient(circle at 84% 86%, rgba(200,255,52,.6) 0, transparent 38%), linear-gradient(135deg, #ff8a5c 0%, #ff6d37 48%, #f05a22 100%); }
+.portal-surname { position: absolute; inset: calc(var(--gp-word-bottom, 62%) + 20px) 16px auto; margin: 0; color: var(--white); font-family: var(--font-display); font-size: clamp(18px, 2.4vw, 26px); font-weight: 600; letter-spacing: -.02em; text-align: center; }
+.name-portal [data-gp-caption] { color: var(--soft); font-size: var(--text-sm); }
+.name-portal [data-gp-hint] { color: var(--soft); }
+.name-portal [data-gp-enter] { padding: 0 16px; border: 1px solid var(--line); border-radius: 8px; color: var(--white); transition: border-color .2s ease, color .2s ease; }
+.name-portal [data-gp-enter]:hover { border-color: var(--orange); color: var(--orange); }
+.name-portal [data-gp-letter]:focus-visible { outline-color: var(--white); }
+.name-portal [data-gp-touch-picker] { top: auto; bottom: 18px; }
+.name-portal [data-gp-select] { border-color: var(--line); border-radius: 8px; background: #211f1e; color: var(--white); font-size: var(--text-sm); }
+.portal-copy { display: flex; flex-direction: column; gap: 40px; }
+.portal-copy h2 { max-width: 22ch; margin: 0; font-family: var(--font-display); font-size: clamp(24px, 3vw, 34px); font-weight: 600; line-height: 1.2; letter-spacing: -.02em; }
+.portal-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.portal-points h3 { margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.portal-points p { margin: 8px 0 0; font-size: var(--text-md); line-height: 1.5; }
+
 /* Archive: the React glass folders (src/), set in the page's own type and focus colour. */
 .archive-intro { max-width: 520px; margin: 0 0 8px; color: var(--soft); font-size: var(--text-md); line-height: 1.55; }
 .archive-desk .gf-root, .archive-desk .gf-meta, .archive-desk .gf-sheet-meta { font-family: var(--font-copy); }
@@ -300,6 +319,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .experience-copy h3 { font-size: 19px; }
   .experience-copy p { font-size: var(--text-sm); line-height: 1.65; }
   .thought-grid { grid-template-columns: 1fr; }
+  .portal-points { grid-template-columns: 1fr; gap: 20px; }
   .thought-card, .thought-card:not(:first-child) { min-height: 0; gap: 17px; padding: 21px 30px 21px 0; border-right: 0; border-bottom: 1px solid var(--line); }
   .thought-card:last-child { border-bottom: 0; }
   .thought-content strong { max-width: none; font-size: 17px; }
@@ -325,7 +345,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .hero { grid-template-columns: var(--profile-width) minmax(0, 1fr); gap: var(--rail-gap); }
   .hero-main { grid-column: 2; }
   .profile-card { position: fixed; z-index: 10; top: 160px; left: var(--shell-inset); width: var(--profile-width); }
-  .page-section, .site-footer {
+  .page-section, .site-footer, .portal-shell {
     width: min(696px, calc(100vw - 48px - var(--rail-offset)));
     margin-right: 0;
     margin-left: calc(var(--shell-inset) + var(--rail-offset));

@@ -148,13 +148,18 @@
         return { el, prefix, target: parseInt(digits, 10), value: 0 };
       });
 
-      // Built now (paused during the splash) so the from() states hide the hero before the splash lifts.
-      const hero = gsap.timeline({ defaults: { ease }, paused: Boolean(window.splashActive) });
-      afterIntro(() => hero.play());
-      hero
+      // Built now (paused) so the from() states hide them before the splash lifts. The card plays as the splash
+      // leaves; the hero text sits below the opening name title, so it plays when it scrolls into view.
+      const card = gsap.timeline({ defaults: { ease }, paused: true })
         .from('.profile-card', { autoAlpha: 0, y: 24, duration: 0.9, clearProps: 'transform' })
-        .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
-        .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' }, 0.15)
+        .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1');
+      const hero = gsap.timeline({ defaults: { ease }, paused: true });
+      afterIntro(() => {
+        card.play();
+        ScrollTrigger.create({ trigger: '.hero-main', start: 'top 85%', once: true, onEnter: () => hero.play() });
+      });
+      hero
+        .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' })
         .from('.hero-intro', { autoAlpha: 0, y: 16, duration: 0.8 }, '<0.35')
         .from('.hero-github', { autoAlpha: 0, y: 16, duration: 0.8, clearProps: 'transform' }, '<0.15')
         .to(counters, {

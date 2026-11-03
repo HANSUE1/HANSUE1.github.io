@@ -22,22 +22,23 @@
   <!-- Splash once per browser session: set html.intro before first paint so the splash covers the page from the start. -->
   <script>try { sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
   <!-- When you change a CSS or JS file, bump its ?v= so browsers drop the cached copy. -->
-  <link rel="stylesheet" href="css/components/glass-icons.css?v=15">
-  <link rel="stylesheet" href="css/components/reflective-card.css?v=15">
-  <link rel="stylesheet" href="css/components/soft-aurora.css?v=15">
-  <link rel="stylesheet" href="css/main.css?v=15">
-  <link rel="stylesheet" href="css/splash.css?v=15">
-  <!-- React island (src/, built by `npm run build` into js/react/): the Archive section's glass folders. -->
-  <link rel="stylesheet" href="js/react/archive.css?v=15">
-  <script type="module" src="js/react/archive.js?v=15"></script>
+  <link rel="stylesheet" href="css/components/glass-icons.css?v=16">
+  <link rel="stylesheet" href="css/components/reflective-card.css?v=16">
+  <link rel="stylesheet" href="css/components/soft-aurora.css?v=16">
+  <link rel="stylesheet" href="css/main.css?v=16">
+  <link rel="stylesheet" href="css/splash.css?v=16">
+  <!-- React islands (src/, built by `npm run build` into js/react/): the opening name title and the Archive folders. -->
+  <link rel="stylesheet" href="js/react/islands.css?v=16">
   <!-- Splash scripts come first so they run without waiting for the GSAP download. -->
-  <script src="js/components/soft-aurora.js?v=15" defer></script>
-  <script src="js/splash.js?v=15" defer></script>
+  <script src="js/components/soft-aurora.js?v=16" defer></script>
+  <script src="js/splash.js?v=16" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" defer></script>
-  <script src="js/components/glass-icons.js?v=15" defer></script>
-  <script src="js/components/reflective-card.js?v=15" defer></script>
-  <script src="js/main.js?v=15" defer></script>
+  <script src="js/components/glass-icons.js?v=16" defer></script>
+  <script src="js/components/reflective-card.js?v=16" defer></script>
+  <script src="js/main.js?v=16" defer></script>
+  <!-- After main.js: deferred and module scripts run in document order, so the React bundle never delays the page's own scripts. -->
+  <script type="module" src="js/react/islands.js?v=16"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -109,6 +110,12 @@
   </header>
 
   <main id="main">
+    <!-- Opening title (React, src/components/name-portal.tsx): "HANS" cut out of an orange field; scrolling flies into
+         a letter. The word below is the no-JS / loading poster, replaced when the island mounts. -->
+    <div class="portal-shell" id="name-portal">
+      <p class="portal-fallback" aria-hidden="true">HANS</p>
+    </div>
+
     <section class="hero page-shell" id="home" aria-labelledby="hero-title">
       <!-- Profile: React Bits ReflectiveCard layout (badge, status, name, role, footer) with photo and socials.
            js/components/reflective-card.js adds the WebGL brushed-metal canvas behind this content. -->

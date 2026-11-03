@@ -1,28 +1,56 @@
 import GlyphPortal, { type GlyphPortalStyle } from "@/components/ui/glyph-portal"
+import Iridescence from "@/components/ui/Iridescence"
 
-// The page's opening title: "HANS" in the display face, its letters cut out of an orange field. Scrolling flies
-// the camera into one letter (hover or arrow keys choose which) until the field fills the screen, and the copy
-// below appears inside it. Colours are the site's own tokens; the styling lives in css/main.css (.name-portal).
+// The dev title: "SOFTWARE DEVELOPER" cut out of a live iridescent surface (React Bits Iridescence). Scrolling flies
+// the camera into one letter (hover or arrow keys choose which) until the surface fills the screen and the copy
+// below appears on it. The surface still follows the pointer and swirls on click. Styling: css/main.css (.name-portal).
+export const TITLE_WORD = "SOFTWARE DEVELOPER"
+
 const STYLE: GlyphPortalStyle = {
-  "--gp-paper": "transparent", // the page's own dotted backdrop shows around the word
+  "--gp-paper": "transparent", // the page's own dotted backdrop shows around the words
   "--gp-ink": "#f8f7f7",
-  "--gp-field": "#ff6d37",
-  "--gp-foreground": "#1a0d07", // dark copy on the orange field (white on orange fails contrast)
+  "--gp-field": "#cfd4e4", // pale chrome under the surface: shown without WebGL, and behind the copy with reduced motion
+  "--gp-foreground": "#121014", // dark copy reads on the light iridescent surface
   fontFamily: "var(--font-copy)",
 }
+
+// Inside GlyphPortal's inert field; the wrapper keeps the component's slow push-in (--gp-field-scale) on scroll.
+const SURFACE = (
+  <div className="portal-field">
+    <Iridescence
+      color={[1, 1, 1]}
+      hueShift={0}
+      saturation={0.55}
+      brightness={1}
+      contrast={0.85}
+      speed={1}
+      scale={1.4}
+      detail={8}
+      warp={1}
+      rotation={0}
+      mouseReact={true}
+      amplitude={0.1}
+      stir={0.35}
+      sheen={0.3}
+      clickSwirl={true}
+      grain={0}
+      fade={0}
+      resolution={0.75}
+    />
+  </div>
+)
 
 export default function NamePortal({ fontFamily }: { fontFamily: string }) {
   return (
     <GlyphPortal
-      word="HANS"
+      word={TITLE_WORD}
       fontFamily={fontFamily}
       fontWeight={800}
       scrollLength={1.8}
       enterLabel="Step inside"
       className="name-portal"
       style={STYLE}
-      background={<div className="portal-field" />}
-      front={<p className="portal-surname">Curt Austin C. Santos</p>}
+      background={SURFACE}
     >
       <div className="portal-copy">
         <h2>Computer Science at National University, specializing in Digital Forensics.</h2>

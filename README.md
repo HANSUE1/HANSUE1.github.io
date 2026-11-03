@@ -39,7 +39,7 @@ js/components/glass-icons.js   GlassIcons: Tools section icons (WebGL glass, CSS
 js/components/reflective-card.js  ReflectiveCard: brushed-metal profile card
 js/components/soft-aurora.js   SoftAurora: aurora band behind the splash
 images/                        WebP photo and project screenshots
-src/components/ui/             shadcn-style UI components (glyph-portal.tsx, glass-folder-cards.tsx; unchanged from their sources)
+src/components/ui/             shadcn-style UI components (glyph-portal.tsx, glass-folder-cards.tsx, Iridescence.jsx; unchanged from their sources)
 src/components/name-portal.tsx the opening title: GlyphPortal set up with the name, colours and inside copy
 src/components/archive-desk.tsx  the Archive's three folders, filled from the page's project and article cards
 src/main.tsx                   bundle entry: loads every island below
@@ -69,7 +69,7 @@ The Tools section uses glass icons: each link in `#tool-icons` holds an inline S
 
 The soft-skills meters are 20 ticks drawn by CSS from `--value`; with GSAP they light up tick by tick while the percentage counts up as each row scrolls in, and hovering a row sweeps a highlight across its meter. The site runs in three stages: landing page (the splash) → dev title → portfolio. While the dev title still covers most of the screen, `initTitleStage` in `js/main.js` puts `title-stage` on `<html>`, which hides the nav, the pinned profile card and the back-to-top button; as the title scrolls off they return and the profile card plays its entrance.
 
-The dev title is a GlyphPortal: "HANS" cut out of an orange field, with the full name under it. Hovering a letter (or the arrow keys) picks which one to enter; scrolling flies the camera into that letter until the field fills the screen and the copy inside it appears, then the hero follows, whose entrance plays as it scrolls into view. With reduced motion it is a static title and panel; without JS, a plain orange "HANS".
+The dev title is a GlyphPortal: "SOFTWARE DEVELOPER" cut out of a live React Bits Iridescence surface (`src/components/ui/Iridescence.jsx`, the JS + CSS variant, typed by `Iridescence.d.ts`), which follows the pointer and swirls on click. The word is `TITLE_WORD` in `src/components/name-portal.tsx`. Hovering a letter (or the arrow keys) picks which one to enter; scrolling flies the camera into that letter until the field fills the screen and the copy inside it appears, then the hero follows, whose entrance plays as it scrolls into view. With reduced motion it is a static title and panel; without WebGL the surface falls back to a flat pale chrome; without JS, the words in plain text.
 
 The Archive's three glass folders lean open on hover, fan their files out on click, and close on Escape or a click outside. Projects (smoked glass) holds each project's screenshot linked to its repository and a `···` menu with all repositories; Writing (milk glass) holds the articles, which open in the article dialog; Studies holds generated artwork, and its `+` key drops a newly painted study into the folder.
 

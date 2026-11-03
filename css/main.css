@@ -201,9 +201,8 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 /* Name portal: the React GlyphPortal title at the top of the page (src/components/name-portal.tsx). Its own
    stylesheet sets layout with zero specificity, so these single-class rules restyle it for the site. */
 .portal-shell { position: relative; }
-.portal-fallback { display: grid; min-height: 100vh; min-height: 100svh; place-items: center; margin: 0; color: var(--orange); font-family: var(--font-display); font-size: clamp(6rem, 22vw, 15rem); font-weight: 800; line-height: 1; letter-spacing: -.02em; }
-.portal-field { position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1)); background: radial-gradient(circle at 18% 12%, #ffb08a 0, transparent 36%), radial-gradient(circle at 84% 86%, rgba(200,255,52,.6) 0, transparent 38%), linear-gradient(135deg, #ff8a5c 0%, #ff6d37 48%, #f05a22 100%); }
-.portal-surname { position: absolute; inset: calc(var(--gp-word-bottom, 62%) + 20px) 16px auto; margin: 0; color: var(--white); font-family: var(--font-display); font-size: clamp(18px, 2.4vw, 26px); font-weight: 600; letter-spacing: -.02em; text-align: center; }
+.portal-fallback { display: grid; min-height: 100vh; min-height: 100svh; place-items: center; margin: 0; padding: 0 24px; color: #cfd4e4; font-family: var(--font-display); font-size: clamp(1.4rem, 6.6vw, 6rem); font-weight: 800; line-height: 1; text-align: center; text-transform: uppercase; white-space: nowrap; }
+.portal-field { position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1)); }
 .name-portal [data-gp-caption] { color: var(--soft); font-size: var(--text-sm); }
 .name-portal [data-gp-hint] { color: var(--soft); }
 .name-portal [data-gp-enter] { padding: 0 16px; border: 1px solid var(--line); border-radius: 8px; color: var(--white); transition: border-color .2s ease, color .2s ease; }

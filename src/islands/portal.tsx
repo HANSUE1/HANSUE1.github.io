@@ -3,7 +3,7 @@
 // Poppins (as the component's own demo does), with a timeout so a slow font never holds the title back.
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import NamePortal from "@/components/name-portal"
+import NamePortal, { TITLE_WORD } from "@/components/name-portal"
 
 declare global {
   interface Window {
@@ -17,10 +17,10 @@ const FALLBACK = '"Arial Black", Arial, sans-serif'
 const host = document.getElementById("name-portal")
 if (host) {
   const timeout = new Promise<void>((done) => setTimeout(done, 1600))
-  Promise.race([document.fonts.load(DISPLAY, "HANS").then(() => undefined), timeout])
+  Promise.race([document.fonts.load(DISPLAY, TITLE_WORD).then(() => undefined), timeout])
     .catch(() => undefined)
     .then(() => {
-      const face = document.fonts.check(DISPLAY, "HANS") ? `Poppins, ${FALLBACK}` : FALLBACK
+      const face = document.fonts.check(DISPLAY, TITLE_WORD) ? `Poppins, ${FALLBACK}` : FALLBACK
       createRoot(host).render(
         <StrictMode>
           <NamePortal fontFamily={face} />

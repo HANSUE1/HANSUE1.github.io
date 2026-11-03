@@ -9,6 +9,7 @@
   <meta property="og:title" content="Hans Santos — Computer Science · Digital Forensics">
   <meta property="og:description" content="Computer Science student at National University specializing in Digital Forensics. Open to internships, full-time roles and freelance work.">
   <meta property="og:url" content="https://hansue1.github.io/">
+  <meta property="og:image" content="https://hansue1.github.io/images/profile.webp">
   <meta name="twitter:card" content="summary">
   <title>Hans Santos — Computer Science · Digital Forensics</title>
   <link rel="canonical" href="https://hansue1.github.io/">
@@ -21,19 +22,21 @@
   <!-- Splash once per browser session: set html.intro before first paint so the splash covers the page from the start. -->
   <script>try { sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
   <!-- When you change a CSS or JS file, bump its ?v= so browsers drop the cached copy. -->
-  <link rel="stylesheet" href="css/components/glass-icons.css?v=13">
-  <link rel="stylesheet" href="css/components/reflective-card.css?v=13">
-  <link rel="stylesheet" href="css/components/soft-aurora.css?v=13">
-  <link rel="stylesheet" href="css/main.css?v=13">
-  <link rel="stylesheet" href="css/splash.css?v=13">
+  <link rel="stylesheet" href="css/components/glass-folder.css?v=14">
+  <link rel="stylesheet" href="css/components/glass-icons.css?v=14">
+  <link rel="stylesheet" href="css/components/reflective-card.css?v=14">
+  <link rel="stylesheet" href="css/components/soft-aurora.css?v=14">
+  <link rel="stylesheet" href="css/main.css?v=14">
+  <link rel="stylesheet" href="css/splash.css?v=14">
   <!-- Splash scripts come first so they run without waiting for the GSAP download. -->
-  <script src="js/components/soft-aurora.js?v=13" defer></script>
-  <script src="js/splash.js?v=13" defer></script>
+  <script src="js/components/soft-aurora.js?v=14" defer></script>
+  <script src="js/splash.js?v=14" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" defer></script>
-  <script src="js/components/glass-icons.js?v=13" defer></script>
-  <script src="js/components/reflective-card.js?v=13" defer></script>
-  <script src="js/main.js?v=13" defer></script>
+  <script src="js/components/glass-folder.js?v=14" defer></script>
+  <script src="js/components/glass-icons.js?v=14" defer></script>
+  <script src="js/components/reflective-card.js?v=14" defer></script>
+  <script src="js/main.js?v=14" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -55,6 +58,13 @@
   </script>
 </head>
 <body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-arrow-ne" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19.5v-15M6 10.5l6-6 6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  </svg>
+
   <!-- Splash (css/splash.css, js/splash.js): SoftAurora behind the name, then fades out to the page. Decorative, so hidden from screen readers. -->
   <div class="splash" id="splash" aria-hidden="true">
     <div class="splash-aurora"></div>
@@ -131,12 +141,11 @@
       </article>
 
       <div class="hero-main">
-        <p class="availability"><i aria-hidden="true"></i>Open to internships · jobs · freelance</p>
         <h1 class="hero-title" id="hero-title"><span>Digital</span><span class="muted-title">Forensics</span></h1>
-        <p class="hero-intro">I’m Hans Curt Austin C. Santos, a Computer Science student at National University specializing in Digital Forensics. I build web apps, data tools and games, from scrapers in Python to full-stack React apps on Supabase.</p>
+        <p class="hero-intro">I’m Hans Curt Austin C. Santos, a Computer Science student at National University specializing in Digital Forensics. I build web apps, data tools and games, from scrapers in Python to full-stack React apps on Supabase. Open to internships, full-time roles and freelance work.</p>
         <a class="hero-github" href="https://github.com/HANSUE1" target="_blank" rel="noopener noreferrer">
           <span class="hero-github-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.95 0-1.1.39-2 1.03-2.7-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.7 0 3.84-2.34 4.69-4.57 4.94.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12c0-5.523-4.477-10-10-10Z"/></svg>GitHub contributions<span>@HANSUE1</span></span>
-          <img src="https://ghchart.rshah.org/HANSUE1" width="663" height="104" decoding="async" alt="GitHub contribution graph for HANSUE1">
+          <img src="https://ghchart.rshah.org/HANSUE1" width="663" height="104" decoding="async" alt="GitHub contribution graph for HANSUE1" onerror="this.closest('a').remove()">
         </a>
         <div class="stats" aria-label="Career highlights">
           <div class="stat"><strong>3rd</strong><span>Year of<br>Computer Science</span></div>
@@ -147,13 +156,13 @@
           <a class="focus-card focus-orange" href="#projects">
             <svg class="focus-icon" viewBox="0 0 32 32" aria-hidden="true"><path d="m16 3 13 7-13 7L3 10l13-7Z"/><path d="m3 16 13 7 13-7M3 22l13 7 13-7"/></svg>
             <span class="focus-label">Digital forensics,<br>data extraction</span>
-            <span class="focus-arrow" aria-hidden="true">↗</span>
+            <span class="focus-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
             <svg class="focus-art" viewBox="0 0 310 245" preserveAspectRatio="none" aria-hidden="true"><path d="M-30 224c90-36 72-48 121-72s73-22 89-58 57-51 151-17"/></svg>
           </a>
           <a class="focus-card focus-lime" href="#tools">
             <svg class="focus-icon focus-window" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="4" width="26" height="24" rx="2"/><path d="M3 11h26M12 11v17"/></svg>
             <span class="focus-label">React, TypeScript,<br>Python, Supabase</span>
-            <span class="focus-arrow" aria-hidden="true">→</span>
+            <span class="focus-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-right"/></svg></span>
             <svg class="focus-art focus-art-zigzag" viewBox="0 0 360 245" preserveAspectRatio="none" aria-hidden="true"><path d="m-20 91 74-62 34 182 68-74 35 113 74-111 26 123 78-135"/></svg>
           </a>
         </div>
@@ -167,17 +176,19 @@
       <div class="project-grid">
         <a class="project-card" href="https://github.com/HANSUE1/SoftwareEng_Project" target="_blank" rel="noopener noreferrer">
           <div class="project-image"><img src="images/project-barangay.webp" width="800" height="600" loading="lazy" decoding="async" alt="e-Barangay admin dashboard listing document requests and their pickup status"></div>
-          <div class="project-meta"><h3>e-Barangay</h3><p>Community services web app</p><p class="project-desc">A web portal for Barangay 902. Residents register, request documents, report community problems with photos and an e-signature, and send feedback. Admins verify residents, post announcements, and turn requests into print-ready certificates and clearances.</p><ul class="project-tags" aria-label="Built with"><li>React</li><li>TanStack Start</li><li>Supabase</li><li>Tailwind CSS</li></ul></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+          <div class="project-meta"><h3>e-Barangay</h3><p>Community services web app</p><p class="project-desc">A web portal for Barangay 902. Residents register, request documents, report community problems with photos and an e-signature, and send feedback. Admins verify residents, post announcements, and turn requests into print-ready certificates and clearances.</p><ul class="project-tags" aria-label="Built with"><li>React</li><li>TanStack Start</li><li>Supabase</li><li>Tailwind CSS</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </a>
         <a class="project-card" href="https://github.com/HANSUE1/Web-data-extraction" target="_blank" rel="noopener noreferrer">
           <div class="project-image"><img src="images/project-scraper.webp" width="800" height="600" loading="lazy" decoding="async" alt="Terminal running the Python web scraper through its fetch, parse, retry and store stages"></div>
-          <div class="project-meta"><h3>Web Data Extraction</h3><p>Python web scraping framework</p><p class="project-desc">An asynchronous crawler built to scrape responsibly. It fetches pages over HTTP and falls back to a headless browser for JavaScript-heavy sites, follows robots.txt and per-domain rate limits, retries with backoff, resumes interrupted crawls from checkpoints, and exports to JSON, CSV or SQLite.</p><ul class="project-tags" aria-label="Built with"><li>Python</li><li>asyncio</li><li>Playwright</li><li>SQLite</li></ul></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+          <div class="project-meta"><h3>Web Data Extraction</h3><p>Python web scraping framework</p><p class="project-desc">An asynchronous crawler built to scrape responsibly. It fetches pages over HTTP and falls back to a headless browser for JavaScript-heavy sites, follows robots.txt and per-domain rate limits, retries with backoff, resumes interrupted crawls from checkpoints, and exports to JSON, CSV or SQLite.</p><ul class="project-tags" aria-label="Built with"><li>Python</li><li>asyncio</li><li>Playwright</li><li>SQLite</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </a>
         <a class="project-card" href="https://github.com/HANSUE1/HANSUE1.github.io" target="_blank" rel="noopener noreferrer">
           <div class="project-image"><img src="images/project-portfolio.webp" width="800" height="600" loading="lazy" decoding="async" alt="Hero section of this portfolio"></div>
-          <div class="project-meta"><h3>Portfolio</h3><p>This site, hand-built</p><p class="project-desc">A responsive, framework-free portfolio with scroll animations, WebGL glass and brushed-metal effects, and full keyboard accessibility, deployed on GitHub Pages.</p><ul class="project-tags" aria-label="Built with"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GSAP</li></ul></div><span class="project-link-arrow" aria-hidden="true">↗</span>
+          <div class="project-meta"><h3>Portfolio</h3><p>This site, hand-built</p><p class="project-desc">A responsive, framework-free portfolio with scroll animations, WebGL glass and brushed-metal effects, and full keyboard accessibility, deployed on GitHub Pages.</p><ul class="project-tags" aria-label="Built with"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GSAP</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </a>
       </div>
+      <!-- Glass folder (js/components/glass-folder.js): main.js fills it with the project cards above, so it stays empty without JS. -->
+      <div class="project-folder" id="project-folder"></div>
     </section>
 
     <section class="page-section page-shell experience-section" id="experience" aria-labelledby="experience-title">
@@ -185,9 +196,9 @@
         <h2 class="section-title" id="experience-title">Education &amp;<br><span>Experience</span></h2>
       </div>
       <div class="experience-list">
-        <div class="experience-item"><div class="experience-copy"><h3>National University</h3><p>Bachelor of Science in Computer Science, specializing in Digital Forensics. Building real projects alongside coursework, from a production-style web scraper to a full-stack barangay services app.</p><p class="experience-date">3rd Year — Present</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
-        <div class="experience-item"><div class="experience-copy"><h3>Meralco IDOL Hackathon</h3><p>Competed in Meralco’s IDOL Hackathon, building and pitching a tech solution to a real challenge from the country’s largest power distributor, all against a hackathon deadline.</p><p class="experience-date">Hackathon · Participant</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
-        <div class="experience-item"><div class="experience-copy"><h3>Alorica · T-Mobile Account</h3><p>Customer Support Representative for T-Mobile (US). Resolved customer account and service concerns over the phone, documented every case clearly, and worked to quality and handle-time standards in a fast-paced environment.</p><p class="experience-date">2023 — 2024 · Alorica Centris</p></div><span class="experience-mark" aria-hidden="true">↗</span></div>
+        <div class="experience-item"><div class="experience-copy"><h3>National University</h3><p>Bachelor of Science in Computer Science, specializing in Digital Forensics. Building real projects alongside coursework, from a production-style web scraper to a full-stack barangay services app.</p><p class="experience-date">3rd Year — Present</p></div></div>
+        <div class="experience-item"><div class="experience-copy"><h3>Meralco IDOL Hackathon</h3><p>Competed in Meralco’s IDOL Hackathon, building and pitching a tech solution to a real challenge from the country’s largest power distributor, all against a hackathon deadline.</p><p class="experience-date">Hackathon · Participant</p></div></div>
+        <div class="experience-item"><div class="experience-copy"><h3>Alorica · T-Mobile Account</h3><p>Customer Support Representative for T-Mobile (US). Resolved customer account and service concerns over the phone, documented every case clearly, and worked to quality and handle-time standards in a fast-paced environment.</p><p class="experience-date">2023 — 2024 · Alorica Centris</p></div></div>
       </div>
     </section>
 
@@ -221,19 +232,49 @@
       </div>
     </section>
 
+    <!-- Soft skills: --value (0–100) on each item drives the meter in CSS, so it is complete without JS;
+         main.js only replays it tick by tick as the section scrolls in. -->
+    <section class="page-section page-shell skills-section" id="skills" aria-labelledby="skills-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="skills-title">Soft<br><span>Skills</span></h2>
+      </div>
+      <ul class="skill-list">
+        <li class="skill" style="--value: 75">
+          <div class="skill-head"><h3>Communication</h3><span class="skill-value">75%</span></div>
+          <p>Resolving T-Mobile customer concerns over the phone at Alorica, and documenting every case clearly.</p>
+          <span class="skill-meter" aria-hidden="true"></span>
+        </li>
+        <li class="skill" style="--value: 70">
+          <div class="skill-head"><h3>Leadership</h3><span class="skill-value">70%</span></div>
+          <p>Owning my projects end to end, from the first idea to a working app.</p>
+          <span class="skill-meter" aria-hidden="true"></span>
+        </li>
+        <li class="skill" style="--value: 90">
+          <div class="skill-head"><h3>Teamwork</h3><span class="skill-value">90%</span></div>
+          <p>Building and pitching a solution as a team against the Meralco IDOL Hackathon deadline.</p>
+          <span class="skill-meter" aria-hidden="true"></span>
+        </li>
+        <li class="skill" style="--value: 80">
+          <div class="skill-head"><h3>Flexibility</h3><span class="skill-value">80%</span></div>
+          <p>Moving between Python scrapers, React apps, C++ coursework and Godot games.</p>
+          <span class="skill-meter" aria-hidden="true"></span>
+        </li>
+      </ul>
+    </section>
+
     <section class="page-section page-shell thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
       <div class="section-heading-row">
         <h2 class="section-title" id="thoughts-title">Design<br><span>Thoughts</span></h2>
       </div>
       <div class="thought-grid">
         <button class="thought-card" type="button" data-copy="As the internet continues to develop and grow exponentially, jobs related to the industry do too — particularly those that relate to web design and development. The best way to begin is to stay curious, build often, and learn from the work you put into the world.">
-          <span class="thought-content"><strong>Starting and Growing a Career in Web Design</strong><span>As the internet continues to develop and grow exponentially, jobs related to the industry do too, particularly those that relate to web design and development.</span><span class="thought-meta"><span>Apr 8, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
+          <span class="thought-content"><strong>Starting and Growing a Career in Web Design</strong><span>As the internet continues to develop and grow exponentially, jobs related to the industry do too, particularly those that relate to web design and development.</span><span class="thought-meta"><span>Apr 8, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
         <button class="thought-card" type="button" data-copy="Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. A clear message, strong hierarchy, and one focused action help a landing page turn a good idea into a useful experience.">
-          <span class="thought-content"><strong>Create a Landing Page That Performs Great</strong><span>Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. Landing pages are standalone websites used to generate leads or sales — in other words they help you increase your revenue.</span><span class="thought-meta"><span>Mar 15, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
+          <span class="thought-content"><strong>Create a Landing Page That Performs Great</strong><span>Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. Landing pages are standalone websites used to generate leads or sales — in other words they help you increase your revenue.</span><span class="thought-meta"><span>Mar 15, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
         <button class="thought-card" type="button" data-copy="Designers can prepare for what's next by staying close to the people who use their work, learning new tools with intention, and building a practice that makes room for experimentation.">
-          <span class="thought-content"><strong>How Can Designers Prepare for the Future?</strong><span>Stay close to the people who use your work, learn new tools with intention, and build a practice that makes room for experimentation.</span><span class="thought-meta"><span>Feb 28, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true">↗</span>
+          <span class="thought-content"><strong>How Can Designers Prepare for the Future?</strong><span>Stay close to the people who use your work, learn new tools with intention, and build a practice that makes room for experimentation.</span><span class="thought-meta"><span>Feb 28, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
       </div>
     </section>
@@ -249,7 +290,7 @@
         </div>
         <label>I’m reaching out about<select name="topic" required><option value="" selected disabled>Select…</option><option>An internship</option><option>A full-time role</option><option>A freelance project</option><option>Something else</option></select></label>
         <label>Message<textarea name="message" placeholder="Tell me about your project" rows="4" required></textarea></label>
-        <button class="submit-button" type="submit">Submit <span aria-hidden="true">↗</span></button>
+        <button class="submit-button" type="submit">Send message <span aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span></button>
         <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
       </form>
     </section>
@@ -258,17 +299,17 @@
   <footer class="page-shell site-footer">
     <a class="footer-brand" href="#home">Hans Santos <span>© 2026</span></a>
     <p>Hans Curt Austin C. Santos — Computer Science · Digital Forensics</p>
-    <a class="footer-top" href="#home" aria-label="Back to top">↑</a>
+    <a class="footer-top" href="#home" aria-label="Back to top"><svg class="icon"><use href="#i-arrow-up"/></svg></a>
   </footer>
 
   <button class="back-to-top" type="button" aria-label="Back to top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg></button>
 
   <dialog class="article-dialog" id="article-dialog" aria-labelledby="dialog-title">
-    <button class="dialog-close" type="button" aria-label="Close article">×</button>
+    <button class="dialog-close" type="button" aria-label="Close article"><svg class="icon"><use href="#i-close"/></svg></button>
     <p class="dialog-eyebrow"><span id="dialog-date"></span><i></i><span id="dialog-time"></span></p>
     <h2 id="dialog-title"></h2>
     <p id="dialog-copy"></p>
-    <a class="dialog-contact" href="#contact">Let's talk about it <span aria-hidden="true">↗</span></a>
+    <a class="dialog-contact" href="#contact">Let's talk about it <span aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span></a>
   </dialog>
 </body>
 </html>

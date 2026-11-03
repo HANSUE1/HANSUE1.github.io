@@ -11,6 +11,15 @@
     else run();
   };
 
+  // Count-ups rewrite their text every frame; screen readers get the final value from a hidden copy instead.
+  const freezeForScreenReaders = (el) => {
+    const real = document.createElement('span');
+    real.className = 'sr-only';
+    real.textContent = el.textContent;
+    el.before(real);
+    el.setAttribute('aria-hidden', 'true');
+  };
+
   // Nav: mark the link for the section crossing the upper-middle band of the viewport. A section without a
   // nav link keeps the previous highlight instead of clearing every link.
   const initNavHighlight = () => {
@@ -104,6 +113,29 @@
     if (root && window.GlassIcons) GlassIcons(root, { size: 72, gap: 48, columns: 4, labels: 'always' });
   };
 
+  // Projects: one glass folder holding every project card's screenshot, each file linking to its repository.
+  // Built from the cards themselves, so a new project only has to be added once.
+  const initProjectFolder = () => {
+    const root = document.querySelector('#project-folder');
+    if (!root || !window.GlassFolder) return;
+    const files = [...document.querySelectorAll('.project-card')].map((card) => ({
+      name: card.querySelector('h3').textContent,
+      meta: card.querySelector('.project-tags li')?.textContent,
+      image: card.querySelector('.project-image img').getAttribute('src'),
+      href: card.href
+    }));
+    GlassFolder(root, {
+      label: 'Project files',
+      tone: 'dark',
+      art: 'ember',
+      seed: 7,
+      width: 'fit',
+      action: 'more',
+      files,
+      menu: [{ label: 'All repositories on GitHub', onSelect: () => window.open('https://github.com/HANSUE1?tab=repositories', '_blank', 'noopener') }]
+    });
+  };
+
   // Profile card: React Bits ReflectiveCard. Width comes from the page CSS and height from its content; no video,
   // so it reflects the built-in soft studio. Started after the splash so its light sweep is actually seen.
   const initProfileCard = () => {
@@ -124,7 +156,9 @@
       reduced: '(prefers-reduced-motion: reduce)'
     }, ({ conditions }) => {
       if (conditions.reduced) {
-        gsap.from('.hero-main, .profile-card', { autoAlpha: 0, duration: 0.4, clearProps: 'opacity,visibility' });
+        // Paused like the full entrance, otherwise the fade finishes unseen under the splash.
+        const fade = gsap.from('.hero-main, .profile-card', { autoAlpha: 0, duration: 0.4, clearProps: 'opacity,visibility', paused: Boolean(window.splashActive) });
+        afterIntro(() => fade.play());
         return;
       }
 
@@ -132,6 +166,7 @@
       const counters = gsap.utils.toArray('.stat strong').flatMap((el) => {
         const [, prefix, digits] = el.textContent.match(/^(\D*)(\d+)$/) || [];
         if (!digits) return [];
+        freezeForScreenReaders(el);
         el.textContent = prefix + '0';
         return { el, prefix, target: parseInt(digits, 10), value: 0 };
       });
@@ -154,6 +189,23 @@
         }, '<0.1')
         .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
 
+      // Soft skills: once per row, the meter lights up tick by tick while its percentage counts up.
+      gsap.utils.toArray('.skill').forEach((skill) => {
+        const meter = skill.querySelector('.skill-meter');
+        const label = skill.querySelector('.skill-value');
+        const target = parseFloat(skill.style.getPropertyValue('--value')) || 0;
+        const level = { value: 0 };
+        const draw = () => {
+          meter.style.setProperty('--fill', Math.round(level.value / 5) * 5);
+          label.textContent = Math.round(level.value) + '%';
+        };
+        freezeForScreenReaders(label);
+        draw();
+        gsap.timeline({ scrollTrigger: { trigger: skill, start: 'top 88%', once: true } })
+          .from(skill.querySelector('p'), { opacity: 0, y: 14, duration: 0.8, ease })
+          .to(level, { value: target, duration: 1.5, ease: 'power2.out', onUpdate: draw, onComplete: () => meter.style.removeProperty('--fill') }, 0.1);
+      });
+
       // Opacity only (not autoAlpha): visibility:hidden would make unrevealed links and form fields unreachable by Tab.
       const lists = '.project-card, .experience-item, .thought-card, .contact-form > *';
       gsap.set(lists, { opacity: 0, y: 28 });
@@ -170,6 +222,7 @@
   initArticleDialog();
   initContactForm();
   initToolIcons();
+  initProjectFolder();
   initProfileCard();
   initMotion();
 })();

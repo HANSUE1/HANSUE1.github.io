@@ -137,9 +137,50 @@
     if (root && window.GlassIcons) GlassIcons(root, { size: 72, gap: 48, columns: 4, labels: 'always' });
   };
 
-  // GitHub contributions: drawn from live JSON. The API serves GitHub's own calendar with no long cache, whereas the
-  // ghchart image tells browsers to keep it for a day, so that image is only the fallback when the API is down.
+  // GitHub contributions: the year comes from GitHub's calendar (as JSON, since the ghchart image tells browsers to keep
+  // it for a day, so that image is only the fallback). The calendar stops at today's UTC date but files commits under
+  // the committer's own date, so anything committed after midnight here stays off it until 8am. The last few days are
+  // therefore topped up from the live commits API, in the owner's time zone.
   const GITHUB_USER = 'HANSUE1';
+  const GITHUB_TIME_ZONE = 'Asia/Manila';
+  const GITHUB_RECENT_DAYS = 3;
+
+  const getJson = async (url) => {
+    const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!response.ok) throw new Error(url + ' returned ' + response.status);
+    return response.json();
+  };
+
+  const ownerDate = (when) => new Date(when).toLocaleDateString('en-CA', { timeZone: GITHUB_TIME_ZONE }); // YYYY-MM-DD
+
+  // Commits per day across recently pushed repos. Default branches and non-forks only, as GitHub itself counts them.
+  const fetchRecentCommits = async () => {
+    const since = new Date(Date.now() - GITHUB_RECENT_DAYS * 864e5).toISOString();
+    const repos = await getJson('https://api.github.com/users/' + GITHUB_USER + '/repos?sort=pushed&per_page=30');
+    const active = repos.filter((repo) => !repo.fork && repo.pushed_at >= since);
+    const lists = await Promise.all(active.map((repo) => getJson('https://api.github.com/repos/' + repo.full_name + '/commits?per_page=100&author=' + GITHUB_USER + '&since=' + since)));
+    const counts = {};
+    lists.flat().forEach(({ commit }) => {
+      const day = ownerDate(commit.author.date);
+      counts[day] = (counts[day] || 0) + 1;
+    });
+    return counts;
+  };
+
+  // Adds the days the calendar hasn't reached, then keeps the higher count per day: the calendar also counts issues and
+  // pull requests, and taking the higher rather than the sum means nothing doubles once GitHub catches up.
+  const withRecentCommits = (calendar, recent) => {
+    const days = [...calendar];
+    const today = ownerDate(Date.now());
+    const nextDate = (date) => new Date(Date.parse(date + 'T00:00:00Z') + 864e5).toISOString().slice(0, 10);
+    for (let date = nextDate(days.at(-1).date); date <= today; date = nextDate(date)) days.push({ date, count: 0, level: 0 });
+    // GitHub's shading is relative to the year's busiest days, so reuse the level of days with a similar count.
+    const levelFor = (count) => Math.max(1, ...calendar.filter((day) => day.count <= count).map((day) => day.level));
+    return days.map((day) => {
+      const count = recent[day.date] || 0;
+      return count > day.count ? { ...day, count, level: levelFor(count) } : day;
+    });
+  };
 
   const renderGithubGraph = (graph, days) => {
     const make = (tag, className, text) => {
@@ -206,10 +247,12 @@
     const graph = document.querySelector('#github-graph');
     if (!graph) return;
     try {
-      const response = await fetch('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last', { signal: AbortSignal.timeout(8000) });
-      if (!response.ok) throw new Error('Contributions API returned ' + response.status);
-      const { contributions } = await response.json();
-      renderGithubGraph(graph, contributions);
+      // Commits are only a top-up: if they fail (say GitHub's 60 requests an hour per visitor), show the calendar alone.
+      const [{ contributions }, recent] = await Promise.all([
+        getJson('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last'),
+        fetchRecentCommits().catch(() => null)
+      ]);
+      renderGithubGraph(graph, recent ? withRecentCommits(contributions, recent) : contributions);
     } catch {
       // The date in the URL gets round the image's day-long browser cache. If this fails too, drop the block.
       const image = new Image(663, 104);

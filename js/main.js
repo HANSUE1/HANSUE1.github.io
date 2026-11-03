@@ -137,6 +137,90 @@
     if (root && window.GlassIcons) GlassIcons(root, { size: 72, gap: 48, columns: 4, labels: 'always' });
   };
 
+  // GitHub contributions: drawn from live JSON. The API serves GitHub's own calendar with no long cache, whereas the
+  // ghchart image tells browsers to keep it for a day, so that image is only the fallback when the API is down.
+  const GITHUB_USER = 'HANSUE1';
+
+  const renderGithubGraph = (graph, days) => {
+    const make = (tag, className, text) => {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text) el.textContent = text;
+      return el;
+    };
+    // Dates are calendar days, so read and print them in UTC or they shift a day in some time zones.
+    const parse = (date) => new Date(date + 'T00:00:00Z');
+    const format = (date, options) => parse(date).toLocaleDateString('en-US', { timeZone: 'UTC', ...options });
+    const plural = (count) => count + (count === 1 ? ' contribution' : ' contributions');
+
+    const firstRow = parse(days[0].date).getUTCDay();
+    const weeks = Math.ceil((firstRow + days.length) / 7);
+    const cells = make('span', 'github-cells');
+    const months = make('span', 'github-months');
+    graph.style.setProperty('--weeks', weeks);
+
+    let labelled;
+    days.forEach((day, i) => {
+      const cell = make('span', 'github-cell');
+      cell.dataset.level = day.level;
+      cell.dataset.tip = plural(day.count) + ' on ' + format(day.date, { month: 'short', day: 'numeric', year: 'numeric' });
+      if (i === 0) cell.style.gridRowStart = firstRow + 1;
+      cells.append(cell);
+
+      // Label each month on its first full week, leaving out one that would run off the right edge.
+      const week = Math.floor((firstRow + i) / 7);
+      const month = format(day.date, { month: 'short' });
+      if (parse(day.date).getUTCDay() === 0 && month !== labelled && week <= weeks - 3) {
+        const label = make('span', '', month);
+        label.style.gridColumnStart = week + 1;
+        months.append(label);
+        labelled = month;
+      }
+    });
+
+    const total = days.reduce((sum, day) => sum + day.count, 0);
+    const latest = days.findLast((day) => day.count > 0);
+    const summary = plural(total) + ' in the last year' + (latest ? ', latest ' + format(latest.date, { month: 'short', day: 'numeric' }) : '');
+    const caption = make('span', '', summary);
+    const legend = make('span', 'github-legend');
+    legend.setAttribute('aria-hidden', 'true');
+    legend.append(make('span', '', 'Less'));
+    [0, 1, 2, 3, 4].forEach((level) => {
+      const swatch = make('span', 'github-cell');
+      swatch.dataset.level = level;
+      legend.append(swatch);
+    });
+    legend.append(make('span', '', 'More'));
+    const foot = make('span', 'github-foot');
+    foot.append(caption, legend);
+
+    // The caption doubles as the hover readout, so nothing can spill past the edge of the narrow column.
+    cells.addEventListener('mouseover', ({ target }) => { caption.textContent = target.dataset.tip || summary; });
+    cells.addEventListener('mouseleave', () => { caption.textContent = summary; });
+    cells.setAttribute('aria-hidden', 'true');
+    months.setAttribute('aria-hidden', 'true');
+    graph.replaceChildren(months, cells, foot);
+  };
+
+  const initGithubGraph = async () => {
+    const graph = document.querySelector('#github-graph');
+    if (!graph) return;
+    try {
+      const response = await fetch('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last', { signal: AbortSignal.timeout(8000) });
+      if (!response.ok) throw new Error('Contributions API returned ' + response.status);
+      const { contributions } = await response.json();
+      renderGithubGraph(graph, contributions);
+    } catch {
+      // The date in the URL gets round the image's day-long browser cache. If this fails too, drop the block.
+      const image = new Image(663, 104);
+      image.alt = 'GitHub contribution graph for ' + GITHUB_USER;
+      image.onerror = () => graph.closest('a').remove();
+      image.src = 'https://ghchart.rshah.org/' + GITHUB_USER + '?d=' + new Date().toISOString().slice(0, 10);
+      graph.replaceChildren(image);
+      graph.style.aspectRatio = 'auto';
+    }
+  };
+
   // Profile card: React Bits ReflectiveCard. Width comes from the page CSS and height from its content; no video,
   // so it reflects the built-in soft studio. Started after the splash so its light sweep is actually seen.
   const initProfileCard = () => {
@@ -244,6 +328,7 @@
   initArticleDialog();
   initContactForm();
   initToolIcons();
+  initGithubGraph();
   initProfileCard();
   initMotion();
 })();

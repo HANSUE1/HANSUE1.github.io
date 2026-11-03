@@ -54,7 +54,7 @@ Layout breakpoints: base styles are the tablet layout (561–820px); `≤560px` 
 
 ## Editing
 
-- **Content** lives in `index.html`: profile card, hero (including the GitHub contributions graph for `HANSUE1`), projects, experience, tools, soft skills, articles (`data-copy` holds an article's full text) and contact form.
+- **Content** lives in `index.html`: profile card, hero (including the GitHub contributions graph; its username is `GITHUB_USER` in `js/main.js`), projects, experience, tools, soft skills, articles (`data-copy` holds an article's full text) and contact form.
 - **Soft skills**: each `.skill` item's `style="--value: 75"` sets its level (0–100); keep the visible `75%` text in step with it.
 - **Archive folders**: Projects and Writing are filled from the `.project-card` and `.thought-card` elements, so a new project or article appears in its folder automatically. Folder options (labels, art, menus) are in `src/components/archive-desk.tsx`.
 - **Contact email**: `CONTACT_EMAIL` at the top of `js/main.js`. The form has no backend; it opens the visitor's email app.

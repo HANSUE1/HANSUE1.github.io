@@ -97,7 +97,8 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 .hero-title span { display: block; white-space: nowrap; }
 .hero-title .muted-title { color: #333132; }
 .hero-intro { max-width: 510px; margin: 15px 0 0; color: var(--soft); font-family: var(--font-display); font-size: 17px; line-height: 1.45; letter-spacing: -.018em; }
-/* GitHub contributions graph under the intro. ghchart.rshah.org draws it light, so invert it for the dark page. */
+/* GitHub contributions graph under the intro, drawn by initGithubGraph in js/main.js. The img is its fallback:
+   ghchart.rshah.org draws light, so that one is inverted for the dark page. */
 .hero-github { display: block; max-width: 530px; margin-top: 28px; }
 .hero-github-label { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--soft); font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
 .hero-github-label svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -105,6 +106,24 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 .hero-github img { width: 100%; height: auto; border-radius: 8px; filter: invert(1) hue-rotate(180deg); opacity: .85; transition: opacity .2s ease; }
 .hero-github:is(:hover, :focus-visible) img { opacity: 1; }
 .hero-github:is(:hover, :focus-visible) .hero-github-label span { color: var(--orange-hover); }
+/* aspect-ratio holds the space while the data loads; the content can still grow past it on narrow screens. */
+.github-graph { display: block; aspect-ratio: 530 / 118; }
+.github-months, .github-cells { display: grid; grid-template-columns: repeat(var(--weeks), minmax(0, 1fr)); column-gap: 2px; }
+.github-months { height: 16px; color: var(--soft); font-size: var(--text-xs); line-height: 1; }
+.github-months span { grid-row: 1; white-space: nowrap; }
+.github-cells { grid-template-rows: repeat(7, auto); grid-auto-flow: column; row-gap: 2px; }
+.github-cell { aspect-ratio: 1; border-radius: 2px; background: rgba(255, 255, 255, .08); }
+.github-cell[data-level="1"] { background: #853c1e; }
+.github-cell[data-level="2"] { background: #b54d23; }
+.github-cell[data-level="3"] { background: #e05c2b; }
+.github-cell[data-level="4"] { background: #ff8a5c; }
+.github-cell:hover { outline: 1px solid var(--white); }
+.github-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; color: var(--soft); font-size: var(--text-xs); line-height: 1.3; }
+.github-legend { display: flex; flex: none; align-items: center; gap: 3px; }
+.github-legend .github-cell { width: 10px; }
+.github-legend .github-cell:hover { outline: 0; }
+.github-legend span:first-child { margin-right: 3px; }
+.github-legend span:last-child { margin-left: 3px; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; max-width: 530px; margin-top: 52px; }
 .stat strong { display: block; margin-bottom: 10px; font-size: clamp(3.5rem, 6vw, 5rem); line-height: .92; letter-spacing: -.07em; font-weight: 600; font-variant-numeric: tabular-nums; }
 .stat span { display: block; color: #999394; font-size: 14px; line-height: 1.35; text-transform: uppercase; }
@@ -303,6 +322,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   .hero-title { font-size: clamp(3.1rem, 14.8vw, 4.8rem); letter-spacing: -.055em; }
   .hero-intro { margin-top: 13px; font-size: var(--text-md); line-height: 1.55; }
   .hero-github { margin-top: 20px; }
+  .github-months span:nth-child(even) { visibility: hidden; } /* twelve labels collide at phone width */
   .stats { column-gap: 8px; margin-top: 34px; }
   .stat strong { margin-bottom: 8px; font-size: clamp(2.8rem, 11.3vw, 3.7rem); }
   .stat span { font-size: var(--text-xs); line-height: 1.35; }

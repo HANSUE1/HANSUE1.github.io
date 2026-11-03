@@ -65,8 +65,8 @@ export default function NamePortal({ fontFamily }: { fontFamily: string }) {
             <p>Full-stack web apps in React and TypeScript on Supabase, like e-Barangay.</p>
           </div>
           <div>
-            <h3>Play</h3>
-            <p>Games made in Godot, alongside the data tools and web apps.</p>
+            <h3>Collaborate</h3>
+            <p>Open to internships, full-time roles and freelance work.</p>
           </div>
         </div>
       </div>

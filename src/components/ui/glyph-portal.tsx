@@ -30,6 +30,7 @@ export type GlyphPortalProps = {
   fontFamily?: string;
   fontWeight?: number;
   annotations?: boolean;
+  /** Skip-link text. Pass "" to hide the link. */
   enterLabel?: string;
   className?: string;
   style?: GlyphPortalStyle;
@@ -412,7 +413,7 @@ export default function GlyphPortal({
         <span data-gp-fallback aria-hidden="true" style={{ fontFamily, fontWeight: weight }}>{text}</span>
         <div data-gp-caption>
           <span data-gp-hint aria-hidden="true">{interactive ? "Scroll to enter." : annotations ? "A passage through type" : ""}</span>
-          <a data-gp-enter href={`#${uid}-content`}>{enterLabel}<span aria-hidden="true">↘</span></a>
+          {enterLabel && <a data-gp-enter href={`#${uid}-content`}>{enterLabel}<span aria-hidden="true">↘</span></a>}
         </div>
       </div>
       <div data-gp-content id={`${uid}-content`} tabIndex={-1}>

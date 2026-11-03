@@ -47,10 +47,11 @@ export default function NamePortal({ fontFamily }: { fontFamily: string }) {
       fontFamily={fontFamily}
       fontWeight={800}
       scrollLength={1.8}
-      enterLabel="Step inside"
+      enterLabel=""
       className="name-portal"
       style={STYLE}
       background={SURFACE}
+      front={<p className="portal-quote">“You must do the thing you think you cannot do.”</p>}
     >
       <div className="portal-copy">
         <h2>Computer Science at National University, specializing in Digital Forensics.</h2>

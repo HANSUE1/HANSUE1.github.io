@@ -22,21 +22,22 @@
   <!-- Splash once per browser session: set html.intro before first paint so the splash covers the page from the start. -->
   <script>try { sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
   <!-- When you change a CSS or JS file, bump its ?v= so browsers drop the cached copy. -->
-  <link rel="stylesheet" href="css/components/glass-folder.css?v=14">
-  <link rel="stylesheet" href="css/components/glass-icons.css?v=14">
-  <link rel="stylesheet" href="css/components/reflective-card.css?v=14">
-  <link rel="stylesheet" href="css/components/soft-aurora.css?v=14">
-  <link rel="stylesheet" href="css/main.css?v=14">
-  <link rel="stylesheet" href="css/splash.css?v=14">
+  <link rel="stylesheet" href="css/components/glass-icons.css?v=15">
+  <link rel="stylesheet" href="css/components/reflective-card.css?v=15">
+  <link rel="stylesheet" href="css/components/soft-aurora.css?v=15">
+  <link rel="stylesheet" href="css/main.css?v=15">
+  <link rel="stylesheet" href="css/splash.css?v=15">
+  <!-- React island (src/, built by `npm run build` into js/react/): the Archive section's glass folders. -->
+  <link rel="stylesheet" href="js/react/archive.css?v=15">
+  <script type="module" src="js/react/archive.js?v=15"></script>
   <!-- Splash scripts come first so they run without waiting for the GSAP download. -->
-  <script src="js/components/soft-aurora.js?v=14" defer></script>
-  <script src="js/splash.js?v=14" defer></script>
+  <script src="js/components/soft-aurora.js?v=15" defer></script>
+  <script src="js/splash.js?v=15" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" defer></script>
-  <script src="js/components/glass-folder.js?v=14" defer></script>
-  <script src="js/components/glass-icons.js?v=14" defer></script>
-  <script src="js/components/reflective-card.js?v=14" defer></script>
-  <script src="js/main.js?v=14" defer></script>
+  <script src="js/components/glass-icons.js?v=15" defer></script>
+  <script src="js/components/reflective-card.js?v=15" defer></script>
+  <script src="js/main.js?v=15" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -187,8 +188,6 @@
           <div class="project-meta"><h3>Portfolio</h3><p>This site, hand-built</p><p class="project-desc">A responsive, framework-free portfolio with scroll animations, WebGL glass and brushed-metal effects, and full keyboard accessibility, deployed on GitHub Pages.</p><ul class="project-tags" aria-label="Built with"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GSAP</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </a>
       </div>
-      <!-- Glass folder (js/components/glass-folder.js): main.js fills it with the project cards above, so it stays empty without JS. -->
-      <div class="project-folder" id="project-folder"></div>
     </section>
 
     <section class="page-section page-shell experience-section" id="experience" aria-labelledby="experience-title">
@@ -277,6 +276,16 @@
           <span class="thought-content"><strong>How Can Designers Prepare for the Future?</strong><span>Stay close to the people who use your work, learn new tools with intention, and build a practice that makes room for experimentation.</span><span class="thought-meta"><span>Feb 28, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
       </div>
+    </section>
+
+    <!-- Archive: three glass folders (React, src/components/archive-desk.tsx) holding the projects and articles above,
+         plus generated studies. Empty without JS; everything in it is also on the page as plain HTML. -->
+    <section class="page-section page-shell archive-section" id="archive" aria-labelledby="archive-title">
+      <div class="section-heading-row">
+        <h2 class="section-title" id="archive-title">The<br><span>Archive</span></h2>
+      </div>
+      <p class="archive-intro">Projects, writing and generated studies, filed away. Studies paints a new piece each time you add one.</p>
+      <div class="archive-desk" id="archive-desk"></div>
     </section>
 
     <section class="page-section page-shell contact-section" id="contact" aria-labelledby="contact-title">

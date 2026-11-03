@@ -1,0 +1,7 @@
+/* Tailwind for the React islands only. No preflight (its reset would restyle the whole hand-written site), and
+   every utility and theme variable carries the tw prefix, so nothing here can collide with css/main.css.
+   Utilities live in a cascade layer, so the site's own unlayered CSS always wins a tie. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(tw);
+@source "../";

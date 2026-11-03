@@ -1,0 +1,2 @@
+/*! tailwindcss v4.3.4 | MIT License | https://tailwindcss.com */
+@layer theme{:root,:host{--tw-spacing:.25rem}}@layer base,components;@layer utilities{.tw\:flex{display:flex}.tw\:flex-wrap{flex-wrap:wrap}.tw\:items-end{align-items:flex-end}.tw\:gap-x-10{column-gap:calc(var(--tw-spacing) * 10)}.tw\:gap-y-6{row-gap:calc(var(--tw-spacing) * 6)}}

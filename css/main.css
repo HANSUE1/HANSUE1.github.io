@@ -145,14 +145,8 @@ main, .site-footer { position: relative; z-index: 1; }
 .project-link-arrow { padding-top: 20px; color: var(--orange); font-size: 18px; transition: transform .2s ease; }
 .project-card:is(:hover, :focus-visible) .project-link-arrow { transform: translate(2px, -2px); }
 
-/* Project folder: GlassFolder in the page's own type. Its stage reserves headroom above the panel for the fanned files. */
-.project-folder { margin-top: 40px; }
-.project-folder:empty { display: none; }
-.project-folder .gf-root, .project-folder .gf-meta, .project-folder .gf-sheet-meta { font-family: var(--font-copy); }
-.project-folder .gf-sheet:focus-visible, .project-folder .gf-key:focus-visible { outline-color: var(--orange); }
-
 /* Experience */
-.experience-section, .tools-section, .skills-section, .thoughts-section { padding-top: 62px; }
+.experience-section, .tools-section, .skills-section, .thoughts-section, .archive-section { padding-top: 62px; }
 .experience-list { border-top: 1px solid var(--line); }
 .experience-item { padding: 28px 0; border-bottom: 1px solid var(--line); }
 .experience-copy h3 { margin: 0 0 10px; font-family: var(--font-display); font-size: 22px; line-height: 1.2; font-weight: 600; }
@@ -201,6 +195,11 @@ main, .site-footer { position: relative; z-index: 1; }
 .thought-meta i, .dialog-eyebrow i { width: 3px; height: 3px; border-radius: 50%; background: var(--orange); }
 .thought-arrow { position: absolute; right: 12px; bottom: 26px; color: #8a8384; font-size: 18px; transition: color .2s ease, transform .2s ease; }
 .thought-card:is(:hover, :focus-visible) .thought-arrow { color: var(--orange); transform: translate(2px,-2px); }
+
+/* Archive: the React glass folders (src/), set in the page's own type and focus colour. */
+.archive-intro { max-width: 520px; margin: 0 0 8px; color: var(--soft); font-size: var(--text-md); line-height: 1.55; }
+.archive-desk .gf-root, .archive-desk .gf-meta, .archive-desk .gf-sheet-meta { font-family: var(--font-copy); }
+.archive-desk .gf-sheet:focus-visible, .archive-desk .gf-key:focus-visible { outline-color: var(--orange); }
 
 /* Contact */
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
@@ -291,7 +290,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .project-grid { grid-template-columns: 1fr; gap: 30px; }
   .project-image { aspect-ratio: 1.2; }
   .project-meta, .project-link-arrow { padding-top: 14px; }
-  .experience-section, .tools-section, .skills-section, .thoughts-section { padding-top: 47px; }
+  .experience-section, .tools-section, .skills-section, .thoughts-section, .archive-section { padding-top: 47px; }
   .skill-list { gap: 34px; }
   .skill h3 { font-size: 19px; }
   .skill p { font-size: var(--text-sm); }
@@ -353,7 +352,7 @@ main, .site-footer { position: relative; z-index: 1; }
   .experience-copy p { max-width: 590px; line-height: 1.5; }
   .experience-copy .experience-date { margin: 19px 0 0; }
 
-  .tool-icons, .stack-list, .stack-heading, .skill-list, .project-folder { margin-inline: 16px; }
+  .tool-icons, .stack-list, .stack-heading, .skill-list, .archive-intro, .archive-desk { margin-inline: 16px; }
   .skill h3 { font-size: 26px; }
   .tools-section .section-heading-row { margin-bottom: 14px; }
 

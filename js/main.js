@@ -113,29 +113,6 @@
     if (root && window.GlassIcons) GlassIcons(root, { size: 72, gap: 48, columns: 4, labels: 'always' });
   };
 
-  // Projects: one glass folder holding every project card's screenshot, each file linking to its repository.
-  // Built from the cards themselves, so a new project only has to be added once.
-  const initProjectFolder = () => {
-    const root = document.querySelector('#project-folder');
-    if (!root || !window.GlassFolder) return;
-    const files = [...document.querySelectorAll('.project-card')].map((card) => ({
-      name: card.querySelector('h3').textContent,
-      meta: card.querySelector('.project-tags li')?.textContent,
-      image: card.querySelector('.project-image img').getAttribute('src'),
-      href: card.href
-    }));
-    GlassFolder(root, {
-      label: 'Project files',
-      tone: 'dark',
-      art: 'ember',
-      seed: 7,
-      width: 'fit',
-      action: 'more',
-      files,
-      menu: [{ label: 'All repositories on GitHub', onSelect: () => window.open('https://github.com/HANSUE1?tab=repositories', '_blank', 'noopener') }]
-    });
-  };
-
   // Profile card: React Bits ReflectiveCard. Width comes from the page CSS and height from its content; no video,
   // so it reflects the built-in soft studio. Started after the splash so its light sweep is actually seen.
   const initProfileCard = () => {
@@ -222,7 +199,6 @@
   initArticleDialog();
   initContactForm();
   initToolIcons();
-  initProjectFolder();
   initProfileCard();
   initMotion();
 })();

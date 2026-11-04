@@ -35,9 +35,9 @@ const day = (date: string, options: Intl.DateTimeFormatOptions) => new Date(`${d
 const shortDay = (date: string) => day(date, { month: "short", day: "numeric" })
 const month = (date: string) => day(date, { month: "short" })
 
-function Cube({ className, style, empty, children }: { className: string; style: CSSProperties; empty?: boolean; children?: ReactNode }) {
+function Cube({ className, style, empty, ghost, children }: { className: string; style: CSSProperties; empty?: boolean; ghost?: boolean; children?: ReactNode }) {
   return (
-    <div className={`city-cube ${className}`} style={style} data-empty={empty || undefined}>
+    <div className={`city-cube ${className}`} style={style} data-empty={empty || undefined} data-ghost={ghost || undefined}>
       <i className="city-face city-face--top" />
       <i className="city-face city-face--front" />
       <i className="city-face city-face--back" />
@@ -220,7 +220,7 @@ export default function BuildCity({ running }: { running: boolean }) {
                 {/* An empty floor stays mounted at zero height, so it rises from the ground when its language arrives. */}
                 {floors.map((floor) => (
                   <Cube
-                    className="city-floor" key={floor.name} empty={!floor.count} style={{ "--h": `${floor.height}px`, "--z": `${floor.z}px`, "--i": floor.level, "--c": color(floor.name) } as CSSProperties}
+                    className="city-floor" key={floor.name} empty={!floor.count} ghost={language !== null && language !== floor.name} style={{ "--h": `${floor.height}px`, "--z": `${floor.z}px`, "--i": floor.level, "--c": color(floor.name) } as CSSProperties}
                   >
                     {open && floor.count > 0 && <span className="city-floor-tag"><b>{number(floor.count)}</b> {floor.name}</span>}
                   </Cube>
@@ -281,8 +281,6 @@ export default function BuildCity({ running }: { running: boolean }) {
       </div>
 
       <p className="about-note city-hint">Drag to spin. Point at a building to open it. Slide the commits to rewind. Heights are to scale.</p>
-
-      <style>{language ? `.city-floor:not([style*="${color(language)}"]) .city-face { opacity: .1; }` : ""}</style>
 
       <div className="sr-only">
         <table>

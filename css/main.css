@@ -7,6 +7,7 @@
   --white: #f8f7f7;
   --soft: #9b9696;
   --muted: #393637;
+  --dim: #6f6a6b; /* the quiet second line of every title: 3:1 and above on the page */
   --line: rgba(255, 255, 255, .11);
   --orange: #ff6d37;
   --orange-hover: #ff8a5c;
@@ -22,7 +23,7 @@
    Base
    ========================================================================== */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 108px; background: var(--ink); scrollbar-color: var(--muted) var(--ink); }
+html { --anchor-offset: 108px; scroll-behavior: smooth; scroll-padding-top: var(--anchor-offset); background: var(--ink); scrollbar-color: var(--muted) var(--ink); }
 html:has(.article-dialog[open]) { overflow: hidden; }
 body { margin: 0; min-width: 320px; background: radial-gradient(100% 100% at 0% 0%, rgb(46,46,46) 0%, rgb(0,0,0) 100%); color: var(--white); -webkit-font-smoothing: antialiased; }
 body, button, input, select, textarea { font-family: var(--font-copy); }
@@ -65,7 +66,8 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 /* ==========================================================================
    Hero: profile card
    ========================================================================== */
-.hero { display: grid; align-items: start; padding-top: 160px; padding-bottom: 84px; }
+/* Its own top padding clears the nav, so links here cancel the usual anchor offset and the headline lines up with the pinned card. */
+.hero { display: grid; align-items: start; padding-top: 160px; padding-bottom: 84px; scroll-margin-top: calc(var(--anchor-offset) * -1); }
 /* Card surface, header, name, role and footer come from css/components/reflective-card.css; these add the photo and socials.
    The --rc-* values match what ReflectiveCard() sets, so the card is already styled before (or without) its script. */
 .profile-card {
@@ -131,7 +133,7 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 @keyframes pulse { 70%, 100% { box-shadow: 0 0 0 8px rgba(200,255,52,0); } }
 .hero-title { margin: 0; font-family: var(--font-display); font-size: clamp(6.6rem, 9.7vw, 9rem); line-height: .99; letter-spacing: -.02em; font-weight: 800; text-transform: uppercase; }
 .hero-title span { display: block; white-space: nowrap; }
-.hero-title .muted-title { position: relative; width: fit-content; color: #333132; }
+.hero-title .muted-title { position: relative; width: fit-content; color: var(--dim); }
 /* The same words in orange, shown only inside a circle of light that main.js moves. The empty alt text keeps screen readers from reading them twice. */
 .hero-title .muted-title::after {
   content: attr(data-trace); content: attr(data-trace) / ""; position: absolute; inset: 0; color: var(--orange); pointer-events: none;
@@ -141,7 +143,12 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 .hero-intro { max-width: 510px; margin: 15px 0 0; color: var(--soft); font-family: var(--font-display); font-size: 17px; line-height: 1.45; letter-spacing: -.018em; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; max-width: 530px; margin-top: 52px; }
 .stat strong { display: block; margin-bottom: 10px; font-size: clamp(3.5rem, 6vw, 5rem); line-height: .92; letter-spacing: -.07em; font-weight: 600; font-variant-numeric: tabular-nums; }
-.stat span { display: block; color: #999394; font-size: 14px; line-height: 1.35; text-transform: uppercase; }
+.stat span { display: block; color: var(--soft); font-size: 14px; line-height: 1.35; text-transform: uppercase; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
+.hero-button { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border: 1px solid transparent; border-radius: 8px; background: var(--orange); color: var(--on-accent); font-size: var(--text-sm); font-weight: 600; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+.hero-button:is(:hover, :focus-visible) { background: var(--orange-hover); transform: translateY(-2px); }
+.hero-button--ghost { border-color: rgba(255,255,255,.22); background: transparent; color: var(--white); }
+.hero-button--ghost:is(:hover, :focus-visible) { border-color: var(--white); background: rgba(255,255,255,.06); }
 
 
 /* ==========================================================================
@@ -149,6 +156,7 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
    ========================================================================== */
 .page-section { padding-top: 76px; padding-bottom: 94px; }
 .section-heading-row { margin-bottom: 36px; }
+.section-title span { color: var(--dim); }
 .section-title { margin: 0; font-family: var(--font-display); font-size: clamp(4rem, 11vw, 5.7rem); line-height: .98; letter-spacing: -.075em; font-weight: 700; text-transform: uppercase; }
 .project-card:focus-visible, .thought-card:focus-visible { outline: 2px solid var(--orange); outline-offset: 5px; }
 
@@ -186,7 +194,7 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 /* Top margin clears the tilted plates, which swing up past the glass toward the heading. */
 .tool-icons { margin: 30px 0 0; justify-content: flex-start; }
 
-/* Soft skills: a 20-tick level meter. --value is the level; --fill is what is lit right now (main.js steps it
+/* How I Work: a 20-tick level meter. --value is the level; --fill is what is lit right now (main.js steps it
    up on scroll, CSS alone shows it full). The tick mask makes every 5% one segment; the top lit one is the lime peak. */
 .skill-list { display: flex; flex-direction: column; gap: 44px; margin: 0; padding: 0; list-style: none; }
 .skill { --ticks: repeating-linear-gradient(90deg, #000 0 calc(5% - 4px), transparent 0 5%); }
@@ -204,7 +212,7 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 /* Band position: 130% parks it just left of the fill, -40% just right of it. */
 @keyframes skill-sweep { to { background-position: -40% 0, 0 0; } }
 
-/* Thoughts */
+/* Field Notes */
 .thought-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .thought-card { position: relative; display: flex; min-height: 310px; gap: 13px; padding: 25px 14px 27px 0; border: 0; border-right: 1px solid var(--line); background: transparent; text-align: left; cursor: pointer; transition: background .2s ease; }
 .thought-card:not(:first-child) { padding-left: 14px; }
@@ -213,9 +221,9 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 .thought-content { display: flex; flex: 1; flex-direction: column; align-items: flex-start; }
 .thought-content strong { max-width: 270px; font-family: var(--font-display); font-size: 16px; line-height: 1.32; font-weight: 600; }
 .thought-content > span:not(.thought-meta) { margin-top: 13px; color: var(--soft); font-size: var(--text-sm); line-height: 1.7; }
-.thought-meta { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 24px; color: #8f898a; font-size: var(--text-xs); }
+.thought-meta { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 24px; color: var(--soft); font-size: var(--text-xs); }
 .thought-meta i, .dialog-eyebrow i { width: 3px; height: 3px; border-radius: 50%; background: var(--orange); }
-.thought-arrow { position: absolute; right: 12px; bottom: 26px; color: #8a8384; font-size: 18px; transition: color .2s ease, transform .2s ease; }
+.thought-arrow { position: absolute; right: 12px; bottom: 26px; color: var(--soft); font-size: 18px; transition: color .2s ease, transform .2s ease; }
 .thought-card:is(:hover, :focus-visible) .thought-arrow { color: var(--orange); transform: translate(2px,-2px); }
 
 /* Name portal: the React GlyphPortal title at the top of the page (src/components/name-portal.tsx). Its own
@@ -230,8 +238,6 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 .portal-field { position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1)); }
 .name-portal [data-gp-caption] { color: var(--soft); font-size: var(--text-sm); }
 .name-portal [data-gp-hint] { color: var(--soft); }
-.name-portal [data-gp-enter] { padding: 0 16px; border: 1px solid var(--line); border-radius: 8px; color: var(--white); transition: border-color .2s ease, color .2s ease; }
-.name-portal [data-gp-enter]:hover { border-color: var(--orange); color: var(--orange); }
 .name-portal [data-gp-letter]:focus-visible { outline-color: var(--white); }
 .name-portal [data-gp-touch-picker] { top: auto; bottom: 18px; }
 .name-portal [data-gp-select] { border-color: var(--line); border-radius: 8px; background: #211f1e; color: var(--white); font-size: var(--text-sm); }
@@ -251,11 +257,14 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 .archive-desk .gf-sheet:focus-visible, .archive-desk .gf-key:focus-visible { outline-color: var(--orange); }
 
 /* Contact */
+.contact-direct { margin: 0 0 24px; color: var(--soft); font-size: var(--text-md); }
+.contact-direct a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; transition: color .2s ease; }
+.contact-direct a:hover { color: var(--orange); }
 .contact-form { display: flex; flex-direction: column; gap: 20px; }
 .contact-form label { display: flex; min-width: 0; flex-direction: column; gap: 9px; color: #a7a1a2; font-size: var(--text-sm); font-weight: 500; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .contact-form input, .contact-form select, .contact-form textarea { width: 100%; min-height: 49px; padding: 13px 14px; border: 1px solid rgba(255,255,255,.08); border-radius: 8px; outline: none; background: rgba(255,255,255,.09); color: #fff; font-size: var(--text-md); transition: border-color .2s ease, background .2s ease; }
-.contact-form input::placeholder, .contact-form textarea::placeholder { color: #aaa4a5; opacity: 1; }
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: #b8b3b4; opacity: 1; }
 .contact-form select { color: #8b8586; }
 .contact-form select:valid { color: #fff; }
 .contact-form select option { background: #211f1e; color: #fff; }
@@ -272,11 +281,11 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 /* ==========================================================================
    Footer, back-to-top, article dialog
    ========================================================================== */
-.site-footer { display: flex; min-height: 100px; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--line); color: #898283; font-size: var(--text-sm); }
+.site-footer { display: flex; min-height: 100px; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--line); color: var(--soft); font-size: var(--text-sm); }
 .site-footer p { margin: 0; }
 .footer-brand { color: #fff; font-family: var(--font-display); font-size: 15px; font-weight: 600; }
-.footer-brand span { margin-left: 8px; color: #8f898a; font-family: var(--font-copy); font-size: var(--text-xs); font-weight: 400; }
-.footer-top { display: grid; color: #aaa4a5; font-size: 18px; transition: color .2s ease, transform .2s ease; }
+.footer-brand span { margin-left: 8px; color: var(--soft); font-family: var(--font-copy); font-size: var(--text-xs); font-weight: 400; }
+.footer-top { display: grid; color: #b8b3b4; font-size: 18px; transition: color .2s ease, transform .2s ease; }
 .footer-top:is(:hover, :focus-visible) { color: var(--orange); transform: translateY(-2px); }
 
 .back-to-top { position: fixed; right: 24px; bottom: 22px; z-index: 14; display: grid; width: 43px; height: 43px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: rgba(34,31,30,.95); color: #fff; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: .2s ease; }
@@ -290,6 +299,9 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 .dialog-eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 17px; color: #9b9495; font-size: var(--text-xs); }
 .article-dialog h2 { margin: 0; font-family: var(--font-display); font-size: clamp(28px, 6vw, 40px); line-height: 1.16; letter-spacing: -.04em; }
 .article-dialog > p:not(.dialog-eyebrow) { margin: 20px 0 25px; color: #aba5a6; font-size: var(--text-md); line-height: 1.75; }
+.dialog-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin: 0; }
+.dialog-source { display: inline-flex; align-items: center; gap: 18px; color: var(--white); font-size: var(--text-sm); font-weight: 600; }
+.dialog-source[hidden] { display: none; }
 .dialog-contact { display: inline-flex; align-items: center; gap: 18px; color: var(--orange); font-size: var(--text-sm); font-weight: 600; }
 
 /* ==========================================================================
@@ -297,7 +309,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
    desktop (≥821px) pins the profile card and moves content into a right rail.
    ========================================================================== */
 @media (max-width: 820px) {
-  html { scroll-padding-top: 88px; }
+  html { --anchor-offset: 88px; }
   .page-shell { width: min(100% - 40px, 650px); }
   .site-header { top: 16px; }
   .hero { gap: 49px; padding-top: 106px; padding-bottom: 70px; }
@@ -376,7 +388,6 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   .page-section { padding-top: 30px; padding-bottom: 105px; container-type: inline-size; }
   .section-heading-row { margin-bottom: 27px; }
   .section-title { position: relative; top: -11px; font-size: min(clamp(4.2rem, 6.25vw, 5.8rem), 12cqi); line-height: 1; letter-spacing: 0; }
-  .section-title span { color: var(--muted); }
 
   .project-grid { display: flex; flex-direction: column; gap: 48px; }
   .project-card { grid-template-columns: 130px minmax(0, 1fr) 24px; align-items: start; gap: 22px; margin-inline: 16px 20px; }
@@ -408,7 +419,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   .thought-arrow { top: 3px; right: 0; bottom: auto; color: var(--orange); }
 
   .contact-section { padding-top: 40px; }
-  .contact-form { gap: 21px; margin-top: 51px; }
+  .contact-form { gap: 21px; margin-top: 24px; }
   .contact-form input, .contact-form select { min-height: 40px; padding-block: 10px; }
   .contact-form textarea { min-height: 105px; }
   .submit-button { min-height: 40px; justify-content: center; }
@@ -421,6 +432,8 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 /* Short desktop screens: compact the pinned profile card so it and the graph below it never run off-screen. */
 @media (min-width: 821px) and (max-height: 860px) {
   .hero { padding-top: 100px; }
+  .stats { margin-top: 34px; }
+  .hero-actions { margin-top: 26px; }
   .profile-column { top: 100px; }
   /* The card narrows instead of cropping the photo: photo height = (card width - 38px padding) / 1.02 stays
      within 100vh - 489px, which leaves room for the top offset, the rest of the card (~216px) and the graph (~157px). */

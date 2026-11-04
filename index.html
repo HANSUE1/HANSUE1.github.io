@@ -19,17 +19,19 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" href="images/profile.webp" as="image" type="image/webp">
-  <!-- Splash once per browser session: set html.intro before first paint so the splash covers the page from the start. -->
-  <script>try { sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
+  <!-- Splash once per browser session, and never on a link straight to a section: set html.intro before first paint so the splash covers the page from the start. -->
+  <script>try { location.hash || sessionStorage.getItem('introSeen') || document.documentElement.classList.add('intro'); } catch (e) { document.documentElement.classList.add('intro'); }</script>
+  <!-- Without JS the opening title never scrolls away from under the pinned card, so go straight to the portfolio. -->
+  <noscript><style>.portal-shell { display: none; }</style></noscript>
   <!-- When you change a CSS or JS file, bump its ?v= so browsers drop the cached copy. -->
   <link rel="stylesheet" href="css/components/glass-icons.css?v=24">
   <link rel="stylesheet" href="css/components/reflective-card.css?v=24">
   <link rel="stylesheet" href="css/components/light-pillar.css?v=1">
-  <link rel="stylesheet" href="css/components/about-chapters.css?v=4">
-  <link rel="stylesheet" href="css/main.css?v=35">
+  <link rel="stylesheet" href="css/components/about-chapters.css?v=5">
+  <link rel="stylesheet" href="css/main.css?v=38">
   <link rel="stylesheet" href="css/splash.css?v=25">
   <!-- React islands (src/, built by `npm run build` into js/react/): the opening name title and the Archive folders. -->
-  <link rel="stylesheet" href="js/react/islands.css?v=30">
+  <link rel="stylesheet" href="js/react/islands.css?v=31">
   <!-- Splash scripts come first so they run without waiting for the GSAP download. -->
   <script src="js/components/light-pillar.js?v=1" defer></script>
   <script src="js/splash.js?v=25" defer></script>
@@ -37,9 +39,9 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh" crossorigin="anonymous" defer></script>
   <script src="js/components/glass-icons.js?v=24" defer></script>
   <script src="js/components/reflective-card.js?v=24" defer></script>
-  <script src="js/main.js?v=32" defer></script>
+  <script src="js/main.js?v=33" defer></script>
   <!-- After main.js: deferred and module scripts run in document order, so the React bundle never delays the page's own scripts. -->
-  <script type="module" src="js/react/islands.js?v=30"></script>
+  <script type="module" src="js/react/islands.js?v=31"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -48,7 +50,8 @@
     "alternateName": "Hans Santos",
     "jobTitle": "Computer Science Student",
     "affiliation": { "@type": "CollegeOrUniversity", "name": "National University" },
-    "knowsAbout": ["Digital Forensics", "Python", "Java", "JavaScript", "TypeScript", "React", "C++", "Supabase", "MongoDB", "Web Scraping"],
+    "knowsAbout": ["Digital Forensics", "Python", "Java", "JavaScript", "TypeScript", "React", "C++", "Node.js", "Supabase", "MongoDB", "MySQL", "Web Scraping"],
+    "url": "https://hansue1.github.io/",
     "email": "mailto:hans.rjj12@gmail.com",
     "sameAs": [
       "https://www.linkedin.com/in/hans-curt-austin-santos-3b1554391/",
@@ -77,7 +80,7 @@
     <p class="splash-hint"><span class="hint-mouse">Click or press any key to enter</span><span class="hint-touch">Tap to enter</span></p>
   </div>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#home">Skip to content</a>
 
   <header class="site-header">
     <nav class="main-nav" aria-label="Main navigation">
@@ -105,9 +108,9 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="1.5"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></svg>
         <span class="nav-tip">Experience</span>
       </a>
-      <a class="nav-link" href="#thoughts" aria-label="Thoughts">
+      <a class="nav-link" href="#thoughts" aria-label="Field Notes">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4.2-.8L20 7.4 16.6 4 4.8 15.8 4 20Z"/><path d="M13 20h7"/></svg>
-        <span class="nav-tip">Thoughts</span>
+        <span class="nav-tip">Field Notes</span>
       </a>
       <a class="nav-link" href="#contact" aria-label="Contact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>
@@ -170,6 +173,10 @@
           <div class="stat"><strong>+18</strong><span>Languages &amp;<br>technologies</span></div>
           <div class="stat"><strong>+8</strong><span>Public<br>repositories</span></div>
         </div>
+        <div class="hero-actions">
+          <a class="hero-button" href="#contact">Get in touch</a>
+          <a class="hero-button hero-button--ghost" href="files/Hans-Santos-Resume.pdf" target="_blank" rel="noopener">View resume</a>
+        </div>
       </div>
     </section>
 
@@ -187,7 +194,7 @@
         </li>
         <li class="skill" style="--value: 50">
           <div class="skill-head"><h3>Leadership</h3><span class="skill-value">50%</span></div>
-          <p>I own my projects from the first idea to deployment, and I’m still growing into leading a team.</p>
+          <p>I own my projects from the first idea to deployment, and I mentored junior agents as a Senior Agent at Alorica.</p>
           <span class="skill-meter" aria-hidden="true"></span>
         </li>
         <li class="skill" style="--value: 80">
@@ -218,7 +225,7 @@
         </a>
         <a class="project-card" href="https://github.com/HANSUE1/HANSUE1.github.io" target="_blank" rel="noopener noreferrer">
           <div class="project-image"><img src="images/project-portfolio.webp" width="800" height="600" loading="lazy" decoding="async" alt="Hero section of this portfolio"></div>
-          <div class="project-meta"><h3>Portfolio</h3><p>This site, hand-built</p><p class="project-desc">A responsive, framework-free portfolio with scroll animations, WebGL glass and brushed-metal effects, and full keyboard accessibility, deployed on GitHub Pages.</p><ul class="project-tags" aria-label="Built with"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>GSAP</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
+          <div class="project-meta"><h3>Portfolio</h3><p>This site, hand-built</p><p class="project-desc">A responsive portfolio with scroll-driven storytelling, WebGL effects, a 3D city built from my real git history, and full keyboard accessibility, deployed on GitHub Pages.</p><ul class="project-tags" aria-label="Built with"><li>React</li><li>TypeScript</li><li>WebGL</li><li>GSAP</li></ul></div><span class="project-link-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </a>
       </div>
     </section>
@@ -287,23 +294,23 @@
       <div class="experience-list">
         <div class="experience-item"><div class="experience-copy"><h3>National University</h3><p>Bachelor of Science in Computer Science, specializing in Digital Forensics. Building real projects alongside coursework, from a production-style web scraper to a full-stack barangay services app.</p><p class="experience-date">3rd Year — Present</p></div></div>
         <div class="experience-item"><div class="experience-copy"><h3>Meralco IDOL Hackathon</h3><p>Competed in Meralco’s IDOL Hackathon, building and pitching a tech solution to a real challenge from the country’s largest power distributor, all against a hackathon deadline.</p><p class="experience-date">Hackathon · Participant</p></div></div>
-        <div class="experience-item"><div class="experience-copy"><h3>Alorica · T-Mobile Account</h3><p>Customer Support Representative for T-Mobile (US). Resolved customer account and service concerns over the phone, documented every case clearly, and worked to quality and handle-time standards in a fast-paced environment.</p><p class="experience-date">2023 — 2024 · Alorica Centris</p></div></div>
+        <div class="experience-item"><div class="experience-copy"><h3>Alorica · T-Mobile Account</h3><p>Senior Agent on the T-Mobile (US) account. Resolved customer account and service concerns over the phone, documented every case clearly, worked to quality and handle-time standards, and mentored junior agents.</p><p class="experience-date">Sep 2023 — Dec 2024 · Alorica Centris</p></div></div>
       </div>
     </section>
 
     <section class="page-section page-shell thoughts-section" id="thoughts" aria-labelledby="thoughts-title">
       <div class="section-heading-row">
-        <h2 class="section-title" id="thoughts-title">Design<br><span>Thoughts</span></h2>
+        <h2 class="section-title" id="thoughts-title">Field<br><span>Notes</span></h2>
       </div>
       <div class="thought-grid">
-        <button class="thought-card" type="button" data-copy="As the internet continues to develop and grow exponentially, jobs related to the industry do too — particularly those that relate to web design and development. The best way to begin is to stay curious, build often, and learn from the work you put into the world.">
-          <span class="thought-content"><strong>Starting and Growing a Career in Web Design</strong><span>As the internet continues to develop and grow exponentially, jobs related to the industry do too, particularly those that relate to web design and development.</span><span class="thought-meta"><span>Apr 8, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
+        <button class="thought-card" type="button" data-href="https://github.com/HANSUE1/LAB-ACT-DF" data-copy="My digital forensics final project starts from one question: which login events are unusual enough to require forensic review? I generate 160 simulated login events from a fixed seed, so the same evidence gives the same results every time, and I include missing and malformed values on purpose. A preprocessing script then cleans them down to 159 usable events and adds the features an investigator reaches for first: the hour, the day of the week, weekends, unusual hours and failed logins.">
+          <span class="thought-content"><strong>Investigating Suspicious Logins</strong><span>A digital forensics project built around one question: which login events are unusual enough to need a forensic review?</span><span class="thought-meta"><span>Sep 11, 2026</span><i></i><span>1 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
-        <button class="thought-card" type="button" data-copy="Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. A clear message, strong hierarchy, and one focused action help a landing page turn a good idea into a useful experience.">
-          <span class="thought-content"><strong>Create a Landing Page That Performs Great</strong><span>Whether you work in marketing, sales, or product design, you understand the importance of a quality landing page. Landing pages are standalone websites used to generate leads or sales — in other words they help you increase your revenue.</span><span class="thought-meta"><span>Mar 15, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
+        <button class="thought-card" type="button" data-href="https://github.com/HANSUE1/SoftwareEng_Project" data-copy="e-Barangay is a web portal for Barangay 902. Residents register, request documents, report community problems with photos and an e-signature, and send feedback. On the other side, admins verify residents, post announcements, and turn requests into print-ready certificates and clearances. It runs on React and TanStack Start with Supabase behind it.">
+          <span class="thought-content"><strong>Building e-Barangay for Barangay 902</strong><span>A community services portal where residents request documents and report problems, and admins turn requests into certificates.</span><span class="thought-meta"><span>Oct 7, 2026</span><i></i><span>1 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
-        <button class="thought-card" type="button" data-copy="Designers can prepare for what's next by staying close to the people who use their work, learning new tools with intention, and building a practice that makes room for experimentation.">
-          <span class="thought-content"><strong>How Can Designers Prepare for the Future?</strong><span>Stay close to the people who use your work, learn new tools with intention, and build a practice that makes room for experimentation.</span><span class="thought-meta"><span>Feb 28, 2022</span><i></i><span>6 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
+        <button class="thought-card" type="button" data-href="https://github.com/HANSUE1/Web-data-extraction" data-copy="Web Data Extraction is an asynchronous crawler, and the interesting part is not speed. It follows robots.txt, keeps to per-domain rate limits and retries with backoff, so it never hammers a site. Pages come over plain HTTP first, with a headless browser only for JavaScript-heavy sites. Interrupted crawls resume from checkpoints, and results export to JSON, CSV or SQLite.">
+          <span class="thought-content"><strong>Scraping the Web Responsibly</strong><span>What it takes to crawl sites without being a bad guest: robots.txt, rate limits, backoff and checkpoints.</span><span class="thought-meta"><span>Nov 3, 2026</span><i></i><span>1 min read</span></span></span><span class="thought-arrow" aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span>
         </button>
       </div>
     </section>
@@ -312,6 +319,7 @@
       <div class="section-heading-row">
         <h2 class="section-title" id="contact-title">Let's work<br><span>Together</span></h2>
       </div>
+      <p class="contact-direct">Prefer email? <a href="mailto:hans.rjj12@gmail.com">hans.rjj12@gmail.com</a></p>
       <form class="contact-form" id="contact-form">
         <div class="form-row">
           <label>Name<input name="name" type="text" autocomplete="name" placeholder="Your Name" required></label>
@@ -338,7 +346,10 @@
     <p class="dialog-eyebrow"><span id="dialog-date"></span><i></i><span id="dialog-time"></span></p>
     <h2 id="dialog-title"></h2>
     <p id="dialog-copy"></p>
-    <a class="dialog-contact" href="#contact">Let's talk about it <span aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span></a>
+    <p class="dialog-links">
+      <a class="dialog-contact" href="#contact">Let's talk about it <span aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span></a>
+      <a class="dialog-source" target="_blank" rel="noopener noreferrer">View the code <span aria-hidden="true"><svg class="icon"><use href="#i-arrow-ne"/></svg></span></a>
+    </p>
   </dialog>
 </body>
 </html>

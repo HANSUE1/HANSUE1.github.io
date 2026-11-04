@@ -20,8 +20,6 @@
     el.setAttribute('aria-hidden', 'true');
   };
 
-  // Nav: mark the link for the section crossing the upper-middle band of the viewport. A section without a
-  // nav link keeps the previous highlight instead of clearing every link.
   // Stages: landing page (splash) → dev title (#name-portal, the HANS GlyphPortal) → portfolio. While the title
   // still covers most of the screen, html.title-stage hides the portfolio's chrome (nav, pinned profile card,
   // back-to-top); as it scrolls off, the class drops and 'title:leave' lets the card play its entrance.
@@ -46,6 +44,8 @@
     else run();
   };
 
+  // Nav: mark the link for the section crossing the upper-middle band of the viewport. A section without a
+  // nav link keeps the previous highlight instead of clearing every link.
   const initNavHighlight = () => {
     const links = [...document.querySelectorAll('.nav-link')];
     const linkFor = (id) => links.find((link) => link.hash === '#' + id);
@@ -62,13 +62,27 @@
     document.querySelectorAll('main section[id]').forEach((section) => observer.observe(section));
   };
 
+  // A link like /#contact arrives while the title above is still growing to its full height, which leaves the browser's
+  // own jump in the wrong place. Follow the target until the page settles, or until the visitor takes over.
+  const initDeepLink = () => {
+    const target = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    const arrival = performance.getEntriesByType('navigation')[0]?.type;
+    if (!target || arrival === 'reload' || arrival === 'back_forward') return;
+    const follow = new ResizeObserver(() => target.scrollIntoView({ behavior: 'instant' }));
+    const stop = () => follow.disconnect();
+    follow.observe(document.querySelector('main'));
+    setTimeout(stop, 4000);
+    ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((type) => window.addEventListener(type, stop, { once: true, passive: true }));
+  };
+
   const initBackToTop = () => {
     const button = document.querySelector('.back-to-top');
     if (!button) return;
     const update = () => button.classList.toggle('is-visible', window.scrollY > 500);
     window.addEventListener('scroll', update, { passive: true });
     update();
-    button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    // The portfolio's top: the page's real top is the opening title, five screens further up.
+    button.addEventListener('click', () => document.querySelector('#home').scrollIntoView({ behavior: 'smooth' }));
   };
 
   // Article dialog: title and meta come from the card itself; only the full copy lives in data-copy.
@@ -76,6 +90,7 @@
     const dialog = document.querySelector('#article-dialog');
     if (!dialog) return;
     const field = (id) => dialog.querySelector('#' + id);
+    const source = dialog.querySelector('.dialog-source');
 
     document.querySelectorAll('.thought-card').forEach((card) => {
       card.addEventListener('click', () => {
@@ -84,6 +99,8 @@
         field('dialog-date').textContent = date.textContent;
         field('dialog-time').textContent = time.textContent;
         field('dialog-copy').textContent = card.dataset.copy;
+        source.hidden = !card.dataset.href;
+        if (card.dataset.href) source.href = card.dataset.href;
         dialog.showModal();
       });
     });
@@ -149,6 +166,17 @@
     const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
     if (!response.ok) throw new Error(url + ' returned ' + response.status);
     return response.json();
+  };
+
+  // Keeps a result for ten minutes, so moving around the site doesn't spend GitHub's 60 requests an hour.
+  const remembered = async (key, load) => {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(key));
+      if (saved && Date.now() - saved.at < 6e5) return saved.value;
+    } catch {}
+    const value = await load();
+    try { sessionStorage.setItem(key, JSON.stringify({ at: Date.now(), value })); } catch {}
+    return value;
   };
 
   const ownerDate = (when) => new Date(when).toLocaleDateString('en-CA', { timeZone: GITHUB_TIME_ZONE }); // YYYY-MM-DD
@@ -256,11 +284,14 @@
     if (!graph) return;
     try {
       // Commits are only a top-up: if they fail (say GitHub's 60 requests an hour per visitor), show the calendar alone.
-      const [{ contributions }, recent] = await Promise.all([
-        getJson('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last'),
-        fetchRecentCommits().catch(() => null)
-      ]);
-      renderGithubGraph(graph, recentMonths(recent ? withRecentCommits(contributions, recent) : contributions));
+      const days = await remembered('github-days', async () => {
+        const [{ contributions }, recent] = await Promise.all([
+          getJson('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last'),
+          fetchRecentCommits().catch(() => null)
+        ]);
+        return recentMonths(recent ? withRecentCommits(contributions, recent) : contributions);
+      });
+      renderGithubGraph(graph, days);
     } catch {
       // The date in the URL gets round the image's day-long browser cache. If this fails too, drop the block.
       const image = new Image(663, 104);
@@ -268,7 +299,6 @@
       image.onerror = () => graph.closest('a').remove();
       image.src = 'https://ghchart.rshah.org/' + GITHUB_USER + '?d=' + new Date().toISOString().slice(0, 10);
       graph.replaceChildren(image);
-      graph.style.aspectRatio = 'auto';
     }
   };
 
@@ -278,6 +308,36 @@
     const card = document.querySelector('#profile-card');
     if (!card || !window.ReflectiveCard) return;
     afterIntro(() => afterTitle(() => ReflectiveCard(card, { width: '100%', height: 'auto', statusColor: '#c8ff34', tiltStrength: 10 })));
+  };
+
+  // "Trace it." stays dark until light crosses it: one sweep as it lands, then wherever the mouse goes.
+  const initTraceLight = (hero) => {
+    const traced = document.querySelector('.hero-title .muted-title');
+    if (!traced) return;
+    const light = { x: -170, y: 0, r: 0 };
+    const paintLight = () => {
+      traced.style.setProperty('--trace-x', light.x + 'px');
+      traced.style.setProperty('--trace-y', light.y + 'px');
+      traced.style.setProperty('--trace-r', light.r + 'px');
+    };
+    const followX = gsap.quickTo(light, 'x', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
+    const followY = gsap.quickTo(light, 'y', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
+    hero
+      .to(light, { r: 180, duration: 0.25, onUpdate: paintLight }, 0.9)
+      .fromTo(light, { x: -170, y: () => traced.offsetHeight / 2 }, { x: () => traced.offsetWidth + 170, duration: 1.4, ease: 'power1.inOut', onUpdate: paintLight }, 0.9)
+      .to(light, { r: 0, duration: 0.3, onUpdate: paintLight });
+    let lit = false;
+    window.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || hero.isActive()) return;
+      const box = traced.getBoundingClientRect();
+      const x = event.clientX - box.left;
+      const y = event.clientY - box.top;
+      const near = x > -170 && x < box.width + 170 && y > -130 && y < box.height + 130;
+      if (near) { followX(x, lit ? undefined : x); followY(y, lit ? undefined : y); }
+      if (near === lit) return;
+      lit = near;
+      gsap.to(light, { r: near ? 180 : 0, duration: 0.3, overwrite: 'auto', onUpdate: paintLight });
+    }, { passive: true });
   };
 
   // Motion: one authored hero entrance, then lists settle in as they arrive.
@@ -327,36 +387,10 @@
           ease: 'power3.out',
           stagger: 0.12,
           onUpdate() { counters.forEach((c) => { c.el.textContent = c.prefix + Math.round(c.value); }); }
-        }, '<0.1');
+        }, '<0.1')
+        .from('.hero-actions', { autoAlpha: 0, y: 16, duration: 0.8, clearProps: 'transform' }, '<0.25');
 
-      // "Trace it." stays dark until light crosses it: one sweep as it lands, then wherever the mouse goes.
-      const traced = document.querySelector('.hero-title .muted-title');
-      if (traced) {
-        const light = { x: -170, y: 0, r: 0 };
-        const paintLight = () => {
-          traced.style.setProperty('--trace-x', light.x + 'px');
-          traced.style.setProperty('--trace-y', light.y + 'px');
-          traced.style.setProperty('--trace-r', light.r + 'px');
-        };
-        const followX = gsap.quickTo(light, 'x', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
-        const followY = gsap.quickTo(light, 'y', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
-        hero
-          .to(light, { r: 180, duration: 0.25, onUpdate: paintLight }, 0.9)
-          .fromTo(light, { x: -170, y: () => traced.offsetHeight / 2 }, { x: () => traced.offsetWidth + 170, duration: 1.4, ease: 'power1.inOut', onUpdate: paintLight }, 0.9)
-          .to(light, { r: 0, duration: 0.3, onUpdate: paintLight });
-        let lit = false;
-        window.addEventListener('pointermove', (event) => {
-          if (event.pointerType !== 'mouse' || hero.isActive()) return;
-          const box = traced.getBoundingClientRect();
-          const x = event.clientX - box.left;
-          const y = event.clientY - box.top;
-          const near = x > -170 && x < box.width + 170 && y > -130 && y < box.height + 130;
-          if (near) { followX(x, lit ? undefined : x); followY(y, lit ? undefined : y); }
-          if (near === lit) return;
-          lit = near;
-          gsap.to(light, { r: near ? 180 : 0, duration: 0.3, overwrite: 'auto', onUpdate: paintLight });
-        }, { passive: true });
-      }
+      initTraceLight(hero);
 
       // Title → portfolio: a plain cross-fade tied to scroll. The dev title fades out as its last screen scrolls off
       // and the hero fades in as it arrives; scrolling back up reverses both.
@@ -372,7 +406,7 @@
         });
       }
 
-      // Soft skills: once per row, the meter lights up tick by tick while its percentage counts up.
+      // How I Work: once per row, the meter lights up tick by tick while its percentage counts up.
       gsap.utils.toArray('.skill').forEach((skill) => {
         const meter = skill.querySelector('.skill-meter');
         const label = skill.querySelector('.skill-value');
@@ -400,6 +434,7 @@
     });
   };
 
+  initDeepLink();
   initTitleStage();
   initNavHighlight();
   initBackToTop();

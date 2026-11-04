@@ -33,9 +33,11 @@ favicon.svg
 css/main.css                   tokens → base → sections → responsive breakpoints
 css/splash.css                 opening splash (light pillar + name) and its fade-out
 css/components/                styles for the components below
-js/main.js                     nav highlighting, back-to-top, article dialog, contact form, component setup, GSAP motion
+js/main.js                     deep links, nav highlighting, back-to-top, article dialog, contact form, GitHub graph, GSAP motion
 js/splash.js                   splash timing: hold, skip on click/key/scroll, fade out, then start the hero motion
 js/components/glass-icons.js   GlassIcons: Tools section icons (WebGL glass, CSS fallback)
+files/                         the resume and CV PDFs, printed from tools/resume/
+tools/                         build-history.py (the Build chapter's numbers) and resume/ (the PDFs' source)
 js/components/reflective-card.js  ReflectiveCard: brushed-metal profile card
 js/components/light-pillar.js  LightPillar: band of light behind the splash
 images/                        WebP photo and project screenshots

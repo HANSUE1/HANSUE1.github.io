@@ -21,7 +21,7 @@ const CHAPTER_STEP = 0.75
 
 const STATEMENT = "Computer Science at National University, specializing in Digital Forensics."
 const INVESTIGATE = "Digital forensics, and Python tools that pull data out of the web responsibly."
-const BUILD = "Full-stack web apps in React and TypeScript on Supabase, like e-Barangay."
+const BUILD = "Full-stack web apps in React on Supabase, like e-Barangay."
 
 const noHover = () => window.matchMedia("(hover: none)").matches
 

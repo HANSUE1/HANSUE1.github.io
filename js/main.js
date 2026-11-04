@@ -59,7 +59,43 @@
         });
       });
     }, { rootMargin: '-25% 0px -65% 0px' });
-    document.querySelectorAll('main section[id]').forEach((section) => observer.observe(section));
+    document.querySelectorAll('main section[id]:not(.rail-tools)').forEach((section) => observer.observe(section));
+  };
+
+  // On wide screens the profile column is pinned but taller than the screen. It rides along with the page until its end
+  // shows and comes back the same way, so the card greets you and the tools under the graph can still be reached.
+  const initRail = () => {
+    const column = document.querySelector('.profile-column');
+    const hero = document.querySelector('.hero');
+    if (!column || !hero) return;
+    const wide = window.matchMedia('(min-width: 821px)');
+    const heroTop = () => hero.getBoundingClientRect().top + window.scrollY;
+    const room = () => Math.max(0, column.offsetTop + column.offsetHeight + 24 - window.innerHeight);
+    // Measured from the hero on every scroll: the title above it grows after load, so a stored position goes stale.
+    let offset = 0;
+    let last = 0;
+    const update = () => {
+      const past = Math.max(0, window.scrollY - heroTop());
+      offset = wide.matches && past ? Math.min(room(), Math.max(0, offset + past - last)) : 0;
+      last = past;
+      column.style.transform = offset ? `translateY(${-offset}px)` : '';
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    // A link can't scroll to something pinned, so the Tools link and keyboard focus move the page by the difference instead.
+    document.querySelector('.nav-link[href="#tools"]')?.addEventListener('click', (event) => {
+      if (!wide.matches) return;
+      event.preventDefault();
+      window.scrollTo({ top: Math.max(window.scrollY, heroTop()) + room() - offset, behavior: 'smooth' });
+    });
+    column.addEventListener('focusin', (event) => {
+      if (!wide.matches) return;
+      const box = event.target.getBoundingClientRect();
+      const below = box.bottom + 24 - window.innerHeight;
+      const above = 96 - box.top;
+      if (below > 0) window.scrollBy({ top: below, behavior: 'instant' });
+      else if (above > 0) window.scrollBy({ top: -above, behavior: 'instant' });
+    });
   };
 
   const initBackToTop = () => {
@@ -134,7 +170,11 @@
   // Tools: glass icons play their own entrance when scrolled into view, so GSAP leaves them alone.
   const initToolIcons = () => {
     const root = document.querySelector('#tool-icons');
-    if (root && window.GlassIcons) GlassIcons(root, { size: 72, gap: 48, columns: 4, labels: 'always' });
+    if (!root || !window.GlassIcons) return;
+    // Four across in whatever width the column has.
+    const gap = 30;
+    const size = Math.min(50, Math.floor((root.clientWidth - gap * 3) / 4));
+    GlassIcons(root, { size, gap, columns: 4, labels: 'always' });
   };
 
   // GitHub contributions: the year comes from GitHub's calendar (as JSON, since the ghchart image tells browsers to keep
@@ -402,6 +442,7 @@
 
   initTitleStage();
   initNavHighlight();
+  initRail();
   initBackToTop();
   initArticleDialog();
   initContactForm();

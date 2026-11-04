@@ -152,7 +152,6 @@
   };
 
   const ownerDate = (when) => new Date(when).toLocaleDateString('en-CA', { timeZone: GITHUB_TIME_ZONE }); // YYYY-MM-DD
-  const nextDate = (date) => new Date(Date.parse(date + 'T00:00:00Z') + 864e5).toISOString().slice(0, 10);
 
   // Commits per day across recently pushed repos. Default branches and non-forks only, as GitHub itself counts them.
   const fetchRecentCommits = async () => {
@@ -173,6 +172,7 @@
   const withRecentCommits = (calendar, recent) => {
     const days = [...calendar];
     const today = ownerDate(Date.now());
+    const nextDate = (date) => new Date(Date.parse(date + 'T00:00:00Z') + 864e5).toISOString().slice(0, 10);
     for (let date = nextDate(days.at(-1).date); date <= today; date = nextDate(date)) days.push({ date, count: 0, level: 0 });
     // GitHub's shading is relative to the year's busiest days, so reuse the level of days with a similar count.
     const levelFor = (count) => Math.max(1, ...calendar.filter((day) => day.count <= count).map((day) => day.level));
@@ -180,17 +180,6 @@
       const count = recent[day.date] || 0;
       return count > day.count ? { ...day, count, level: levelFor(count) } : day;
     });
-  };
-
-  // The graph previews last month and this month. The days still to come stay as blanks, so its shape holds all month.
-  const lastTwoMonths = (days) => {
-    const [year, month] = ownerDate(Date.now()).split('-').map(Number);
-    const isoDate = (monthIndex, day) => new Date(Date.UTC(year, monthIndex, day)).toISOString().slice(0, 10);
-    const from = isoDate(month - 2, 1);
-    const to = isoDate(month, 0);
-    const shown = days.filter((day) => day.date >= from);
-    for (let date = nextDate(shown.at(-1).date); date <= to; date = nextDate(date)) shown.push({ date, count: 0, level: 'none' });
-    return shown;
   };
 
   const renderGithubGraph = (graph, days) => {
@@ -211,25 +200,28 @@
     const months = make('span', 'github-months');
     graph.style.setProperty('--weeks', weeks);
 
+    let labelled;
     days.forEach((day, i) => {
       const cell = make('span', 'github-cell');
       cell.dataset.level = day.level;
-      if (day.level !== 'none') cell.dataset.tip = plural(day.count) + ' on ' + format(day.date, { month: 'short', day: 'numeric', year: 'numeric' });
+      cell.dataset.tip = plural(day.count) + ' on ' + format(day.date, { month: 'short', day: 'numeric', year: 'numeric' });
       if (i === 0) cell.style.gridRowStart = firstRow + 1;
       cells.append(cell);
 
-      // Label each month over the week it starts in.
-      if (parse(day.date).getUTCDate() === 1) {
-        const label = make('span', '', format(day.date, { month: 'short' }));
-        label.style.gridColumnStart = Math.floor((firstRow + i) / 7) + 1;
+      // Label each month on its first full week, leaving out one that would run off the right edge.
+      const week = Math.floor((firstRow + i) / 7);
+      const month = format(day.date, { month: 'short' });
+      if (parse(day.date).getUTCDay() === 0 && month !== labelled && week <= weeks - 3) {
+        const label = make('span', '', month);
+        label.style.gridColumnStart = week + 1;
         months.append(label);
+        labelled = month;
       }
     });
 
     const total = days.reduce((sum, day) => sum + day.count, 0);
     const latest = days.findLast((day) => day.count > 0);
-    const range = format(days[0].date, { month: 'short' }) + '–' + format(days.at(-1).date, { month: 'short' });
-    const summary = plural(total) + ' in ' + range + (latest ? ', latest ' + format(latest.date, { month: 'short', day: 'numeric' }) : '');
+    const summary = plural(total) + ' in the last year' + (latest ? ', latest ' + format(latest.date, { month: 'short', day: 'numeric' }) : '');
     const caption = make('span', '', summary);
     const legend = make('span', 'github-legend');
     legend.setAttribute('aria-hidden', 'true');
@@ -260,7 +252,7 @@
         getJson('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last'),
         fetchRecentCommits().catch(() => null)
       ]);
-      renderGithubGraph(graph, lastTwoMonths(recent ? withRecentCommits(contributions, recent) : contributions));
+      renderGithubGraph(graph, recent ? withRecentCommits(contributions, recent) : contributions);
     } catch {
       // The date in the URL gets round the image's day-long browser cache. If this fails too, drop the block.
       const image = new Image(663, 104);

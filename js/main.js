@@ -285,7 +285,7 @@
     }, ({ conditions }) => {
       if (conditions.reduced) {
         // Paused like the full entrance, otherwise the fade finishes unseen under the splash.
-        const fade = gsap.from('.hero-main, .profile-card', { autoAlpha: 0, duration: 0.4, clearProps: 'opacity,visibility', paused: Boolean(window.splashActive) });
+        const fade = gsap.from('.hero-main, .profile-column', { autoAlpha: 0, duration: 0.4, clearProps: 'opacity,visibility', paused: Boolean(window.splashActive) });
         afterIntro(() => fade.play());
         return;
       }
@@ -302,9 +302,9 @@
       // Built now (paused) so the from() states hide them before the splash lifts. The card plays as the splash
       // leaves; the hero text sits below the opening name title, so it plays when it scrolls into view.
       const card = gsap.timeline({ defaults: { ease }, paused: true })
-        // fromTo, not from: while the title stage hides the card, from() would capture opacity 0 as its end state.
-        .fromTo('.profile-card', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.9, clearProps: 'transform' })
-        .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1');
+        .from('.profile-card', { autoAlpha: 0, y: 24, duration: 0.9, clearProps: 'transform' })
+        .from('.profile-photo', { clipPath: 'inset(100% 0 0 0 round 14px)', duration: 1.1, clearProps: 'clipPath' }, '<0.1')
+        .from('.hero-github', { autoAlpha: 0, y: 16, duration: 0.8, clearProps: 'transform' }, '<0.15');
       const hero = gsap.timeline({ defaults: { ease }, paused: true });
       afterIntro(() => {
         afterTitle(() => card.play());
@@ -313,15 +313,13 @@
       hero
         .from('.hero-title span', { yPercent: 105, clipPath: 'inset(0 0 100% 0)', duration: 1, stagger: 0.12, clearProps: 'transform,clipPath' })
         .from('.hero-intro', { autoAlpha: 0, y: 16, duration: 0.8 }, '<0.35')
-        .from('.hero-github', { autoAlpha: 0, y: 16, duration: 0.8, clearProps: 'transform' }, '<0.15')
         .to(counters, {
           value: (i) => counters[i].target,
           duration: 1.6,
           ease: 'power3.out',
           stagger: 0.12,
           onUpdate() { counters.forEach((c) => { c.el.textContent = c.prefix + Math.round(c.value); }); }
-        }, '<0.1')
-        .from('.focus-card', { autoAlpha: 0, y: 30, duration: 0.9, stagger: 0.1, clearProps: 'transform' }, '<0.15');
+        }, '<0.1');
 
       // Title → portfolio: a plain cross-fade tied to scroll. The dev title fades out as its last screen scrolls off
       // and the hero fades in as it arrives; scrolling back up reverses both.

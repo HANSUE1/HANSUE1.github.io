@@ -129,9 +129,15 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
    ========================================================================== */
 .hero-main { min-width: 0; }
 @keyframes pulse { 70%, 100% { box-shadow: 0 0 0 8px rgba(200,255,52,0); } }
-.hero-title { margin: 0; font-family: var(--font-display); font-size: clamp(5.5rem, 7.6vw, 7rem); line-height: .99; letter-spacing: -.02em; font-weight: 800; text-transform: uppercase; }
+.hero-title { margin: 0; font-family: var(--font-display); font-size: clamp(6.6rem, 9.7vw, 9rem); line-height: .99; letter-spacing: -.02em; font-weight: 800; text-transform: uppercase; }
 .hero-title span { display: block; white-space: nowrap; }
-.hero-title .muted-title { color: #333132; }
+.hero-title .muted-title { position: relative; width: fit-content; color: #333132; }
+/* The same words in orange, shown only inside a circle of light that main.js moves. The empty alt text keeps screen readers from reading them twice. */
+.hero-title .muted-title::after {
+  content: attr(data-trace); content: attr(data-trace) / ""; position: absolute; inset: 0; color: var(--orange); pointer-events: none;
+  -webkit-mask: radial-gradient(circle var(--trace-r, 0px) at var(--trace-x, 0) var(--trace-y, 50%), #000 55%, transparent);
+  mask: radial-gradient(circle var(--trace-r, 0px) at var(--trace-x, 0) var(--trace-y, 50%), #000 55%, transparent);
+}
 .hero-intro { max-width: 510px; margin: 15px 0 0; color: var(--soft); font-family: var(--font-display); font-size: 17px; line-height: 1.45; letter-spacing: -.018em; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; max-width: 530px; margin-top: 52px; }
 .stat strong { display: block; margin-bottom: 10px; font-size: clamp(3.5rem, 6vw, 5rem); line-height: .92; letter-spacing: -.07em; font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -297,7 +303,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   .hero { gap: 49px; padding-top: 106px; padding-bottom: 70px; }
   .profile-column { width: min(100%, 344px); justify-self: center; }
   .hero-main { width: 100%; }
-  .hero-title { font-size: clamp(4.7rem, 13vw, 6.7rem); }
+  .hero-title { font-size: clamp(4.7rem, 16.5vw, 8.4rem); }
   .hero-intro { max-width: 560px; font-size: 16px; }
   .stats { max-width: 550px; margin-top: 40px; }
   .site-footer { flex-wrap: wrap; padding-block: 25px; }
@@ -308,7 +314,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   /* Six 34px icons need tighter spacing to fit a 320px screen. */
   .main-nav { gap: 12px; padding: 0 14px; }
   .hero { padding-top: 96px; gap: 39px; }
-  .hero-title { font-size: clamp(3.1rem, 14.8vw, 4.8rem); letter-spacing: -.055em; }
+  .hero-title { font-size: clamp(3.5rem, 19.5vw, 6rem); letter-spacing: -.055em; }
   .hero-intro { margin-top: 13px; font-size: var(--text-md); line-height: 1.55; }
   .stats { column-gap: 8px; margin-top: 34px; }
   .stat strong { margin-bottom: 8px; font-size: clamp(2.8rem, 11.3vw, 3.7rem); }
@@ -445,7 +451,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
     --rail-offset: calc(var(--profile-width) + var(--rail-gap));
   }
   .profile-card .reflective-card__name { font-size: 24px; }
-  .hero-title { font-size: clamp(3.65rem, 7.5vw, 6rem); }
+  .hero-title { font-size: clamp(4.6rem, 9.4vw, 7.4rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {

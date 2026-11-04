@@ -329,6 +329,35 @@
           onUpdate() { counters.forEach((c) => { c.el.textContent = c.prefix + Math.round(c.value); }); }
         }, '<0.1');
 
+      // "Trace it." stays dark until light crosses it: one sweep as it lands, then wherever the mouse goes.
+      const traced = document.querySelector('.hero-title .muted-title');
+      if (traced) {
+        const light = { x: -170, y: 0, r: 0 };
+        const paintLight = () => {
+          traced.style.setProperty('--trace-x', light.x + 'px');
+          traced.style.setProperty('--trace-y', light.y + 'px');
+          traced.style.setProperty('--trace-r', light.r + 'px');
+        };
+        const followX = gsap.quickTo(light, 'x', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
+        const followY = gsap.quickTo(light, 'y', { duration: 0.35, ease: 'power3', onUpdate: paintLight });
+        hero
+          .to(light, { r: 180, duration: 0.25, onUpdate: paintLight }, 0.9)
+          .fromTo(light, { x: -170, y: () => traced.offsetHeight / 2 }, { x: () => traced.offsetWidth + 170, duration: 1.4, ease: 'power1.inOut', onUpdate: paintLight }, 0.9)
+          .to(light, { r: 0, duration: 0.3, onUpdate: paintLight });
+        let lit = false;
+        window.addEventListener('pointermove', (event) => {
+          if (event.pointerType !== 'mouse' || hero.isActive()) return;
+          const box = traced.getBoundingClientRect();
+          const x = event.clientX - box.left;
+          const y = event.clientY - box.top;
+          const near = x > -170 && x < box.width + 170 && y > -130 && y < box.height + 130;
+          if (near) { followX(x, lit ? undefined : x); followY(y, lit ? undefined : y); }
+          if (near === lit) return;
+          lit = near;
+          gsap.to(light, { r: near ? 180 : 0, duration: 0.3, overwrite: 'auto', onUpdate: paintLight });
+        }, { passive: true });
+      }
+
       // Title → portfolio: a plain cross-fade tied to scroll. The dev title fades out as its last screen scrolls off
       // and the hero fades in as it arrives; scrolling back up reverses both.
       if (document.querySelector('#name-portal')) {

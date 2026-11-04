@@ -182,11 +182,11 @@
     });
   };
 
-  // The graph previews last month and this month. The days still to come stay as blanks, so its shape holds all month.
-  const lastTwoMonths = (days) => {
+  // The graph previews the last two months and this one. The days still to come stay as blanks, so its shape holds all month.
+  const recentMonths = (days) => {
     const [year, month] = ownerDate(Date.now()).split('-').map(Number);
     const isoDate = (monthIndex, day) => new Date(Date.UTC(year, monthIndex, day)).toISOString().slice(0, 10);
-    const from = isoDate(month - 2, 1);
+    const from = isoDate(month - 3, 1);
     const to = isoDate(month, 0);
     const shown = days.filter((day) => day.date >= from);
     for (let date = nextDate(shown.at(-1).date); date <= to; date = nextDate(date)) shown.push({ date, count: 0, level: 'none' });
@@ -260,7 +260,7 @@
         getJson('https://github-contributions-api.jogruber.de/v4/' + GITHUB_USER + '?y=last'),
         fetchRecentCommits().catch(() => null)
       ]);
-      renderGithubGraph(graph, lastTwoMonths(recent ? withRecentCommits(contributions, recent) : contributions));
+      renderGithubGraph(graph, recentMonths(recent ? withRecentCommits(contributions, recent) : contributions));
     } catch {
       // The date in the URL gets round the image's day-long browser cache. If this fails too, drop the block.
       const image = new Image(663, 104);

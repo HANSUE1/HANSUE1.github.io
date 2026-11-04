@@ -239,6 +239,8 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 
 /* Archive: the React glass folders (src/), set in the page's own type and focus colour. */
 .archive-intro { max-width: 520px; margin: 0 0 8px; color: var(--soft); font-size: var(--text-md); line-height: 1.55; }
+.archive-intro a { color: var(--white); text-decoration: underline; text-underline-offset: 3px; transition: color .2s ease; }
+.archive-intro a:hover { color: var(--orange); }
 .archive-desk .gf-root, .archive-desk .gf-meta, .archive-desk .gf-sheet-meta { font-family: var(--font-copy); }
 .archive-desk .gf-sheet:focus-visible, .archive-desk .gf-key:focus-visible { outline-color: var(--orange); }
 

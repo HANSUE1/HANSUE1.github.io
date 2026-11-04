@@ -1,5 +1,5 @@
 import * as React from "react"
-import GlassFolder, { type ArtPreset, type FolderFile } from "@/components/ui/glass-folder-cards"
+import GlassFolder, { type FolderFile } from "@/components/ui/glass-folder-cards"
 import { cn } from "@/lib/utils"
 
 // The folders hold what index.html already shows, read from its cards once at mount, so every project and
@@ -22,13 +22,13 @@ function readArticles() {
   return { cards, files }
 }
 
-// Studies: every press of + paints a new piece from the next preset; the art is seeded by the file name, so no
-// two studies are the same picture.
-const STUDY_ART: ArtPreset[] = ["dusk", "glacier", "verdant", "ember", "aurora"]
-const study = (n: number): FolderFile => {
-  const art = STUDY_ART[(n - 1) % STUDY_ART.length]
-  return { name: `Study ${n}`, meta: art[0].toUpperCase() + art.slice(1), art }
-}
+// Printed from tools/resume/ by its build.py. Without an image, a file is drawn as a sheet of paper.
+const DOCUMENTS = [
+  { name: "Resume", meta: "PDF · 1 page", url: "files/Hans-Santos-Resume.pdf" },
+  { name: "CV", meta: "PDF · 2 pages", url: "files/Hans-Santos-CV.pdf" },
+]
+const documentFiles: FolderFile[] = DOCUMENTS.map(({ name, meta }) => ({ name, meta }))
+const openDocument = (url: string) => window.open(url, "_blank", "noopener")
 
 // Two folders a row where they fit at a readable size, otherwise one; never wider than the component's drawn
 // 340px. Rounded to 10px so a window resize does not repaint the art for every pixel.
@@ -89,14 +89,16 @@ export default function ArchiveDesk({ className }: { className?: string }) {
         ]}
       />
       <GlassFolder
-        label="Studies"
+        label="Resume & CV"
         art="aurora"
         seed={3}
-        action="add"
+        action="more"
         width={width}
         appearDelay={280}
-        files={[study(1), study(2)]}
-        onAdd={(files) => study(files.length + 1)}
+        files={documentFiles}
+        // Opens in a new tab, so reading a PDF never takes anyone off the site.
+        onFileSelect={(_, index) => openDocument(DOCUMENTS[index].url)}
+        menu={DOCUMENTS.map(({ name, url }) => ({ label: `Open ${name}`, onSelect: () => openDocument(url) }))}
       />
     </div>
   )

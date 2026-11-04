@@ -15,6 +15,7 @@ export type GlyphPortalStyle = CSSProperties & {
 };
 
 export type GlyphPortalProps = {
+  /** A "\n" starts a new line; lines are left-aligned. */
   word?: string;
   /** First matching character. Omit to choose the largest safe patch of ink. */
   focusChar?: string;
@@ -44,6 +45,8 @@ const smooth = (a: number, b: number, n: number) => {
   return t * t * (3 - 2 * t);
 };
 const DEFAULT_FONT = '"Arial Black", "Arial", sans-serif';
+/** Baseline to baseline, in the 100px units the word is measured in. */
+const LINE_STEP = 92;
 type Ink = { x: number; y: number; radius: number; index: number };
 type Letter = { index: number; x: number; y: number; width: number; height: number };
 
@@ -98,11 +101,12 @@ export default function GlyphPortal({
   const progressRef = useRef(onProgress);
   useLayoutEffect(() => { progressRef.current = onProgress; }, [onProgress]);
   const text = word.trim().normalize("NFC") || "SUBLIME";
+  const lines = text.split("\n");
   let characterOffset = 0;
   const characters = Array.from(text, (char) => {
     const index = characterOffset; characterOffset += char.length;
     return { char, index };
-  });
+  }).filter(({ char }) => char !== "\n");
   const length = Number.isFinite(scrollLength) ? clamp(scrollLength, 1, 8) : 2.4;
   const weight = Number.isFinite(fontWeight) ? clamp(fontWeight, 1, 1000) : 900;
   const hasFront = front != null;
@@ -152,26 +156,34 @@ export default function GlyphPortal({
       const scanFont = `${font.fontWeight} 300px ${font.fontFamily}`;
       context.font = `${font.fontWeight} 100px ${font.fontFamily}`;
       context.fontKerning = "none";
-      const metrics = context.measureText(text);
-      const advances = Array.from({ length: text.length }, (_, i) => context.measureText(text.slice(0, i)).width);
+      // Where each character starts, by its index in text, and the ink of all the lines together.
+      const origins: { x: number; y: number }[] = [];
+      let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity, start = 0;
+      lines.forEach((line, row) => {
+        const y = row * LINE_STEP;
+        const metrics = context.measureText(line);
+        left = Math.min(left, -metrics.actualBoundingBoxLeft);
+        right = Math.max(right, metrics.actualBoundingBoxRight);
+        top = Math.min(top, y - metrics.actualBoundingBoxAscent);
+        bottom = Math.max(bottom, y + metrics.actualBoundingBoxDescent);
+        for (let i = 0; i < line.length; i++) origins[start + i] = { x: context.measureText(line.slice(0, i)).width, y };
+        start += line.length + 1;
+      });
       // SVG getBBox includes the font's line box in some engines. Frame visible ink instead.
-      bounds = { x: -metrics.actualBoundingBoxLeft, y: -metrics.actualBoundingBoxAscent,
-        width: metrics.actualBoundingBoxLeft + metrics.actualBoundingBoxRight,
-        height: metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent };
+      bounds = { x: left, y: top, width: right - left, height: bottom - top };
       if (!bounds.width || !bounds.height) return false;
       center = { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 };
       const requested = focusChar ? text.indexOf(focusChar.normalize("NFC")) : -1;
-      let offset = 0;
       candidates = []; letters = [];
-      for (const char of Array.from(text)) {
+      for (const { char, index } of characters) {
         context.font = `${font.fontWeight} 100px ${font.fontFamily}`;
         const m = context.measureText(char);
-        letters.push({ index: offset, x: advances[offset] - m.actualBoundingBoxLeft,
-          y: -m.actualBoundingBoxAscent, width: m.actualBoundingBoxLeft + m.actualBoundingBoxRight,
+        const origin = origins[index];
+        letters.push({ index, x: origin.x - m.actualBoundingBoxLeft,
+          y: origin.y - m.actualBoundingBoxAscent, width: m.actualBoundingBoxLeft + m.actualBoundingBoxRight,
           height: m.actualBoundingBoxAscent + m.actualBoundingBoxDescent });
         const found = interior(context, char, scanFont);
-        if (found) candidates.push({ ...found, x: found.x + advances[offset], index: offset });
-        offset += char.length;
+        if (found) candidates.push({ ...found, x: found.x + origin.x, y: found.y + origin.y, index });
       }
       target = candidates.find((candidate) => candidate.index === requested) ?? [...candidates].sort((a, b) => b.radius - a.radius || Math.abs(a.x - center.x) - Math.abs(b.x - center.x))[0] ?? null;
       return true;
@@ -342,8 +354,8 @@ export default function GlyphPortal({
   }, [text, focusChar, interactive, fontFamily, weight, length, clipId, hasFront]);
 
   return (
-    <section ref={sectionRef} id={uid} className={className} aria-label={text}
-      style={{ "--gp-length": length, "--gp-characters": Array.from(text).length, ...style } as CSSProperties}>
+    <section ref={sectionRef} id={uid} className={className} aria-label={lines.join(" ")}
+      style={{ "--gp-length": length, "--gp-characters": Math.max(...lines.map((line) => Array.from(line).length)), ...style } as CSSProperties}>
       <style>{`
         ${q}{--gp-paper:#fff;--gp-ink:#0c1212;--gp-field:#0b3b2a;--gp-foreground:#fbfbfa;position:relative;isolation:isolate;background:var(--gp-paper);color:var(--gp-ink);font-family:Arial,sans-serif;}
         ${q}>[data-gp-viewport]{position:absolute;inset:0 auto auto 0;height:100vh;height:100svh;width:0;pointer-events:none;visibility:hidden;}
@@ -362,7 +374,7 @@ export default function GlyphPortal({
         ${q} [data-gp-select]{min-height:44px;min-width:90px;border:1px solid #d8deda;border-radius:4px;background:var(--gp-paper);color:var(--gp-ink);padding:0 10px;font:inherit;}
         ${q} [data-gp-select]:focus-visible{outline:2px solid var(--gp-field);outline-offset:4px;}
         @media(any-pointer:coarse){${q} [data-gp-touch-picker]{display:flex;}}
-        ${q} [data-gp-fallback]{position:absolute;inset:0;display:none;place-items:center;font-size:min(calc(100cqw / var(--gp-characters)),38cqh);line-height:1;color:var(--gp-field);}
+        ${q} [data-gp-fallback]{position:absolute;inset:0;display:none;place-items:center;font-size:min(calc(100cqw / var(--gp-characters)),38cqh);line-height:1;white-space:pre-line;color:var(--gp-field);}
         ${q}[data-gp-ready] [data-gp-fallback]{visibility:hidden;}
         ${q} [data-gp-caption]{position:absolute;inset:auto 8% 9%;display:flex;align-items:center;justify-content:space-between;gap:1rem;font:12px/1.4 Arial,sans-serif;opacity:var(--gp-caption,1);pointer-events:var(--gp-caption-hit,auto);}
         ${q} [data-gp-caption]{font-family:inherit;}
@@ -397,7 +409,7 @@ export default function GlyphPortal({
         <svg data-gp-art aria-hidden="true" focusable="false">
           <defs>
             <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
-              <text data-gp-glyph x="0" y="0" style={{ fontFamily, fontWeight: weight, fontSize: 100, fontKerning: "none", fontVariantLigatures: "none", letterSpacing: 0 }}>{text}</text>
+              <text data-gp-glyph x="0" y="0" style={{ fontFamily, fontWeight: weight, fontSize: 100, fontKerning: "none", fontVariantLigatures: "none", letterSpacing: 0 }}>{lines.map((line, row) => <tspan x="0" y={row * LINE_STEP} key={row}>{line}</tspan>)}</text>
             </clipPath>
           </defs>
           <g data-gp-marks style={{ visibility: annotations ? "visible" : "hidden" }}><path /></g>

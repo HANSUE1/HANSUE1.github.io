@@ -1,10 +1,10 @@
 import GlyphPortal, { type GlyphPortalStyle } from "@/components/ui/glyph-portal"
 import Iridescence from "@/components/ui/Iridescence"
 
-// The dev title: "SOFTWARE DEVELOPER" cut out of a live iridescent surface (React Bits Iridescence). Scrolling flies
+// The dev title: "Software developer", on two lines, cut out of a live iridescent surface (React Bits Iridescence). Scrolling flies
 // the camera into one letter (hover or arrow keys choose which) until the surface fills the screen and the copy
 // below appears on it. The surface still follows the pointer and swirls on click. Styling: css/main.css (.name-portal).
-export const TITLE_WORD = "SOFTWARE DEVELOPER"
+export const TITLE_WORD = "Software\ndeveloper"
 
 const STYLE: GlyphPortalStyle = {
   "--gp-paper": "transparent", // the page's own dotted backdrop shows around the words

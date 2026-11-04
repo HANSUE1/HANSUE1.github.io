@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react"
-import { startPile } from "@/lib/brick-pile"
+import BuildChart from "@/components/build-chart"
 
 // What you find inside the letter once the dev title's camera lands: four chapters, each with its verb built into the
-// pointer. About is a magnifying lens, Investigate recovers redacted words, Build throws bricks around, Collaborate
+// pointer. About is a magnifying lens, Investigate recovers redacted words, Build rewinds a chart of the real code, Collaborate
 // brings a second cursor. The dock at the bottom centre switches chapters with a fade; scrolling walks through them too,
 // so nobody misses the copy. With reduced motion or without WebGL the plain copy below shows instead.
 // Styling: css/components/about-chapters.css. The surface's look per chapter: LOOKS in name-portal.tsx.
@@ -22,8 +22,6 @@ const CHAPTER_STEP = 0.75
 const STATEMENT = "Computer Science at National University, specializing in Digital Forensics."
 const INVESTIGATE = "Digital forensics, and Python tools that pull data out of the web responsibly."
 const BUILD = "Full-stack web apps in React and TypeScript on Supabase, like e-Barangay."
-const BRICKS = ["React", "TypeScript", "Supabase", "e-Barangay", "Python", "JavaScript", "MongoDB", "Java", "C++", "HTML", "CSS"]
-const FEATURED = new Set(["React", "TypeScript", "Supabase", "e-Barangay"])
 
 const noHover = () => window.matchMedia("(hover: none)").matches
 
@@ -170,24 +168,11 @@ function InvestigatePanel({ running }: PanelProps) {
 }
 
 function BuildPanel({ running }: PanelProps) {
-  const pit = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (running && pit.current) return startPile(pit.current)
-  }, [running])
-
   return (
     <div className="about-stage about-stage--build">
       <h3 className="about-verb">Build</h3>
-      <div className="about-brief">
-        <p className="about-sentence">{BUILD}</p>
-        <p className="about-note" aria-hidden="true">Pick a brick up and throw it.</p>
-      </div>
-      <div className="about-pit" ref={pit} aria-hidden="true">
-        {BRICKS.map((brick) => (
-          <span className="about-chip" data-featured={FEATURED.has(brick) || undefined} key={brick}>{brick}</span>
-        ))}
-      </div>
+      <p className="about-sentence">{BUILD}</p>
+      <BuildChart running={running} />
     </div>
   )
 }

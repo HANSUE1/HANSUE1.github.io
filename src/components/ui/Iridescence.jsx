@@ -113,6 +113,8 @@ void main() {
 const FIELD_COLUMNS = 48;
 const MAX_SWIRLS = 6;
 const SWIRL_LIFE = 3.2;
+// Props that glide to a new value instead of jumping, so a parent can change the surface's mood by re-rendering.
+const LOOK = ['hueShift', 'saturation', 'brightness', 'contrast', 'warp', 'scale', 'sheen'];
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -260,7 +262,8 @@ const Iridescence = ({
       scratch: new Float32Array(0),
       fieldActive: false,
       swirls: [],
-      seed: 0
+      seed: 0,
+      look: Object.fromEntries(LOOK.map(key => [key, settingsRef.current[key]]))
     };
     const swirlData = new Float32Array(MAX_SWIRLS * 4);
     let raf = 0;
@@ -351,6 +354,7 @@ const Iridescence = ({
 
     const render = () => {
       const s = settingsRef.current;
+      const look = state.look;
       resolveColor(s);
       layoutField();
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -369,21 +373,21 @@ const Iridescence = ({
       gl.uniform3f(uniforms.uColor, state.color[0], state.color[1], state.color[2]);
       gl.uniform2f(uniforms.uMouse, state.mouse[0], state.mouse[1]);
       gl.uniform1f(uniforms.uAmplitude, s.amplitude);
-      gl.uniform1f(uniforms.uScale, s.scale);
+      gl.uniform1f(uniforms.uScale, look.scale);
       gl.uniform1f(uniforms.uRotation, (s.rotation * Math.PI) / 180);
       gl.uniform1i(uniforms.uDetail, s.detail);
-      gl.uniform1f(uniforms.uWarp, s.warp);
-      gl.uniform1f(uniforms.uHue, (s.hueShift * Math.PI) / 180);
-      gl.uniform1f(uniforms.uSaturation, s.saturation);
-      gl.uniform1f(uniforms.uBrightness, s.brightness);
-      gl.uniform1f(uniforms.uContrast, s.contrast);
+      gl.uniform1f(uniforms.uWarp, look.warp);
+      gl.uniform1f(uniforms.uHue, (look.hueShift * Math.PI) / 180);
+      gl.uniform1f(uniforms.uSaturation, look.saturation);
+      gl.uniform1f(uniforms.uBrightness, look.brightness);
+      gl.uniform1f(uniforms.uContrast, look.contrast);
       gl.uniform1f(uniforms.uGrain, s.grain);
       gl.uniform1f(uniforms.uSeed, state.seed);
       gl.uniform1f(uniforms.uFade, s.fade);
       gl.uniform1f(uniforms.uOpacity, s.opacity);
       gl.uniform1f(uniforms.uStir, s.mouseReact ? s.stir : 0);
       gl.uniform3f(uniforms.uPointer, pointer.x, pointer.y, s.mouseReact ? state.presence : 0);
-      gl.uniform1f(uniforms.uSheen, s.sheen);
+      gl.uniform1f(uniforms.uSheen, look.sheen);
       gl.uniform4fv(uniforms.uSwirls, swirlData);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -398,6 +402,13 @@ const Iridescence = ({
       last = now;
       const moving = !s.paused && !reduce;
       if (moving) state.phase += dt * s.speed;
+      const glide = reduce ? 1 : 1 - Math.exp(-dt * 3);
+      let gliding = false;
+      for (const key of LOOK) {
+        const gap = s[key] - state.look[key];
+        state.look[key] += gap * glide;
+        gliding ||= Math.abs(gap) > 0.001;
+      }
       const target = s.mouseReact && pointer.tracked ? [pointer.x, pointer.y] : [0.5, 0.5];
       const follow = 1 - Math.exp(-dt * 5);
       state.mouse[0] += (target[0] - state.mouse[0]) * follow;
@@ -408,6 +419,7 @@ const Iridescence = ({
       if (s.grain > 0 && moving) state.seed = Math.floor(now / 42) % 997;
       render();
       const settling =
+        gliding ||
         Math.abs(target[0] - state.mouse[0]) > 0.0005 ||
         Math.abs(target[1] - state.mouse[1]) > 0.0005 ||
         Math.abs((pointer.inside ? 1 : 0) - state.presence) > 0.002;

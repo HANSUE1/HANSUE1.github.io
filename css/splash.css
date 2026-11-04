@@ -1,16 +1,17 @@
 /* ==========================================================================
-   Splash: aurora + name over the page, then fades out to the portfolio.
+   Splash: light pillar + name over the page, then fades out to the portfolio.
    Shown only while html.intro is set (inline script in <head>, once per
    browser session). js/splash.js runs the timing; if it never runs, the
    fallback animation below still fades the splash out after 6s.
    ========================================================================== */
 .splash { display: none; }
-/* Keep the scrollbar's space while scrolling is locked so the page doesn't shift as the splash lifts; paint it to match. */
-html.intro { scrollbar-gutter: stable; background: #0b0a0a; }
+html.intro { background: #0b0a0a; }
 /* Lock scrolling only while splash.js owns the splash: the CSS-only fallback can't remove html.intro, so a plain lock would trap the page. */
 html.intro:has(.splash.is-live) { overflow: hidden; }
+/* 100vw, not right: 0, so the name and the light stay put when the scrollbar returns as the splash lifts. The page behind
+   is still hidden at that moment, so its own shift goes unseen. */
 html.intro .splash, .splash.is-leaving {
-  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; overflow: hidden;
+  position: fixed; inset: 0 auto 0 0; width: 100vw; z-index: 50; display: grid; place-items: center; overflow: hidden;
   background: #0b0a0a; color: var(--white);
 }
 html.intro .splash { animation: splash-in .6s ease both, splash-out .9s ease 6s forwards; }
@@ -19,14 +20,13 @@ html.intro .splash.is-live { animation: splash-in .6s ease backwards; }
 /* Leaving is a plain fade; the dev title fades in behind it a beat later (css/main.css, .portal-shell). */
 .splash.is-leaving { opacity: 0; visibility: hidden; transition: opacity .8s ease, visibility 0s .8s; }
 
-.splash .splash-aurora { position: absolute; inset: 0; width: auto; height: auto; }
 .splash-content { position: relative; z-index: 1; padding: 0 24px; text-align: center; }
 
-.splash-eyebrow, .splash-hint { margin: 0; color: rgba(248,247,247,.72); font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; }
-.splash-name { margin: 18px 0 0; font-family: var(--font-display); font-size: clamp(3.4rem, 14vw, 9.5rem); line-height: .9; letter-spacing: -.06em; font-weight: 700; text-transform: uppercase; }
-.splash-name span { display: block; }
-/* Second word as an outline so the aurora shows through it. */
-.splash-name span + span { color: transparent; -webkit-text-stroke: 1.5px rgba(248,247,247,.85); }
+.splash-eyebrow, .splash-hint { margin: 0; color: rgba(248,247,247,.72); text-shadow: 0 1px 10px rgba(11,10,10,.7); font-size: 12px; font-weight: 500; letter-spacing: .28em; text-transform: uppercase; }
+.splash-name { margin: 18px 0 0; font-family: var(--font-display); font-size: clamp(2.2rem, 12.5vw, 9.5rem); line-height: .9; letter-spacing: -.04em; font-weight: 700; text-transform: uppercase; white-space: nowrap; filter: drop-shadow(0 2px 20px rgba(11,10,10,.6)); }
+.splash-name span { display: inline-block; }
+/* Second word as an outline. The dark tint keeps it readable where the pillar burns white, and the pillar still shows through. */
+.splash-name span + span { color: rgba(11,10,10,.5); -webkit-text-stroke: 1.5px var(--white); }
 .splash-hint { position: absolute; z-index: 1; bottom: max(28px, env(safe-area-inset-bottom)); left: 0; right: 0; font-size: 11px; color: rgba(248,247,247,.5); text-align: center; }
 
 .splash-eyebrow { animation: splash-rise .9s cubic-bezier(.2,.8,.2,1) .35s both; }
@@ -45,7 +45,6 @@ html.intro .splash.is-live { animation: splash-in .6s ease backwards; }
 }
 
 @media (max-width: 560px) {
-  .splash-name { font-size: 18vw; }
   .splash-eyebrow, .splash-hint { letter-spacing: .2em; }
 }
 

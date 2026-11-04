@@ -312,7 +312,9 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 @media (max-width: 560px) {
   .page-shell { width: calc(100% - 36px); }
   /* Six 34px icons need tighter spacing to fit a 320px screen. */
-  .main-nav { gap: 12px; padding: 0 14px; }
+  /* Eight links have to fit a 320px phone, so the spacing and the links shrink with the screen. */
+  .main-nav { gap: clamp(2px, 1vw, 12px); padding: 0 8px; }
+  .nav-link { width: clamp(30px, 9.4vw, 34px); }
   .hero { padding-top: 96px; gap: 39px; }
   .hero-title { font-size: clamp(3.5rem, 19.5vw, 6rem); letter-spacing: -.055em; }
   .hero-intro { margin-top: 13px; font-size: var(--text-md); line-height: 1.55; }

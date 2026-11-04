@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react"
-import BuildChart from "@/components/build-chart"
+import BuildCity from "@/components/build-city"
 
 // What you find inside the letter once the dev title's camera lands: four chapters, each with its verb built into the
-// pointer. About is a magnifying lens, Investigate recovers redacted words, Build rewinds a chart of the real code, Collaborate
+// pointer. About is a magnifying lens, Investigate recovers redacted words, Build spins a city made of the real repos, Collaborate
 // brings a second cursor. The dock at the bottom centre switches chapters with a fade; scrolling walks through them too,
 // so nobody misses the copy. With reduced motion or without WebGL the plain copy below shows instead.
 // Styling: css/components/about-chapters.css. The surface's look per chapter: LOOKS in name-portal.tsx.
@@ -64,16 +64,16 @@ function AboutPanel({ running }: PanelProps) {
     const host = root.current
     if (!running || !host) return
     const started = performance.now()
-    let x = host.clientWidth * 0.3
-    let y = host.clientHeight * 0.45
+    let x = host.clientWidth * 0.5
+    let y = host.clientHeight * 0.5
     let raf = 0
     const frame = (now: number) => {
       const t = (now - started) / 1000
       const { seen, x: px, y: py, movedAt } = pointer.current
       // Until the pointer takes over, and again once it rests or goes down to the dock, the lens drifts across the statement.
       const free = !seen || now - movedAt > 3500 || py > host.clientHeight - 120
-      const tx = free ? host.clientWidth * (0.36 + 0.26 * Math.sin(t * 0.55)) : px
-      const ty = free ? host.clientHeight * (0.44 + 0.16 * Math.sin(t * 0.83 + 1)) : py
+      const tx = free ? host.clientWidth * (0.5 + 0.2 * Math.sin(t * 0.55)) : px
+      const ty = free ? host.clientHeight * (0.48 + 0.12 * Math.sin(t * 0.83 + 1)) : py
       const follow = free ? 0.025 : 0.16
       x += (tx - x) * follow
       y += (ty - y) * follow
@@ -172,7 +172,7 @@ function BuildPanel({ running }: PanelProps) {
     <div className="about-stage about-stage--build">
       <h3 className="about-verb">Build</h3>
       <p className="about-sentence">{BUILD}</p>
-      <BuildChart running={running} />
+      <BuildCity running={running} />
     </div>
   )
 }

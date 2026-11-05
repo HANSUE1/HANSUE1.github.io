@@ -3,3 +3,4 @@
 import "@/styles/globals.css"
 import "@/islands/portal"
 import "@/islands/archive"
+import "@/islands/menu"

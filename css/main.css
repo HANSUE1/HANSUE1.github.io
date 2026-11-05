@@ -367,22 +367,25 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
 
 @media (min-width: 821px) {
   :root {
-    --shell-inset: max(24px, calc((100vw - 1140px) / 2));
+    --menu-col: 0px; /* the side menu's column, from 1200px up */
+    --shell-inset: max(24px, calc((100vw - 1140px - var(--menu-col)) / 2));
     /* --profile-cap shrinks the card on short screens (see below) so the photo keeps its shape. */
     --profile-cap: 344px;
     --profile-width: min(344px, var(--profile-cap));
     --rail-gap: clamp(48px, 6.95vw, 100px);
     --rail-offset: calc(var(--profile-width) + var(--rail-gap));
+    --rail-width: min(696px, calc(100vw - 48px - var(--menu-col) - var(--rail-offset)));
   }
   .hero { grid-template-columns: var(--profile-width) minmax(0, 1fr); gap: var(--rail-gap); }
   .hero-main { grid-column: 2; }
-  .profile-column { position: fixed; z-index: 10; top: 160px; left: var(--shell-inset); width: var(--profile-width); transition: opacity .6s ease, visibility .6s ease; }
+  .profile-column, .side-menu { position: fixed; z-index: 10; top: 160px; transition: opacity .6s ease, visibility .6s ease; }
+  .profile-column { left: calc(var(--shell-inset) + var(--menu-col)); width: var(--profile-width); }
   /* !important: the reduced-motion fade writes inline opacity here. */
-  html.title-stage .profile-column { opacity: 0 !important; visibility: hidden !important; }
+  html.title-stage .profile-column, html.title-stage .side-menu { opacity: 0 !important; visibility: hidden !important; }
   .page-section, .site-footer {
-    width: min(696px, calc(100vw - 48px - var(--rail-offset)));
+    width: var(--rail-width);
     margin-right: 0;
-    margin-left: calc(var(--shell-inset) + var(--rail-offset));
+    margin-left: calc(var(--shell-inset) + var(--menu-col) + var(--rail-offset));
   }
   /* Sections are size containers so titles can cap at the rail width (cqi): "CONTRIBUTIONS" otherwise overflows. */
   .page-section { padding-top: 30px; padding-bottom: 105px; container-type: inline-size; }
@@ -434,7 +437,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   .hero { padding-top: 100px; }
   .stats { margin-top: 34px; }
   .hero-actions { margin-top: 26px; }
-  .profile-column { top: 100px; }
+  .profile-column, .side-menu { top: 100px; }
   /* The card narrows instead of cropping the photo: photo height = (card width - 38px padding) / 1.02 stays
      within 100vh - 489px, which leaves room for the top offset, the rest of the card (~216px) and the graph (~157px). */
   :root { --profile-cap: max(220px, calc((100vh - 489px) * 1.02 + 38px)); }
@@ -445,7 +448,7 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
    card can stay wide enough for the graph's summary to fit beside it. */
 @media (min-width: 821px) and (max-height: 730px) {
   :root { --profile-cap: max(220px, calc((100vh - 424px) * 1.02 + 38px)); }
-  .profile-column { top: 88px; }
+  .profile-column, .side-menu { top: 88px; }
   .profile-photo { margin-top: 12px; }
   .profile-card .reflective-card__identity { margin-top: 12px; }
   .profile-card .reflective-card__name { font-size: 24px; }
@@ -467,6 +470,17 @@ html:not(.intro) .portal-shell { animation: stage-in .9s ease .35s backwards; }
   }
   .profile-card .reflective-card__name { font-size: 24px; }
   .hero-title { font-size: clamp(4.6rem, 9.4vw, 7.4rem); }
+}
+
+/* The side menu needs a column of its own, so it starts where the rail can give that up. Below this, the top nav
+   alone covers the same sections. */
+.side-menu { display: none; }
+@media (min-width: 1200px) {
+  :root { --menu-col: 190px; }
+  .side-menu { display: block; left: var(--shell-inset); width: calc(var(--menu-col) - 14px); }
+  .hero { width: calc(var(--rail-offset) + var(--rail-width)); margin-right: 0; margin-left: calc(var(--shell-inset) + var(--menu-col)); }
+  /* Inset, because the folding sections clip anything drawn outside their rows. */
+  .side-menu button:focus-visible { outline: 2px solid var(--orange); outline-offset: -2px; border-radius: 6px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

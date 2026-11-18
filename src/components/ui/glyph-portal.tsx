@@ -133,6 +133,9 @@ export default function GlyphPortal({
     let W = 1, H = 1, travel = 1, startScale = 1, endScale = 1;
     let center = { x: 0, y: 0 }, target: Ink | null = null;
     let lastProgress = -1;
+    // Scroll position last painted. Progress clamps at 0 and 1, so most scroll frames (all of the travel past the
+    // landing) would otherwise rewrite a dozen identical styles and attributes.
+    let painted = NaN;
     let candidates: Ink[] = [], letters: Letter[] = [];
     let choosing = false;
     let bounds = { x: 0, y: 0, width: 1, height: 1 };
@@ -218,6 +221,7 @@ export default function GlyphPortal({
     };
 
     const paint = (progress: number) => {
+      painted = progress;
       const isStatic = motion.matches || !browserFrameSeen || stalled || !target;
       const p = isStatic ? 0 : progress;
       const t = clamp(p / 0.78);
@@ -288,8 +292,11 @@ export default function GlyphPortal({
       if (time !== undefined && !browserFrameSeen) {
         browserFrameSeen = true; stalled ||= performance.now() - mountedAt > 2500; dirty = true;
       }
+      const relaid = dirty;
       if (dirty) { dirty = false; layout(); }
-      if (ready) paint(position());
+      if (!ready) return;
+      const progress = position();
+      if (relaid || progress !== painted) paint(progress);
     };
     const schedule = () => { if (!raf && active) raf = requestAnimationFrame(frame); };
     const resize = () => { cancelAnimationFrame(raf); dirty = true; frame(); };

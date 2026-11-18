@@ -327,8 +327,11 @@
       .fromTo(light, { x: -170, y: () => traced.offsetHeight / 2 }, { x: () => traced.offsetWidth + 170, duration: 1.4, ease: 'power1.inOut', onUpdate: paintLight }, 0.9)
       .to(light, { r: 0, duration: 0.3, onUpdate: paintLight });
     let lit = false;
+    // Only measure while the title is near the screen: a layout read on every mouse move anywhere else is wasted work.
+    let nearScreen = false;
+    new IntersectionObserver(([entry]) => { nearScreen = entry.isIntersecting; }, { rootMargin: '200px 0px' }).observe(traced);
     window.addEventListener('pointermove', (event) => {
-      if (event.pointerType !== 'mouse' || hero.isActive()) return;
+      if (!nearScreen || event.pointerType !== 'mouse' || hero.isActive()) return;
       const box = traced.getBoundingClientRect();
       const x = event.clientX - box.left;
       const y = event.clientY - box.top;

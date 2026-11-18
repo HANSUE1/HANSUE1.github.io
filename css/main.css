@@ -84,7 +84,10 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
 .profile-card .reflective-card__name { font-family: var(--font-display); font-size: 28px; font-weight: 700; letter-spacing: -.04em; }
 .profile-card .reflective-card__footer { margin-top: 20px; }
 .profile-card .reflective-card__id { gap: 8px; }
-.profile-card .reflective-card__dot { box-shadow: 0 0 0 0 rgba(200,255,52,.6); animation: pulse 2.4s ease-out infinite; }
+/* The pulse is a ring that scales and fades: transform and opacity run on the compositor, where an animated box-shadow
+   repainted the pinned card every frame for as long as it was on screen. 3.67 = the old 8px spread around a 6px dot. */
+.profile-card .reflective-card__dot { position: relative; }
+.profile-card .reflective-card__dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: rgba(200,255,52,.6); animation: pulse 2.4s ease-out infinite; }
 .social-links { display: flex; gap: 14px; }
 .social-links a { display: grid; width: 24px; height: 24px; place-items: center; color: var(--orange); transition: transform .2s ease, color .2s ease; }
 .social-links a:hover, .social-links a:focus-visible { color: var(--orange-hover); transform: translateY(-2px); }
@@ -130,7 +133,7 @@ html.title-stage .site-header, html.title-stage .back-to-top { opacity: 0; visib
    Hero: intro, stats
    ========================================================================== */
 .hero-main { min-width: 0; }
-@keyframes pulse { 70%, 100% { box-shadow: 0 0 0 8px rgba(200,255,52,0); } }
+@keyframes pulse { 70%, 100% { transform: scale(3.67); opacity: 0; } }
 .hero-title { margin: 0; font-family: var(--font-display); font-size: clamp(6.6rem, 9.7vw, 9rem); line-height: .99; letter-spacing: -.02em; font-weight: 800; text-transform: uppercase; }
 .hero-title span { display: block; white-space: nowrap; }
 .hero-title .muted-title { position: relative; width: fit-content; color: var(--dim); }

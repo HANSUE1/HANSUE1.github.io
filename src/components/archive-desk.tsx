@@ -28,6 +28,7 @@ const DOCUMENTS = [
 ]
 const documentFiles: FolderFile[] = DOCUMENTS.map(({ name, meta }) => ({ name, meta }))
 const openInTab = (url: string) => window.open(url, "_blank", "noopener")
+const allRepositories = [{ label: "All repositories on GitHub", onSelect: () => openInTab("https://github.com/HANSUE1?tab=repositories") }]
 
 // Two folders a row where they fit at a readable size, otherwise one; never wider than the component's drawn
 // 340px. Rounded to 10px so a window resize does not repaint the art for every pixel.
@@ -62,12 +63,7 @@ export default function ArchiveDesk({ className }: { className?: string }) {
         action="more"
         width={width}
         files={projects}
-        menu={[
-          {
-            label: "All repositories on GitHub",
-            onSelect: () => window.open("https://github.com/HANSUE1?tab=repositories", "_blank", "noopener"),
-          },
-        ]}
+        menu={allRepositories}
       />
       <GlassFolder
         label="Labs"
@@ -79,12 +75,7 @@ export default function ArchiveDesk({ className }: { className?: string }) {
         appearDelay={140}
         files={labFiles}
         onFileSelect={(_, index) => openInTab(LABS[index].url)}
-        menu={[
-          {
-            label: "All repositories on GitHub",
-            onSelect: () => openInTab("https://github.com/HANSUE1?tab=repositories"),
-          },
-        ]}
+        menu={allRepositories}
       />
       <GlassFolder
         label="Resume & CV"

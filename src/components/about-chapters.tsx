@@ -24,6 +24,8 @@ const INVESTIGATE = "Digital forensics, and Python tools that pull data out of t
 const BUILD = "Full-stack web apps in React on Supabase, like e-Barangay."
 
 const noHover = () => window.matchMedia("(hover: none)").matches
+/** One screen of the pinned title, the unit every chapter's scroll position is measured in. */
+const screenOf = (section: HTMLElement) => section.querySelector<HTMLElement>("[data-gp-pin]")!.clientHeight
 
 type PanelProps = { running: boolean }
 
@@ -190,8 +192,7 @@ function CollaboratePanel({ running }: PanelProps) {
     const invite = host.querySelector<HTMLElement>(".about-invite")!
     const stops = [...roles, invite]
     const started = performance.now()
-    const anchor = (el: HTMLElement) => {
-      const box = host.getBoundingClientRect()
+    const anchor = (el: HTMLElement, box: DOMRect) => {
       const rect = el.getBoundingClientRect()
       return { x: rect.right - box.left - Math.min(26, rect.width / 3), y: rect.bottom - box.top - 8 }
     }
@@ -204,13 +205,13 @@ function CollaboratePanel({ running }: PanelProps) {
       const resting = !seen || now - movedAt > 2200
       // Beside your cursor while you move; left alone, Hans walks the roles and ends on the invite.
       const stop = stops[Math.floor((now - started) / 1500) % stops.length]
+      const box = host.getBoundingClientRect()
       const hovered = seen && !resting ? stops.find((el) => {
-        const box = host.getBoundingClientRect()
         const rect = el.getBoundingClientRect()
         return px + box.left > rect.left && px + box.left < rect.right && py + box.top > rect.top && py + box.top < rect.bottom
       }) : undefined
       const goal = hovered ?? (resting ? stop : undefined)
-      const target = goal ? anchor(goal) : { x: px + 40, y: py + 34 }
+      const target = goal ? anchor(goal, box) : { x: px + 40, y: py + 34 }
       const dx = (target.x - x) * 0.085
       const dy = (target.y - y) * 0.085
       x += dx
@@ -319,7 +320,7 @@ export default function AboutChapters({ chapter, onChapter }: { chapter: number;
     const seen = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting), { threshold: 0.3 })
     seen.observe(host)
     const update = () => {
-      const screen = section.querySelector<HTMLElement>("[data-gp-pin]")!.clientHeight
+      const screen = screenOf(section)
       const landed = -section.getBoundingClientRect().top - screen * PORTAL_LENGTH
       const next = Math.max(0, Math.min(CHAPTERS.length - 1, Math.floor(landed / (screen * CHAPTER_STEP))))
       if (next !== current.current) onChapter(next)
@@ -338,7 +339,7 @@ export default function AboutChapters({ chapter, onChapter }: { chapter: number;
   const select = (next: number, focus = false) => {
     const section = root.current?.closest<HTMLElement>(".name-portal")
     if (!section) return
-    const screen = section.querySelector<HTMLElement>("[data-gp-pin]")!.clientHeight
+    const screen = screenOf(section)
     const top = window.scrollY + section.getBoundingClientRect().top + screen * (PORTAL_LENGTH + next * CHAPTER_STEP) + 2
     window.scrollTo({ top, behavior: "instant" })
     onChapter(next)

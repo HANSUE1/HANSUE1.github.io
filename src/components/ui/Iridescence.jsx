@@ -115,8 +115,17 @@ const MAX_SWIRLS = 6;
 const SWIRL_LIFE = 3.2;
 // Props that glide to a new value instead of jumping, so a parent can change the surface's mood by re-rendering.
 const LOOK = ['hueShift', 'saturation', 'brightness', 'contrast', 'warp', 'scale', 'sheen'];
+// The surface is soft and low-frequency, so past this many shaded pixels the browser's upscale looks the same and
+// the GPU only pays more: a full-screen pass at 2x DPR on a 4K screen would otherwise shade ~7M pixels a frame.
+const MAX_PIXELS = 800_000;
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+/** Backing-store size for a w×h CSS box: device pixels × resolution, capped at MAX_PIXELS. */
+const canvasSize = (width, height, resolution) => {
+  const dpr = Math.min(Math.min(window.devicePixelRatio || 1, 2) * resolution, Math.sqrt(MAX_PIXELS / (width * height)));
+  return [Math.max(1, Math.round(width * dpr)), Math.max(1, Math.round(height * dpr))];
+};
 
 const compile = (gl, type, source) => {
   const shader = gl.createShader(type);
@@ -441,6 +450,7 @@ const Iridescence = ({
     };
 
     const onPointerMove = event => {
+      if (!visible) return; // off-screen: skip the layout read and the brush
       const s = settingsRef.current;
       const { x, y } = locate(event);
       const inside = x >= 0 && x <= 1 && y >= 0 && y <= 1;
@@ -461,7 +471,7 @@ const Iridescence = ({
 
     const onPointerDown = event => {
       const s = settingsRef.current;
-      if (!s.clickSwirl || reduce) return;
+      if (!s.clickSwirl || reduce || !visible) return;
       const { x, y } = locate(event);
       if (x < 0 || x > 1 || y < 0 || y > 1) return;
       if (state.swirls.length >= MAX_SWIRLS) {
@@ -473,19 +483,15 @@ const Iridescence = ({
     };
 
     const resize = () => {
-      const s = settingsRef.current;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2) * s.resolution;
       state.width = Math.max(1, root.clientWidth);
       state.height = Math.max(1, root.clientHeight);
-      canvas.width = Math.max(1, Math.round(state.width * dpr));
-      canvas.height = Math.max(1, Math.round(state.height * dpr));
+      [canvas.width, canvas.height] = canvasSize(state.width, state.height, settingsRef.current.resolution);
       render();
       wake();
     };
 
     wakeRef.current = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2) * settingsRef.current.resolution;
-      if (canvas.width !== Math.max(1, Math.round(state.width * dpr))) resize();
+      if (canvas.width !== canvasSize(state.width, state.height, settingsRef.current.resolution)[0]) resize();
       else if (!raf) render();
       wake();
     };
@@ -497,6 +503,8 @@ const Iridescence = ({
       if (visible) {
         last = 0;
         wake();
+      } else {
+        pointer.inside = false; // moves are ignored while hidden, so don't brush from a stale position on return
       }
     });
     visibility.observe(root);
